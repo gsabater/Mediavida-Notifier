@@ -15,7 +15,7 @@ init();
 
 var _audio, _fade;
 var local = false;
-var localID = 0;
+var localID = 1;
 var notifications = {};
 
 
@@ -87,7 +87,7 @@ var notifications = {};
 
 			}else{
 				//console.log("No updates",last.id);
-				sendPush("test", "Prueba");
+				//sendPush("test", "Prueba");
 			}
 			
 	  }
@@ -108,8 +108,7 @@ var notifications = {};
 			_audio.play();
 			window.setTimeout(function(){ clearNotification(notID); }, 6000);
 
-			chrome.browserAction.setBadgeText(object details)
-			chrome.browserAction.getBadgeText(object details, function callback)
+			//chrome.browserAction.setBadgeText({text:"new"});
 	  }
 
 	//+-------------------------------------------------------
