@@ -11,27 +11,32 @@
 
 console.log("MV Notifier init", "running every 30 sec");
 
-window.MV = setInterval(checkNotifications, 30000);
-initParser();
+init();
 
+var _audio, _fade;
 var local = false;
 var localID = 0;
 var notifications = {};
 
 
   //+-------------------------------------------------------
-  //| initParser()
+  //| init()
   //| + Creates the first ul element used to parse 
   //| + the response from server
   //+--------------------------------
   //| + Also inits localstorage
   //+-------------------------------------------------------
-	  function initParser(){
+	  function init(){
 	  	var ul = document.createElement( 'ul' );
 	  	ul.setAttribute("id", "parser");
 	  	document.body.appendChild(ul);
 
+	  	_audio = new Audio();
+			_audio.src = "assets/notification.mp3";
+
 	  	localStorage("get", "lastNotification");
+
+	  	window.MV = setInterval(checkNotifications, 30000);
 	  }
 
   //+-------------------------------------------------------
@@ -82,6 +87,7 @@ var notifications = {};
 
 			}else{
 				//console.log("No updates",last.id);
+				sendPush("test", "Prueba");
 			}
 			
 	  }
@@ -91,13 +97,19 @@ var notifications = {};
   //| + Sends a notification to the browser with details
   //+-------------------------------------------------------
 	  function sendPush(notID, text){
+
 	  	var options = {
 			  type: "basic",
 			  title: "Mediavida Notifier",
 			  message: text,
-			  iconUrl: "48.png"
-			}
-			chrome.notifications.create(notID, options);
+			  iconUrl: "/assets/mv.png" }
+				chrome.notifications.create(notID, options);
+
+			_audio.play();
+			window.setTimeout(function(){ clearNotification(notID); }, 6000);
+
+			chrome.browserAction.setBadgeText(object details)
+			chrome.browserAction.getBadgeText(object details, function callback)
 	  }
 
 	//+-------------------------------------------------------
@@ -105,13 +117,50 @@ var notifications = {};
   //| + Opens link and deletes notification from center
   //+-------------------------------------------------------
 	  function pushAction(notificationId){
+
+	  	clearNotification(notificationId);
+
 	  	var base = chrome.extension.getURL("");
 	  	var url = "http://www.mediavida.com/"+notifications[notificationId].url.split(base)[1];
 	  	chrome.tabs.create({"url":url,"selected":true});
+	  }
+
+	//+-------------------------------------------------------
+  //| clearNotification()
+  //| + Removes the notification from the action center and 
+  //| + fades the audio background.
+  //+-------------------------------------------------------
+	  function clearNotification(notificationId){
 	  	chrome.notifications.clear(notificationId);
+
+	  	if(!_fade){
+		  	_fade = true;
+				var vol = 1;
+				var interval = 100; // 200ms interval
+
+				var fadeout = setInterval(
+				  function() {
+				    // Reduce volume by 0.05 as long as it is above 0
+				    // This works as long as you start with a multiple of 0.05!
+				    if (vol > 0.05) {
+				      vol -= 0.05;
+				      _audio.volume = vol; console.log(vol);
+				    }
+				    else {
+				      // Stop the setInterval when 0 is reached
+				      _fade = false;
+				      _audio.pause();
+				      _audio.volume = 1;
+							_audio.currentTime = 0;
+							clearInterval(fadeout);
+				    }
+				  }, interval);	  		
+	  	}
+
 	  }
 
 	  chrome.notifications.onClicked.addListener(pushAction);
+	  chrome.notifications.onClosed.addListener(clearNotification);
 
 	//+-------------------------------------------------------
   //| localStorage()
