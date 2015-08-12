@@ -17,10 +17,20 @@
     "scripts": ["mv.js"]
   },
 
+  "content_scripts": [
+    {
+      "matches": ["*://*.mediavida.com/*"],
+      "js": ["mv-front.js"]
+    }
+  ],
+
   "permissions": [
     "storage",
     "activeTab",
+    "webRequest",
+    "webRequestBlocking",
     "notifications",
+
     //"https://ajax.googleapis.com/",
     "*://*.mediavida.com/*"
   ]

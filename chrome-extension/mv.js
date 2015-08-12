@@ -183,3 +183,16 @@ var notifications = {};
 				});
 	  	}
 	  }
+
+  //+-------------------------------------------------------
+  //| Force https
+  //| Detects the protocol and redirects to https
+  //+-------------------------------------------------------
+	  chrome.webRequest.onBeforeRequest.addListener(function (details){
+	  	protocol = details.url.split("://")[0];
+	    if(protocol == "http"){
+	    	return {redirectUrl: "https" + details.url.substring(protocol.length)};
+	    }    
+	  },
+	    {urls: ["http://*.mediavida.com/*"], types: ["main_frame"]}, ["blocking"]
+	  );
