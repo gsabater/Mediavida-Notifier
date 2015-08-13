@@ -10,7 +10,6 @@
   "browser_action": {
     "default_icon": "assets/icon.png"
     //"default_popup": "popup.html"
-    //"default_title": "Click here!"
   },
 
   "background": {
@@ -20,7 +19,11 @@
   "content_scripts": [
     {
       "matches": ["*://*.mediavida.com/*"],
-      "js": ["mv-front.js"]
+      "css": ["mv-front.css"],
+      "js": [
+        "assets/jquery-2.1.4.min.js", 
+        "mv-front.js"
+      ]
     }
   ],
 

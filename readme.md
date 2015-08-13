@@ -4,3 +4,4 @@ Project still in development.
 
 ##Features
 * Desktop notifications for any event in MV.
+* Force https navigation on the site
