@@ -3,13 +3,13 @@
 
   "name": "Mediavida Notifier",
   "description": "Enhances the Mediavida Experience.",
-  "version": "0.1",
+  "version": "0.2",
 
   "options_page": "options.html",
 
   "browser_action": {
-    "default_icon": "assets/icon.png"
-    //"default_popup": "popup.html"
+    "default_icon": "assets/icon.png",
+    "default_popup": "popup.html"
   },
 
   "background": {

@@ -11,3 +11,7 @@ div.bwrap div.quote {
 	font-size: 11px;
 	font-style: normal;
 }
+
+body.MVN-oscuro div.bwrap {
+	color: rgb(238, 238, 238) !important;
+}

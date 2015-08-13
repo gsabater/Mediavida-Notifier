@@ -13,6 +13,7 @@ console.log("MV Notifier init", "running every 30 sec");
 
 init();
 
+var _num = 0;
 var _audio, _fade;
 var local = false;
 var localID = 1;
@@ -92,23 +93,42 @@ var notifications = {};
 			
 	  }
 
+
+
+
 	//+-------------------------------------------------------
   //| sendPush()
   //| + Sends a notification to the browser with details
   //+-------------------------------------------------------
 	  function sendPush(notID, text){
 
+	  	_num++;
+
 	  	var options = {
 			  type: "basic",
+			  iconUrl: "/assets/mv.png",
 			  title: "Mediavida Notifier",
 			  message: text,
-			  iconUrl: "/assets/mv.png" }
-				chrome.notifications.create(notID, options);
+			  //contextMessage: "testinger",
+			  priority: 2
+			}
+
+			chrome.notifications.create(notID, options);
+			chrome.browserAction.setBadgeText({text: _num.toString()});
 
 			_audio.play();
-			window.setTimeout(function(){ clearNotification(notID); }, 6000);
+			window.setTimeout(function(){ updatePush(notID); }, 4000);
+			window.setTimeout(function(){ clearNotification(notID); }, 12000);
+	  }
 
-			//chrome.browserAction.setBadgeText({text:"new"});
+	//+-------------------------------------------------------
+  //| sendPush()
+  //| + Sends a notification to the browser with details
+  //+-------------------------------------------------------
+	  function updatePush(notID){
+
+	  	var options = { contextMessage: "..." }
+			chrome.notifications.update(notID, options);
 	  }
 
 	//+-------------------------------------------------------
@@ -118,6 +138,9 @@ var notifications = {};
 	  function pushAction(notificationId){
 
 	  	clearNotification(notificationId);
+
+	  	_num--;
+	  	chrome.browserAction.setBadgeText({text: (_num <0)? _num.toString() : "" });
 
 	  	var base = chrome.extension.getURL("");
 	  	var url = "http://www.mediavida.com/"+notifications[notificationId].url.split(base)[1];

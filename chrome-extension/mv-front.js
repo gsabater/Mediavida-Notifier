@@ -14,12 +14,16 @@ console.log("MV Notifier active");
 init();
 reverseQuote();
 
+var oscuro = false;
+
   //+-------------------------------------------------------
   //| init()
   //+--------------------------------
   //| + Also inits localstorage
   //+-------------------------------------------------------
 	  function init(){
+	  	oscuro = ($("link[href*='oscuro.css']").length)? true : false;
+	  	if(oscuro){ $("body").addClass("MVN-oscuro"); }
 	  }  
 
 	//+-------------------------------------------------------
