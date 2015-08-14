@@ -14,6 +14,7 @@ console.log("MV Notifier active");
 init();
 reverseQuote();
 
+var UT = false;
 var oscuro = false;
 var version = "0.3";
 
@@ -82,16 +83,30 @@ var version = "0.3";
 	  	//console.log(mentions);
 	  }
 
-	  function DOMModificationHandler(){
-    $(this).unbind('DOMSubtreeModified.event1');
-    setTimeout(function(){
-        modifyComments();
-        $('#ContentContainer').bind('DOMSubtreeModified.event1',DOMModificationHandler);
-    },1000);
-}
 
-//after document-load
-$('#ContentContainer').bind('DOMSubtreeModified.event1',DOMModificationHandler);
+	//+-------------------------------------------------------
+  //| Miscellanea
+  //| + Check for usertools installed
+  //| + Print init DOM modifications
+  //+-------------------------------------------------------
 
-	  //footer
+  	MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+  	//| + Check for UT
+  	//+-------------------------------------------------------	
+			var observer = new MutationObserver(function(mutations, observer) {
+			  if(mutations[0].addedNodes[1].href == "http://mvusertools.com/"){ 
+			  	UT = true; 
+			  	$("body").addClass("has-ut"); 
+			  }
+			});
+			
+			observer.observe($(".f_info > p").get(0), {
+			  subtree: true,
+			  childList: true,
+			  attributes: true
+			});
+
+	//| + Footer credits
+	//+-------------------------------------------------------	
 	  $(".f_info").append("<p><a href='http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508'>Mediavida Notifier</a> v." + version + "</p>");

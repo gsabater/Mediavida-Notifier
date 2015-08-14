@@ -91,7 +91,7 @@ var notifications = {};
   //+-------------------------------------------------------
 	  function sendPush(notID, text){
 
-  		_num ++;
+  		_num++;
 
 	  	var options = {
 			  type: "basic",

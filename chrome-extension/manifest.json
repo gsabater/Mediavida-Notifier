@@ -21,7 +21,8 @@
       "matches": ["*://*.mediavida.com/*"],
       "css": ["mv-front.css"],
       "js": [
-        "assets/jquery-2.1.4.min.js", 
+        "lib/jquery-2.1.4.min.js",
+        "lib/jquery.magnific-popup.min.js",
         "mv-front.js"
       ]
     }
