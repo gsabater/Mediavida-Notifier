@@ -40,10 +40,22 @@ chrome.browserAction.setBadgeText({text:""});
   //+-------------------------------------------------------
     function parseMV(xhr){
 
-      console.log("print notificaciones");
-
       var el = document.getElementById('parser');
-      el.innerHTML = xhr;    
+      el.innerHTML = xhr;
 
-      //hacer que la ultima notificación sea la last en local  
+      var lis = el.getElementsByTagName('li');
+      var last = lis[0];
+
+      var base = chrome.extension.getURL("");
+
+      for(i=lis.length-1; i>=0; i--){
+
+        _url = lis[i].getElementsByTagName("a")[0]
+        url = "http://www.mediavida.com/" + _url.href.split(base)[1];
+
+        _url.href = url;
+        _url.target = "_blank";
+
+      }
+
     }    

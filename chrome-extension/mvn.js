@@ -15,8 +15,6 @@ init();
 
 var _num = 0;
 var _audio, _fade;
-var local = false;
-var localID = 1;
 var notifications = {};
 
 
@@ -35,7 +33,7 @@ var notifications = {};
 	  	_audio = new Audio();
 			_audio.src = "assets/notification.mp3";
 
-	  	localStorage("get", "lastNotification");
+	  	localStorage("get", "MVN-user");
 
 	  	window.MV = setInterval(checkNotifications, 30000);
 	  }
@@ -46,18 +44,17 @@ var notifications = {};
   //| + Loads only when localstorage is ready
   //+-------------------------------------------------------
 		function checkNotifications(){
-			console.log("check", local, localID);
-			if(local){
-				var xhr = new XMLHttpRequest();
-				xhr.open("GET", "http://www.mediavida.com/notificaciones/fly", true);
-				xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-				xhr.onreadystatechange = function() {
-				  if (xhr.readyState == 4) {
-				    parseMV(xhr.responseText);
-				  }
-				}
-				xhr.send();
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://www.mediavida.com/notificaciones/fly", true);
+			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			xhr.onreadystatechange = function() {
+			  if (xhr.readyState == 4) {
+			    parseMV(xhr.responseText);
+			  }
 			}
+			xhr.send();
+			
 		}
 
   //+-------------------------------------------------------
@@ -71,26 +68,18 @@ var notifications = {};
 			var lis = el.getElementsByTagName('li');
 			var last = lis[0];
 
-			if(local !== last.id){
-				for(i=lis.length-1; i>=0; i--){
+			//sendPush("test", "Prueba");
 
-					var notID = parseInt(lis[i].id.split("f_")[1]);
-					if(notID > localID){
-						text = lis[i].getElementsByTagName("blockquote")[0].innerText;
-						_url = lis[i].getElementsByTagName("a")[0].href;
+			for(i=lis.length-1; i>=0; i--){
 
-						localID = notID;
-						sendPush(lis[i].id, text);
-						notifications[lis[i].id] = {url:_url};
-						localStorage("set", "lastNotification", lis[i].id);
-					}
+				if(lis[i].classList.contains("unread")){
+					text = lis[i].getElementsByTagName("blockquote")[0].innerText;
+					_url = lis[i].getElementsByTagName("a")[0].href;
+
+					sendPush(lis[i].id, text);
+					notifications[lis[i].id] = {url:_url};
 				}
-
-			}else{
-				//console.log("No updates",last.id);
-				//sendPush("test", "Prueba");
 			}
-			
 	  }
 
 
@@ -122,8 +111,8 @@ var notifications = {};
 	  }
 
 	//+-------------------------------------------------------
-  //| sendPush()
-  //| + Sends a notification to the browser with details
+  //| updatePush()
+  //| + Updates the options so the update lasts longer
   //+-------------------------------------------------------
 	  function updatePush(notID){
 
@@ -195,14 +184,11 @@ var notifications = {};
 	  		var obj= {};
 				obj[key] = value;
 				storage.set(obj);
-
-				local = value; //ugly fix
 	  	}
 
 	  	if(method == "get"){
 	  		storage.get(key,function(result){
-	  			console.log("Get local",result,result.lastNotification);
-	  			if(!result.lastNotification){ local = 1; localStorage("set", "lastNotification", "f_1"); }else{ local = result.lastNotification; localID = parseInt(result.lastNotification.split("f_")[1]);  }
+
 				});
 	  	}
 	  }
@@ -211,6 +197,7 @@ var notifications = {};
   //| Force https
   //| Detects the protocol and redirects to https
   //+-------------------------------------------------------
+  /*
 	  chrome.webRequest.onBeforeRequest.addListener(function (details){
 	  	protocol = details.url.split("://")[0];
 	    if(protocol == "http"){
@@ -219,3 +206,4 @@ var notifications = {};
 	  },
 	    {urls: ["http://*.mediavida.com/*"], types: ["main_frame"]}, ["blocking"]
 	  );
+	  */

@@ -13,7 +13,7 @@
   },
 
   "background": {
-    "scripts": ["mv.js"]
+    "scripts": ["mvn.js"]
   },
 
   "content_scripts": [
