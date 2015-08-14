@@ -91,7 +91,7 @@ var notifications = {};
   //+-------------------------------------------------------
 	  function sendPush(notID, text){
 
-	  	_num++;
+  		_num ++;
 
 	  	var options = {
 			  type: "basic",
@@ -103,7 +103,7 @@ var notifications = {};
 			}
 
 			chrome.notifications.create(notID, options);
-			chrome.browserAction.setBadgeText({text: _num.toString()});
+			chrome.browserAction.setBadgeText({text: (_num>0)?_num.toString():""});
 
 			_audio.play();
 			window.setTimeout(function(){ updatePush(notID); }, 4000);
@@ -172,6 +172,9 @@ var notifications = {};
 
 	  chrome.notifications.onClicked.addListener(pushAction);
 	  chrome.notifications.onClosed.addListener(clearNotification);
+	  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+    	if (request.clear == "0"){ _num = 0; }
+  	});
 
 	//+-------------------------------------------------------
   //| localStorage()

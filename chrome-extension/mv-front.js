@@ -15,6 +15,7 @@ init();
 reverseQuote();
 
 var oscuro = false;
+var version = "0.3";
 
   //+-------------------------------------------------------
   //| init()
@@ -80,3 +81,17 @@ var oscuro = false;
 
 	  	//console.log(mentions);
 	  }
+
+	  function DOMModificationHandler(){
+    $(this).unbind('DOMSubtreeModified.event1');
+    setTimeout(function(){
+        modifyComments();
+        $('#ContentContainer').bind('DOMSubtreeModified.event1',DOMModificationHandler);
+    },1000);
+}
+
+//after document-load
+$('#ContentContainer').bind('DOMSubtreeModified.event1',DOMModificationHandler);
+
+	  //footer
+	  $(".f_info").append("<p><a href='http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508'>Mediavida Notifier</a> v." + version + "</p>");
