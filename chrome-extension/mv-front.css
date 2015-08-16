@@ -1,4 +1,4 @@
-/* */
+/* Posts */
 
 div.post .binfo, div.post .binfo .bwrap {
 	height: auto;
@@ -16,7 +16,139 @@ body.MVN-oscuro div.bwrap {
 	color: rgb(238, 238, 238) !important;
 }
 
+em.mvn-orderby-manita {
+    margin-top: 20px;
+    cursor: pointer;
+    /* padding-top: 2px; */
+}
+
+.mvn-orderby-manita img {
+    width: 15px;
+    height: auto;
+    margin-top: 9px;
+}
+
+
+/*** Loading ***/
+#foros #main.mvn-loading-all {
+  min-height: 450px !important;
+  height: 450px !important;
+  overflow: hidden;
+}
+
+.indicator{
+  display: none;
+  position: absolute;
+  z-index: 999;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  cursor: progress;
+}
+
+.indicator .spinner{
+  /*background-image: url("assets/spinner.gif");
+  background-image: url("style/img/loader.gif");*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  left: 40%;
+  margin-top: -9px;
+  margin-left: -9px;
+  width: 18px;
+  height: 18px;
+
+  width: auto;
+  background-repeat: no-repeat;
+}
+
+#main.mvn-loading-all .indicator{
+  display: block;
+}
+
+/*** Settings ***/
+
+#mvn-settings-mfp {
+	position: relative;
+	background: white;
+	padding: 0;
+	width: 600px;
+ 	margin: 20px auto;
+ 	margin-top: -33vh;
+}
+
+#mvn-settings-mfp h2{
+  padding: 10px 20px;
+  background-color: rgba(239, 239, 239, 0.63);
+  font-size: 17px;
+  font-weight: 100;
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 0;
+}
+
+#mvn-settings-mfp .mfp-close{
+	border-left: 1px solid #CCC;
+}
+
+#modal-lang .row{
+	height: calc(100% - 44px);
+	margin: 0;
+}
+
+#modal-lang textarea{
+	border: 0;
+	height: calc(100% - 49px);
+}
+
+#modal-lang .col-md-8, #modal-lang .col-md-12, #modal-lang .amb-idiomes, #modal-lang .idioma{
+	height: 100%;
+}
+
+#modal-lang .detalles-archivo{
+	background-color: #EFEFEF;
+  box-shadow: inset 0 4px 4px -4px rgba(0, 0, 0, 0.1);
+  border-bottom: 0;
+  border-left: 1px solid #DDD;
+  background: #F3F3F3;
+  height: 100%;
+}
+
+#modal-lang .detalles-archivo .detalles{
+	padding: 10px 0px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+#modal-lang .detalles-archivo .detalles span{
+  font-weight: 300;
+}
+
+#modal-lang .detalles-archivo .borrar{
+  color: #A32340;
+}
+
+
+
+#modal-lang .bottom-save{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+
+	padding: 10px 20px;
+	background-color: rgba(239, 239, 239, 0.63);
+	font-size: 17px;
+	font-weight: 100;
+	border-bottom: 1px solid #DDD;
+	margin-bottom: 0;
+}
+
 /*** USERTOOLS FIX ***/
+
 body.has-ut .ut_tag{
 	margin-top: 24px !important;
 }
@@ -402,3 +534,61 @@ img.mfp-img {
   top: 0;
   right: 0;
   padding-top: 0; }
+
+
+/***** CSS options for popup ***/
+
+/* at start */
+.my-mfp-slide-bottom .zoom-anim-dialog {
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+
+	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg );
+
+}
+
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
+	opacity: 1;
+	-webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-moz-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-ms-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	-o-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+	transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+}
+
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
+	opacity: 0;
+
+	-webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	-o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+	transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+}
+
+/* Dark overlay, start state */
+.my-mfp-slide-bottom.mfp-bg {
+	opacity: 0;
+
+	-webkit-transition: opacity 0.3s ease-out; 
+	-moz-transition: opacity 0.3s ease-out; 
+	-o-transition: opacity 0.3s ease-out; 
+	transition: opacity 0.3s ease-out;
+}
+/* animate in */
+.my-mfp-slide-bottom.mfp-ready.mfp-bg {
+	opacity: 0.8;
+}
+/* animate out */
+.my-mfp-slide-bottom.mfp-removing.mfp-bg {
+	opacity: 0;
+}

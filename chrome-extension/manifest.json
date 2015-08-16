@@ -23,9 +23,15 @@
       "js": [
         "lib/jquery-2.1.4.min.js",
         "lib/jquery.magnific-popup.min.js",
-        "mv-front.js"
+        "mv-front.js",
+        "modules/mvn.module.extras.js",
+        "modules/mvn.module.posts.js"
       ]
     }
+  ],
+
+  "web_accessible_resources": [
+    "settings.html"
   ],
 
   "permissions": [

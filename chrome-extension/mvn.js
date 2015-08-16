@@ -17,6 +17,8 @@ var _num = 0;
 var _audio, _fade;
 var notifications = {};
 
+console.log(localStorage['ut-Tags']);
+
 
   //+-------------------------------------------------------
   //| init()
