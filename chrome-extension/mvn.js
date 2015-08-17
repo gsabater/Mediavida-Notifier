@@ -9,15 +9,13 @@
 //   
 //=================================================================
 
-console.log("MV Notifier init", "running every 30 sec");
+console.log("MV Notifier background");
 
 init();
 
 var _num = 0;
 var _audio, _fade;
 var notifications = {};
-
-console.log(localStorage['ut-Tags']);
 
 
   //+-------------------------------------------------------
@@ -40,6 +38,7 @@ console.log(localStorage['ut-Tags']);
 	  	window.MV = setInterval(checkNotifications, 30000);
 	  }
 
+
   //+-------------------------------------------------------
   //| checkNotifications()
   //| + Loads the information from MV every 30 sec
@@ -56,8 +55,8 @@ console.log(localStorage['ut-Tags']);
 			  }
 			}
 			xhr.send();
-			
 		}
+
 
   //+-------------------------------------------------------
   //| parseMV()
@@ -85,8 +84,6 @@ console.log(localStorage['ut-Tags']);
 	  }
 
 
-
-
 	//+-------------------------------------------------------
   //| sendPush()
   //| + Sends a notification to the browser with details
@@ -112,15 +109,16 @@ console.log(localStorage['ut-Tags']);
 			window.setTimeout(function(){ clearNotification(notID); }, 12000);
 	  }
 
+
 	//+-------------------------------------------------------
   //| updatePush()
   //| + Updates the options so the update lasts longer
   //+-------------------------------------------------------
 	  function updatePush(notID){
-
 	  	var options = { contextMessage: "..." }
 			chrome.notifications.update(notID, options);
 	  }
+
 
 	//+-------------------------------------------------------
   //| pushAction()
@@ -137,6 +135,7 @@ console.log(localStorage['ut-Tags']);
 	  	var url = "http://www.mediavida.com/"+notifications[notificationId].url.split(base)[1];
 	  	chrome.tabs.create({"url":url,"selected":true});
 	  }
+
 
 	//+-------------------------------------------------------
   //| clearNotification()
@@ -172,11 +171,19 @@ console.log(localStorage['ut-Tags']);
 
 	  }
 
+
+  //| + Multiple event listeners for chrome runtime
+  //+-------------------------------------------------------
 	  chrome.notifications.onClicked.addListener(pushAction);
 	  chrome.notifications.onClosed.addListener(clearNotification);
+	  
 	  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    	if (request.clear == "0"){ _num = 0; }
+	  	console.log("+ MVN: Message event", request);
+
+    	if (request.mvnBadge == "num"){ sendResponse({farewell: _num}); }
+    	if (request.clear == "0")			{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
   	});
+
 
 	//+-------------------------------------------------------
   //| localStorage()
@@ -197,6 +204,7 @@ console.log(localStorage['ut-Tags']);
 				});
 	  	}
 	  }
+
 
   //+-------------------------------------------------------
   //| Force https

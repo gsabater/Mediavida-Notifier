@@ -17,12 +17,15 @@ reverseQuote();
   //| + and shows quote information on each footer
   //+-------------------------------------------------------
 	  function reverseQuote(){
+
+	  	console.log("+ MVN: reverseQuote()");
+
 	  	var mentions = [];
 	  	var mentors = [];
 
 	  //| + Find quotes in every post
   	//+-------------------------------------------------------
-	  	var posts = $(".largecol > .post");
+	  	var posts = $(".largecol .post");
 
 	  	for (i = 0; i <= posts.length - 1; i++){
 
@@ -72,6 +75,9 @@ reverseQuote();
   	$(".mvn-orderby-manita").on("click", function(){ orderbyManitas(); });
 
 	  function orderbyManitas(){
+
+	  	console.log("+ MVN: orderbyManitas()");
+	  	
 	  	var page = false;
 
 	  	//First prepare the visual feedback
@@ -147,9 +153,12 @@ reverseQuote();
 	  function applyOrder(){
 	  	console.log("APPLY ORDER");
 			var posts = $(".post:not(.mvn-fake-post)");
+			var likes = 0;
 
 			for (i = 0; i <= posts.length - 1; i++){
-	  		$(posts[i]).attr("data-likes", $(posts[i]).find(".mola").text());
+				likes = $(posts[i]).find(".mola").text();
+	  		$(posts[i]).attr("data-likes", likes);
+	  		if(likes == 0){ $(posts[i]).css("display","none"); }
 	  	}
 
 			posts.sort(function (a, b){
@@ -163,4 +172,10 @@ reverseQuote();
 			window.scrollTo(0, 0);
 			$("#mvn-order-results").append(posts);
 			$(".mvn-loading-all").removeClass("mvn-loading-all");
+
+			reverseQuote();
 	  }
+
+	  $(".masmola").on("click", function(){
+	  	//alert("asd");
+	  });

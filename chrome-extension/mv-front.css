@@ -28,6 +28,11 @@ em.mvn-orderby-manita {
     margin-top: 9px;
 }
 
+div.post.mark{
+  background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: 100px top !important;
+}
 
 /*** Loading ***/
 #foros #main.mvn-loading-all {

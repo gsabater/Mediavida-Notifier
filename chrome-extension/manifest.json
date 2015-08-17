@@ -9,7 +9,7 @@
 
   "browser_action": {
     "default_icon": "assets/icon.png",
-    "default_popup": "popup.html"
+    "default_popup": "modules/mvn.popup.html"
   },
 
   "background": {
@@ -31,7 +31,8 @@
   ],
 
   "web_accessible_resources": [
-    "settings.html"
+    "settings.html",
+    "/assets/*"
   ],
 
   "permissions": [

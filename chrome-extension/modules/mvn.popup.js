@@ -10,7 +10,7 @@
 //=================================================================
 
 checkNotifications();
-chrome.browserAction.setBadgeText({text:""});
+
 chrome.runtime.sendMessage({clear: "0"});
 
   //+-------------------------------------------------------
