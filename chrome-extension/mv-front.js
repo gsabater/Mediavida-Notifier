@@ -15,7 +15,8 @@ init();
 
 var UT = false;
 var oscuro = false;
-var version = "0.3";
+
+var _posts = [];
 
 var fullURL = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
 var _url = window.location.pathname.split( '/' );

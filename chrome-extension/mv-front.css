@@ -16,6 +16,36 @@ body.MVN-oscuro div.bwrap {
 	color: rgb(238, 238, 238) !important;
 }
 
+
+/*** USER TOOLS ***/
+
+.mvn-post .post_controls .buttons{ display: none; }
+.mvn-post:hover .post_controls .buttons{ display: block; }
+
+.mvn-ajax .buttons .propuesta, .mvn-ajax .buttons .report { opacity: 0.2; }
+.mvn-ajax .buttons .propuesta:hover, .mvn-ajax .buttons .report:hover { opacity: 0.2; }
+
+dd.online{ display: none; }
+.mvn-online{
+  display: inline-block;
+  background-color: rgba(0, 128, 0, 0.74);
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  border-radius: 10px;
+}
+
+.usertools .online-pos{
+  display: none;
+}
+
+.usertools .blacklist-pos{
+  float: left;
+}
+
+
+/*** ORDER BY MANITA ***/
+
 em.mvn-orderby-manita {
     margin-top: 20px;
     cursor: pointer;
@@ -28,6 +58,8 @@ em.mvn-orderby-manita {
     margin-top: 9px;
 }
 
+
+/*** Extras ***/
 div.post.mark{
   background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
   background-repeat: no-repeat !important;
@@ -98,6 +130,37 @@ div.post.mark{
 
 #mvn-settings-mfp .mfp-close{
 	border-left: 1px solid #CCC;
+}
+
+
+/*** MVN-manitas ***/
+.mvn-manitas .mfp-close {
+  width: 31px;
+  height: 31px;
+  background-color: #FFA000;
+  line-height: 31px;
+}
+
+.mvn-manitas #thumbs {
+  width: auto;
+}
+
+#thumbs ul li{ 
+  position: relative;
+  overflow: visible; 
+}
+
+#thumbs a.tooltip:hover:after{
+  border: 1px solid #fc0;
+  padding: 3px 6px;
+  background: #efefef;
+  content: attr(title);
+  position: absolute;
+  right: -50%;
+  top: 5px;
+  color: black;
+  z-index: 9999999;
+  font-weight: bold;
 }
 
 #modal-lang .row{

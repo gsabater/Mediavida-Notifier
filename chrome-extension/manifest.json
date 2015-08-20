@@ -24,8 +24,9 @@
         "lib/jquery-2.1.4.min.js",
         "lib/jquery.magnific-popup.min.js",
         "mv-front.js",
-        "modules/mvn.module.extras.js",
-        "modules/mvn.module.posts.js"
+        "modules/mvn.module.user.js",
+        "modules/mvn.module.posts.js",
+        "modules/mvn.module.extras.js"
       ]
     }
   ],
@@ -41,8 +42,6 @@
     "webRequest",
     "webRequestBlocking",
     "notifications",
-
-    //"https://ajax.googleapis.com/",
     "*://*.mediavida.com/*"
   ]
 }

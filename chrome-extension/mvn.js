@@ -8,14 +8,26 @@
 //  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
 //   
 //=================================================================
+// Modules:
+// mvn posts: 	Reverse quote, orderByManitas
+// mvn user: 		userTools
+// mvn extras: 	Settings injection and upper pagination
+//=================================================================
 
 console.log("MV Notifier background");
 
 init();
 
+var v = 0.3;
 var _num = 0;
 var _audio, _fade;
-var notifications = {};
+var notifications = { };
+
+var ls = { };
+var user = {
+	https: false,
+	audio: "notification.mp3"
+};
 
 
   //+-------------------------------------------------------
@@ -33,16 +45,40 @@ var notifications = {};
 	  	_audio = new Audio();
 			_audio.src = "assets/notification.mp3";
 
-	  	localStorage("get", "MVN-user");
-
 	  	window.MV = setInterval(checkNotifications, 30000);
+	  	window.setTimeout(function(){ chrome.storage.local.get("MVN-user", function(result){ MVNStorage(result); });  }, 100);
 	  }
 
 
   //+-------------------------------------------------------
+  //| MVNStorage()
+  //| + Loads the information from MV every 30 sec
+  //+-------------------------------------------------------
+		function MVNStorage(localstorage){
+			console.log(localstorage, localstorage['MVN-user'].v, v);
+
+			user.v = v;
+
+			if(!localstorage['MVN-user']){ setMVNStorage(localstorage); }else{ 
+		
+				if(localstorage['MVN-user'].v < v){ 
+					setMVNStorage(localstorage);
+					notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
+					sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v); 
+				}
+
+			}
+		}
+
+		function setMVNStorage(ls){
+			ls['MVN-user'] = user;
+			chrome.storage.local.set(ls);
+			console.log("Setting", ls);
+		}
+
+  //+-------------------------------------------------------
   //| checkNotifications()
   //| + Loads the information from MV every 30 sec
-  //| + Loads only when localstorage is ready
   //+-------------------------------------------------------
 		function checkNotifications(){
 
@@ -55,6 +91,7 @@ var notifications = {};
 			  }
 			}
 			xhr.send();
+
 		}
 
 
@@ -183,27 +220,6 @@ var notifications = {};
     	if (request.mvnBadge == "num"){ sendResponse({farewell: _num}); }
     	if (request.clear == "0")			{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
   	});
-
-
-	//+-------------------------------------------------------
-  //| localStorage()
-  //| + Manages values in storage to know last recorded not.
-  //+-------------------------------------------------------
-	  function localStorage(method, key, value){
-	  	var storage = chrome.storage.local;
-
-	  	if(method == "set"){
-	  		var obj= {};
-				obj[key] = value;
-				storage.set(obj);
-	  	}
-
-	  	if(method == "get"){
-	  		storage.get(key,function(result){
-
-				});
-	  	}
-	  }
 
 
   //+-------------------------------------------------------
