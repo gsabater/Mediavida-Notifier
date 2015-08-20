@@ -18,7 +18,7 @@ console.log("MV Notifier background");
 
 init();
 
-var v = 0.3;
+var v = 0.4;
 var _num = 0;
 var _audio, _fade;
 var notifications = { };
