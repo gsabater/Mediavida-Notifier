@@ -37,10 +37,14 @@ $.fn.tipsy = function() {
 	  	current_page = (_url[4] && _url[4] !== "1" && !isNaN(_url[4]))? parseInt(_url[4]) : 1;
 	  	last_page = $(".tpag .paginas .last").text();
 	  	in_post = ($(".largecol > .post").length)? true : false;
+
+	  	$("form .post").addClass("mvn-fake-post");
 	  	console.log("Loaded post: ",in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 
+	  	userTools();
   		reverseQuote();
-  		userTools();
+  		_pages[current_page] = true;
+
   	}
 
 
@@ -65,7 +69,7 @@ $.fn.tipsy = function() {
 	//| loadPage
 	//| + Loads a specific page given a parameter
 	//+-------------------------------------------------------
-	  function loadPage(page){
+	  function loadPage(page, callback){
 	  
 	  	if($("#postform").is(":visible")){ loadingPage = true; }
 	  	if(!loadingPage){
@@ -73,7 +77,19 @@ $.fn.tipsy = function() {
 	  		loadingPage = true;
 	  		if(in_post){
 
-	  			page = (page)? page : current_page+1;
+	  			page = (page)? page : current_page + 1;
+
+	  			if(callback){ found = false;
+	  				for(i = last_page; i >= 1; i--){ //console.log(i, _pages[i]); 
+	  					if(!_pages[i]){ 
+	  						page = i; found = true; 
+	  						$(".status-page").text("Página " + page + "/" + last_page); 
+	  					} 
+	  				} 
+
+	  				if(!found){ return applyOrder(); }
+	  			}
+
 	  			var postURL = ($(".headlink").length)? $(".headlink").attr("href") + "/" + page : window.location.pathname + "/" + page;
 
 	  			$.ajax({
@@ -85,9 +101,18 @@ $.fn.tipsy = function() {
 						},
 
 						success: function(data, textStatus, XMLHttpRequest) {
-							insertXHR(data);
+							
 							loadingPage = false;
-							if(page == (current_page+1)){ current_page++; }
+							_pages[page] = true;
+
+							if(callback=="manitas"){
+								insertXHR(data, true);
+								loadPage(false,"manitas");
+							}else{
+								insertXHR(data);
+								if(page == (current_page+1)){ current_page++; }
+							}
+
 						}
 
 					});
@@ -101,24 +126,27 @@ $.fn.tipsy = function() {
 	//| insertXHR
 	//| + Inserts the loaded posts in DOM
 	//+-------------------------------------------------------
-	  function insertXHR(xhr){
+	  function insertXHR(xhr, inArray){
 	  	var posts = $('.post', xhr);
 
-	  	var bottom = $("#bottompanel", xhr).clone().removeAttr("id").addClass("mvn-ajax-pagination").insertBefore("#bottompanel");
-	  	//$(".mvn-ajax-pagination .paginas a").each(function(i,e){ $(e).replaceWith("<span>"+$(e).text()+"</span>"); });
-
-	  	$("#bottompanel").replaceWith($("#bottompanel", xhr));
-
+		  if(!inArray){
+		  	$("#bottompanel").replaceWith($("#bottompanel", xhr));
+		  	var bottom = $("#bottompanel", xhr).clone().removeAttr("id").addClass("mvn-ajax-pagination").insertBefore("#bottompanel");
+		  	//$(".mvn-ajax-pagination .paginas a").each(function(i,e){ $(e).replaceWith("<span>"+$(e).text()+"</span>"); });
+		  }
+	  	
 	  	for (i = 0; i <= posts.length - 1; i++){
 	  		if(posts[i].id && !$(posts[i]).hasClass("postit")){
 	  			_posts[posts[i].id.substring(4)] = posts[i];
 	  			$(posts[i]).attr("data-likes", $(posts[i]).find(".mola").text()).addClass("mvn-post mvn-ajax");
-		  		$(posts[i]).insertBefore("#bottompanel");//.insertBefore(".largecol .tpanel");
+		  		if(!inArray){ $(posts[i]).insertBefore("#bottompanel"); }
 		  	}
 	  	}
 
-	  	reverseQuote();
-  		userTools();
+	  	if(!inArray){
+	  		userTools();
+	  		reverseQuote();
+	  	}
 
 	  }
 
@@ -181,81 +209,41 @@ $.fn.tipsy = function() {
   	if(in_post){ $("#scrollpages").append("<em class='mvn-orderby-manita'><img src='/style/img/botones/thumb_up.png' alt='Ordenar por manitas' width='14' height='14'></em>"); }
   	$(".mvn-orderby-manita").on("click", function(){ orderbyManitas(); });
 
-/*
-	//+-------------------------------------------------------
-  //| orderbyManitas()
-  //| + Loads the whole post and sorts the posts by manitas
-  //+-------------------------------------------------------
-  	if($(".largecol > .post").length){ $("#scrollpages").append("<em class='mvn-orderby-manita'><img src='/style/img/botones/thumb_up.png' alt='me gusta' width='14' height='14'></em>"); }
-  	$(".mvn-orderby-manita").on("click", function(){ orderbyManitas(); });
-
-	  function orderbyManitas(){
-
+  	function orderbyManitas(){
 	  	console.log("+ MVN: orderbyManitas()");
-	  	
-	  	var page = false;
 
 	  	//First prepare the visual feedback
-	  	$("#main").prepend("<div class='indicator'><span class='spinner'><img src='/style/img/loader.gif' /> Cargando y ordenando posts, espera...</span></div>");
-	  	$(".largecol").prepend("<div id='mvn-order-results'></div>");
-
+	  	$("#main").prepend("<div class='indicator'><span class='spinner'>Cargando y ordenando posts, espera...</span><span class='status-page'></span></div>");
+	  	$(".largecol").prepend("<div id='mvn-order-results'></div>");	  	
 	  	$("#main").addClass("mvn-loading-all");
-	  	$(".post").first().addClass("mvn-first-post");
-	  	$("form .post").addClass("mvn-fake-post");
-	  	
+
 	  	//Start loading everything
-	  	if(last_page > 1){
-	  		loadPages(1, last_page, current_page);
-	  	}else{
-	  		console.log("solo una pag xd");
-	  		applyOrder();
-	  	}
+	  	loadPage(false,"manitas");
+
 	  }
-
-	  function loadPages(page, last_page, current_page){
-	  	var postURL = ($(".headlink").length)? $(".headlink").attr("href") + "/" + page : fullURL + "/" + page;
-	  	
-	  	if(page == current_page){
-	  		page++;
-	  		if(page <= last_page){ loadPages(page, last_page, current_page); }else{ applyOrder(); }
-	  	}else{
-
-		  	console.log("loading page", page,postURL);
-
-		  	$.ajax({
-					url: postURL,
-					error: function(XMLHttpRequest, textStatus, errorThrown) {
-						//handler("XMLHttpRequest".responseText);
-						console.log("error", XMLHttpRequest.responseText);
-					},
-					success: function(data, textStatus, XMLHttpRequest) {
-						//console.log("ok"); //,data
-						//handler(data);
-						//imagenes(data);
-
-						insertXHR(data, page, current_page);
-						page++;
-		  			if(page <= last_page){ loadPages(page, last_page, current_page); }else{ applyOrder(); }
-
-					}
-				});
-	  	}
-	  }
-
-
 
 	  function applyOrder(){
 	  	console.log("APPLY ORDER");
-			var posts = $(".post:not(.mvn-fake-post)");
-			var likes = 0;
+	  }
 
-			for (i = 0; i <= posts.length - 1; i++){
-				likes = $(posts[i]).find(".mola").text();
-	  		$(posts[i]).attr("data-likes", likes);
-	  		if(likes == 0){ $(posts[i]).css("display","none"); }
+	//+-------------------------------------------------------
+  //| applyOrder()
+  //| + Orders array and removes visual feedback
+  //+-------------------------------------------------------	  
+	  function applyOrder(){
+	  	console.log("APPLY ORDER");
+
+			var _order = [];
+
+	  	for(key in _posts){
+				likes = $(_posts[key]).find(".mola").text();
+	  		$(_posts[key]).attr("data-likes", likes);
+	  		if(likes > 1){ _order[key] = _posts[key]; }
 	  	}
 
-			posts.sort(function (a, b){
+	  	console.log(_posts, _order);
+
+			_order.sort(function (a, b){
 
 		    a = parseInt($(a).attr("data-likes"), 10);
 		    b = parseInt($(b).attr("data-likes"), 10);
@@ -264,18 +252,13 @@ $.fn.tipsy = function() {
 			});
 
 			window.scrollTo(0, 0);
-			$("#mvn-order-results").append(posts);
+			$(".largecol .post:not(.mvn-fake-post)").remove();
+			$("#mvn-order-results").append(_order);
 			$(".mvn-loading-all").removeClass("mvn-loading-all");
 
+			userTools();
 			reverseQuote();
 	  }
-
-	  $(".masmola").on("click", function(){
-	  	//alert("asd");
-	  });
-
-	  */
-
 
 	//+-------------------------------------------------------
 	//| Post action: Click #num to quote - init dom
@@ -329,7 +312,7 @@ $.fn.tipsy = function() {
     		if(data == "1"){ 
     			n = parseInt(m.text()) + 1;
     			m.text(n);
-    			m.is(":hidden") ? m.fadeIn() : e.flash(n);
+    			m.fadeIn();
     		}
 		  });
 

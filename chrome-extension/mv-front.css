@@ -88,8 +88,8 @@ div.post.mark{
 }
 
 .indicator .spinner{
-  /*background-image: url("assets/spinner.gif");
-  background-image: url("style/img/loader.gif");*/
+  background-image: url("chrome-extension://__MSG_@@extension_id__/assets/spinner.gif");
+  /*background-image: url("style/img/loader.gif");*/
   position: absolute;
   top: 50%;
   left: 50%;
@@ -100,8 +100,25 @@ div.post.mark{
   width: 18px;
   height: 18px;
 
+  padding-left: 25px;
+  line-height: 20px;
+  left: 35%;
+
   width: auto;
   background-repeat: no-repeat;
+}
+
+.indicator .status-page{
+  position: absolute;
+  top: 50%;
+  /* margin-top: -9px; */
+  margin-left: -9px;
+  height: 18px;
+  padding-left: 35px;
+  line-height: 40px;
+  left: 35%;
+  width: auto;
+  font-weight: bold;
 }
 
 #main.mvn-loading-all .indicator{

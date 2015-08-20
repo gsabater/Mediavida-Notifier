@@ -17,6 +17,7 @@ var UT = false;
 var oscuro = false;
 
 var _posts = [];
+var _pages = [];
 
 var fullURL = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
 var _url = window.location.pathname.split( '/' );
