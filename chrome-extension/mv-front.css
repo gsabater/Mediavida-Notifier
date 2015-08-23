@@ -35,6 +35,14 @@ dd.online{ display: none; }
   border-radius: 10px;
 }
 
+.MVN-oscuro .mvn-online{
+  border: 1px solid white;
+}
+
+.mark .mvn-online{
+  display: none;
+}
+
 .usertools .online-pos{
   display: none;
 }
@@ -124,6 +132,12 @@ div.post.mark{
 #main.mvn-loading-all .indicator{
   display: block;
 }
+
+.MVN-oscuro .indicator{
+  background-color: white;
+  color: #3A2D2D;
+}
+    
 
 /*** Settings ***/
 

@@ -1,24 +1,184 @@
 <!DOCTYPE html>
-<html>
-<head><title>My Test Extension Options</title></head>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>MVN Settings</title>
+
+	<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="modules/mvn.options.js"></script>
+
+	<style type="text/css">
+	
+		body{
+			background-color: #f1f1f1;
+			padding: 0;
+			margin: 0;
+		}
+
+		header{
+			display: block;
+			width: 100%;
+			background-color: white;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		header h1{
+			font-size: 20px;
+	    font-weight: 700;
+	    line-height: 60px;
+	    margin: 0;
+	    text-transform: uppercase;
+	    color: #363636;
+		}
+
+		header h2{
+			color: #aaa;
+	    font-size: 11px;
+	    font-family: Arial, sans-serif;
+	    font-weight: 300;
+	    margin: -17px 0px 10px 0px;
+	    min-height: 25px;
+	    opacity: 1;
+	    text-transform: uppercase;
+		}
+
+		header img{
+			width: 20px;
+		}
+
+		#container{
+			width: 650px;
+			margin: 0 auto;
+		}
+
+		.card-header{
+			margin-bottom: 10px;
+			padding-top: 40px;
+	    margin-left: 15px;
+	    font-size: 20px;
+	    font-weight: 100;
+		}
+
+		.card {
+			display: block;
+			width: 100%;
+	    background: #fff;
+	    box-shadow: 0 0 13px rgba(0, 0, 0, .07);
+	    margin: 0 auto;
+	    padding: 0 0 30px 0;
+	    border-radius: 3px;
+	    padding: 10px 25px;
+	  }
+
+	  .option{
+	  	margin: 20px 0;
+	  }
+
+	  .option label {
+	    display: block;
+	    font-weight: bold;
+	    padding-left: 15px;
+    	text-indent: -15px;
+		}
+
+		.option input{
+			width: 13px;
+	    height: 13px;
+	    padding: 0;
+	    margin:0;
+	    vertical-align: bottom;
+	    position: relative;
+	    top: -1px;
+	    *overflow: hidden;
+		}
+
+		.option-title {
+		  margin-left: 5px;
+		}
+
+		.option-desc {
+		  padding-left: 25px;
+		}
+
+	  .button{
+	    padding: 7px 10px;
+	    background-color: rgba(119, 119, 119, 0.51);
+	    box-shadow: 0px 0px 7px rgba(150, 150, 150, 0.43);
+	    color: white;
+	    border-radius: 2px;
+	    cursor: pointer;
+	  }
+
+	  .saved{
+	  	display: none;
+	  	background-color: rgba(0, 128, 0, 0.14);
+	    border: 1px solid rgba(0, 128, 0, 0.27);
+	    padding: 10px;
+	    width: 500px;
+	    /* margin: 0 auto; */
+	    position: fixed;
+	    left: 50%;
+	    margin-left: -250px;
+	    bottom: 100px;
+	    text-align: center;
+	    color: #4C4C4C;
+	  }
+	</style>
+</head>
 <body>
 
-Favorite color:
-<select id="color">
- <option value="red">red</option>
- <option value="green">green</option>
- <option value="blue">blue</option>
- <option value="yellow">yellow</option>
-</select>
+<header>
+	<h1>MEDIAVIDA NOTIFIER</h1>
+	<h2>OPCIONES, ajustes y varios</h2>
+</header>
 
-<label>
-  <input type="checkbox" id="like">
-  I like colors.
-</label>
+<div id="container">
 
-<div id="status"></div>
-<button id="save">Save</button>
+	<h1 class="card-header">Ajustes de notificación</h1>
+	<div class="card">
+		
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" id="option-notif-audio">
+				<span class="option-title">Reproducir un sonido al recibir notificaciones en Mediavida</span></label>
+			<div class="option-desc">Activar esta opción hará que se reproduzca un sonido al recibir una nueva notificación.</div>
+		</div>
 
-<script src="options.js"></script>
+		<div class="option">
+			<label class="option-label" style="margin-left: 17px;">
+				<span class="option-title">Sonido de notificación:&nbsp;&nbsp;</span>
+				<select id="notification-audio">
+					<option value="notification.mp3">Half Life</option>
+					<option value="notification_tone.mp3">Tubular</option>
+					<option value="notification_1up.mp3">1UP</option>
+				</select>
+			</label>
+			<div class="option-desc">Activar esta opción hará que se reproduzca un sonido al recibir una nueva notificación.</div>
+		</div>		
+
+		<div class="test-notification" style="background-color: #F5F5F5; padding: 5px; margin: 10px -33px -10px -25px; text-align: right;">
+			<span class="button js-test-notification">Probar notificación</span>
+		</div>
+	</div>
+
+	<h1 class="card-header">Ajustes de navegación</h1>
+	<div class="card">
+		
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" id="option-https">
+				<span class="option-title">Forzar navegación segura</span>
+			</label>
+			<div class="option-desc">Esto hará que la navegación en mediavida.com sea mediante protocolo https.<br>
+			<div style="color: #989898">Aviso: Esta opción provoca que <a href="http://www.mediavida.com/foro/mediavida/mv-usertools-extension-para-firefox-chrome-opera-safari-413818" target="_blank">Mediavida Usertools</a> deje de funcionar.</div></div>
+		</div>
+	</div>	
+
+</div>
+
+<div class="saved">Los ajustes se han guardado correctamente</div>
+
+  
 </body>
 </html>

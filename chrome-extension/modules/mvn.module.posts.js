@@ -181,8 +181,10 @@ $.fn.tipsy = function() {
 	  		}
 	  	}
 
+
 	  //| + Print quotes in posts
-  	//+-------------------------------------------------------	  	
+  	//+-------------------------------------------------------
+  		$(".mvn-mention").remove();
 	  	for(key in mentions){
 	  		if(mentions[key].length > 1){
 	  			
@@ -192,14 +194,14 @@ $.fn.tipsy = function() {
 	  				m[i] = mentors[mentions[key][i]] + " <a href='#"+mentions[key][i]+"' rel='"+mentions[key][i]+"' class='quote'>#" +mentions[key][i] + "</a>";
 	  			};
 
-	  			$("#post"+key).find(".bwrap").append("Citado por " + m.join(" - "));
+	  			$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + m.join(" - ") + "</span>");
 
 	  		}else{
-					$("#post"+key).find(".bwrap").append("Citado por " + mentors[mentions[key]] + " <a href='#"+mentions[key]+"' rel='"+mentions[key]+"' class='quote'>#" +mentions[key] + "</a>");
+					$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + mentors[mentions[key]] + " <a href='#"+mentions[key]+"' rel='"+mentions[key]+"' class='quote'>#" +mentions[key] + "</a>" + "</span>");
 	  		}
 	  	}
 
-	  	//console.log(mentions);
+	  	//console.log(mentions, mentors);
 	  }
 
 	//+-------------------------------------------------------

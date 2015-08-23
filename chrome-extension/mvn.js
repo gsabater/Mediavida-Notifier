@@ -16,9 +16,7 @@
 
 console.log("MV Notifier background");
 
-init();
-
-var v = 0.4;
+var v = 0.5;
 var _num = 0;
 var _audio, _fade;
 var notifications = { };
@@ -29,6 +27,7 @@ var user = {
 	audio: "notification.mp3"
 };
 
+init();
 
   //+-------------------------------------------------------
   //| init()
@@ -43,7 +42,7 @@ var user = {
 	  	document.body.appendChild(ul);
 
 	  	_audio = new Audio();
-			_audio.src = "assets/notification.mp3";
+	  	_audio.src = "assets/" + user.audio;
 
 	  	window.MV = setInterval(checkNotifications, 30000);
 	  	window.setTimeout(function(){ chrome.storage.local.get("MVN-user", function(result){ MVNStorage(result); });  }, 100);
@@ -59,20 +58,28 @@ var user = {
 
 			user.v = v;
 
-			if(!localstorage['MVN-user']){ setMVNStorage(localstorage); }else{ 
-		
-				if(localstorage['MVN-user'].v < v){ 
-					setMVNStorage(localstorage);
-					notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
-					sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v); 
-				}
-
+			if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){ 
+				setMVNStorage(localstorage);
+				notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
+				sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v); 
+			}else{
+				user = localstorage['MVN-user'];
+				_audio.src = "assets/" + user.audio;
 			}
+
 		}
 
-		function setMVNStorage(ls){
+		function setMVNStorage(ls, options){
+			if(options){
+				user.https = ls.https;
+				user.audio = ls.audio;
+				ls = {};
+			}
+
 			ls['MVN-user'] = user;
 			chrome.storage.local.set(ls);
+			if(user.audio){ _audio.src = "assets/" + user.audio; }
+
 			console.log("Setting", ls);
 		}
 
@@ -141,7 +148,7 @@ var user = {
 			chrome.notifications.create(notID, options);
 			chrome.browserAction.setBadgeText({text: (_num>0)?_num.toString():""});
 
-			_audio.play();
+			if(user.audio){ _audio.play(); }
 			window.setTimeout(function(){ updatePush(notID); }, 4000);
 			window.setTimeout(function(){ clearNotification(notID); }, 12000);
 	  }
@@ -219,6 +226,8 @@ var user = {
 
     	if (request.mvnBadge == "num"){ sendResponse({farewell: _num}); }
     	if (request.clear == "0")			{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
+    	if (request.test == "true")		{ sendPush("test", "Prueba"); }
+    	if (request.options)					{ setMVNStorage(request.options, true); }
   	});
 
 
@@ -226,13 +235,13 @@ var user = {
   //| Force https
   //| Detects the protocol and redirects to https
   //+-------------------------------------------------------
-  /*
 	  chrome.webRequest.onBeforeRequest.addListener(function (details){
-	  	protocol = details.url.split("://")[0];
-	    if(protocol == "http"){
-	    	return {redirectUrl: "https" + details.url.substring(protocol.length)};
-	    }    
+	  	if(user.https){
+		  	protocol = details.url.split("://")[0];
+		    if(protocol == "http"){
+		    	return {redirectUrl: "https" + details.url.substring(protocol.length)};
+		    }
+		  }
 	  },
 	    {urls: ["http://*.mediavida.com/*"], types: ["main_frame"]}, ["blocking"]
 	  );
-	  */
