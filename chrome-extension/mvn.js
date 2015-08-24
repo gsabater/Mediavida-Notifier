@@ -138,7 +138,7 @@ init();
 
 	  	var options = {
 			  type: "basic",
-			  iconUrl: "/assets/mv.png",
+			  iconUrl: "/assets/MVN_128x128.png",
 			  title: "Mediavida Notifier",
 			  message: text,
 			  //contextMessage: "testinger",
@@ -150,7 +150,7 @@ init();
 
 			if(user.audio){ _audio.play(); }
 			window.setTimeout(function(){ updatePush(notID); }, 4000);
-			window.setTimeout(function(){ clearNotification(notID); }, 12000);
+			window.setTimeout(function(){ clearNotification(notID); }, 10000);
 	  }
 
 
@@ -198,8 +198,8 @@ init();
 				  function() {
 				    // Reduce volume by 0.05 as long as it is above 0
 				    // This works as long as you start with a multiple of 0.05!
-				    if (vol > 0.05) {
-				      vol -= 0.05;
+				    if (vol > 0.1) {
+				      vol -= 0.1;
 				      _audio.volume = vol; console.log(vol);
 				    }
 				    else {
@@ -226,7 +226,7 @@ init();
 
     	if (request.mvnBadge == "num"){ sendResponse({farewell: _num}); }
     	if (request.clear == "0")			{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
-    	if (request.test == "true")		{ sendPush("test", "Prueba"); }
+    	if (request.test == "true")		{ sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación"); }
     	if (request.options)					{ setMVNStorage(request.options, true); }
   	});
 

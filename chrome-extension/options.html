@@ -8,11 +8,31 @@
 	<script type="text/javascript" src="modules/mvn.options.js"></script>
 
 	<style type="text/css">
-	
+
+    ::-webkit-scrollbar{
+      width: 4px; 
+      height: 12px;
+    }
+
+    ::-webkit-scrollbar-track{
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background: rgba(0, 0, 0, 0.5);
+    }
+
 		body{
 			background-color: #f1f1f1;
 			padding: 0;
 			margin: 0;
+			padding-bottom: 100px;
+		}
+
+		a {
+		    color: #C78710;
+		    text-decoration: none;
+		    font-weight: 600;
 		}
 
 		header{
@@ -103,26 +123,32 @@
 
 	  .button{
 	    padding: 7px 10px;
-	    background-color: rgba(119, 119, 119, 0.51);
+	    background-color: rgba(255, 144, 2, 0.74);
 	    box-shadow: 0px 0px 7px rgba(150, 150, 150, 0.43);
 	    color: white;
 	    border-radius: 2px;
 	    cursor: pointer;
-	  }
+	    font-weight: 600;
+	    border-bottom: 2px solid #FF6601;
+		}
 
 	  .saved{
 	  	display: none;
-	  	background-color: rgba(0, 128, 0, 0.14);
-	    border: 1px solid rgba(0, 128, 0, 0.27);
+	    background-color: rgba(21, 80, 21, 0.83);
+	    border: 3px solid rgba(0, 0, 0, 0.27);
 	    padding: 10px;
-	    width: 500px;
+	    width: 100vw;
 	    /* margin: 0 auto; */
 	    position: fixed;
-	    left: 50%;
-	    margin-left: -250px;
-	    bottom: 100px;
+	    left: 0;
+	    /* margin-left: -250px; */
+	    top: 30vh;
 	    text-align: center;
-	    color: #4C4C4C;
+	    color: #FFF;
+	    height: 200px;
+	    font-size: 30px;
+	    line-height: 190px;
+	    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.43);
 	  }
 	</style>
 </head>
@@ -130,11 +156,12 @@
 
 <header>
 	<h1>MEDIAVIDA NOTIFIER</h1>
-	<h2>OPCIONES, ajustes y varios</h2>
+	<!-- <h2>OPCIONES, ajustes y varios</h2> -->
 </header>
 
 <div id="container">
 
+<!-- Notificacion -->
 	<h1 class="card-header">Ajustes de notificación</h1>
 	<div class="card">
 		
@@ -162,6 +189,7 @@
 		</div>
 	</div>
 
+<!-- Navegación -->
 	<h1 class="card-header">Ajustes de navegación</h1>
 	<div class="card">
 		
@@ -171,13 +199,48 @@
 				<span class="option-title">Forzar navegación segura</span>
 			</label>
 			<div class="option-desc">Esto hará que la navegación en mediavida.com sea mediante protocolo https.<br>
-			<div style="color: #989898">Aviso: Esta opción provoca que <a href="http://www.mediavida.com/foro/mediavida/mv-usertools-extension-para-firefox-chrome-opera-safari-413818" target="_blank">Mediavida Usertools</a> deje de funcionar.</div></div>
+			<div style="color: #989898">Aviso: Esta opción provoca que <a href="http://www.mediavida.com/foro/mediavida/mv-usertools-extension-para-firefox-chrome-opera-safari-413818" target="_blank">MV Usertools</a> deje de funcionar.<br>
+			También es posible que algunos avisos ya leídos, aparezcan como no leídos.</div></div>
 		</div>
 	</div>	
 
+
+<!-- Donaciones y créditos -->
+	<h1 class="card-header">Agradecimientos y donaciones</h1>
+	<div class="card">
+		<div style="width: 150px; float: right; text-align: right; margin-right: -15px;"><img src="assets/MVN_128x128.png" style="width: 128px;" /></div>
+		<h4 style="margin-bottom: -5px;">Agradecimientos</h4>
+		<p>Quisiera agradecer el apoyo y la colaboración de todos los participantes en el <a href="http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508" target="_blank">hilo de la extensión</a>, que han contribuido aportando materiales, bugs e ideas. La extensión es gracias a vosotros. </p>
+		
+		<hr>
+		
+		<h4 style="margin-bottom: -5px;">Agradecimientos especiales</h4>
+		<p>· <a href="http://www.mediavida.com/id/AmyMorgan" target="_blank">AmyMorgan</a> por su aportación con el icono de la extensión. <br>
+		· <a href="http://www.mediavida.com/id/Vegon" target="_blank">Vegon</a> y a <a href="http://www.mediavida.com/id/cm07" target="_blank">cm07</a> por su excelente trabajo en las <a href="http://www.mediavida.com/foro/mediavida/mv-usertools-extension-para-firefox-chrome-opera-safari-413818" target="_blank">MV Usertools</a>.<br>
+		· <a href="http://www.mediavida.com/id/ItNaS" target="_blank">ItNaS</a> por su igualmente especial <a href="http://www.mediavida.com/foro/mediavida/mv-power-tools-scroll-infinito-live-preview-etc-487327" target="_blank">MV Power Tools</a></p>
+
+		<hr>
+
+		<h4 style="margin-bottom: -5px;">Donaciones</h4>
+		<p>Si te gusta la extensión, crees que es útil, y te gustaría demostrarme tu apoyo, invitame a una cerveza.<br>Si no tienes dinero, quizás haya algo de <a href="http://steamcommunity.com/id/Gohrum/wishlist/?sort=added" target="_blank">mi wishlist</a> que te sobre.
+		
+
+
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center;">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
+<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+</form>
+</p>
+<div style="color: #989898">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
+
+	</div>
 </div>
 
-<div class="saved">Los ajustes se han guardado correctamente</div>
+<div class="saved">Guardado correctamente</div>
 
   
 </body>

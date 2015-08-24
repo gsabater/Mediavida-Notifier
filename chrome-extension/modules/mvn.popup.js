@@ -59,4 +59,6 @@ chrome.runtime.sendMessage({clear: "0"});
 
       }
 
+      window.setTimeout(function(){ document.getElementsByTagName("body")[0].style.width = "400px" }, 200);
+
     }    

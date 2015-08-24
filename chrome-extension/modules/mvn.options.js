@@ -31,7 +31,7 @@ $(function(ready){
 
     function saved(){
       $(".saved").fadeIn(300);
-      window.setTimeout(function(){$(".saved").fadeOut(300);}, 2000);
+      window.setTimeout(function(){$(".saved").fadeOut(300);}, 1000);
     }
 
   //+-------------------------------------------------------
