@@ -16,6 +16,7 @@ init();
 var UT = false;
 var oscuro = false;
 
+var _user  = [];
 var _posts = [];
 var _pages = [];
 
@@ -37,6 +38,10 @@ var _url = window.location.pathname.split( '/' );
 
 	  	chrome.runtime.sendMessage({mvnBadge: "num"}, function(response) {
 			  printFrontNotifications(response.farewell);
+			});
+
+			chrome.runtime.sendMessage({getUser: "object"}, function(response) {
+			  _user = response.farewell;
 			});
 	  }  
 

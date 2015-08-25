@@ -16,15 +16,16 @@
 
 console.log("MV Notifier background");
 
-var v = 0.5;
+var v = 0.51;
 var _num = 0;
 var _audio, _fade;
 var notifications = { };
 
 var ls = { };
 var user = {
-	https: false,
-	audio: "notification.mp3"
+	https		: false,
+	scroll	: true,
+	audio		: "notification.mp3"
 };
 
 init();
@@ -54,14 +55,14 @@ init();
   //| + Loads the information from MV every 30 sec
   //+-------------------------------------------------------
 		function MVNStorage(localstorage){
-			console.log(localstorage, localstorage['MVN-user'].v, v);
+			//console.log(localstorage, localstorage['MVN-user'].v, v);
 
 			user.v = v;
 
 			if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){ 
 				setMVNStorage(localstorage);
 				notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
-				sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v); 
+				sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true); 
 			}else{
 				user = localstorage['MVN-user'];
 				_audio.src = "assets/" + user.audio;
@@ -73,6 +74,7 @@ init();
 			if(options){
 				user.https = ls.https;
 				user.audio = ls.audio;
+				user.scroll = ls.scroll;
 				ls = {};
 			}
 
@@ -113,7 +115,7 @@ init();
 			var lis = el.getElementsByTagName('li');
 			var last = lis[0];
 
-			//sendPush("test", "Prueba");
+			//sendPush("test", "Prueba", true);
 
 			for(i=lis.length-1; i>=0; i--){
 
@@ -132,9 +134,9 @@ init();
   //| sendPush()
   //| + Sends a notification to the browser with details
   //+-------------------------------------------------------
-	  function sendPush(notID, text){
+	  function sendPush(notID, text, badge){
 
-  		_num++;
+  		if(!badge){ _num++; }
 
 	  	var options = {
 			  type: "basic",
@@ -146,7 +148,7 @@ init();
 			}
 
 			chrome.notifications.create(notID, options);
-			chrome.browserAction.setBadgeText({text: (_num>0)?_num.toString():""});
+			if(!badge){ chrome.browserAction.setBadgeText({text: (_num>0)?_num.toString():""}); }
 
 			if(user.audio){ _audio.play(); }
 			window.setTimeout(function(){ updatePush(notID); }, 4000);
@@ -172,8 +174,8 @@ init();
 
 	  	clearNotification(notificationId);
 
-	  	_num--;
-	  	chrome.browserAction.setBadgeText({text: (_num <0)? _num.toString() : "" });
+	  	if(_num > 0){ _num--; }
+	  	chrome.browserAction.setBadgeText({text: (_num > 0)? _num.toString() : "" });
 
 	  	var base = chrome.extension.getURL("");
 	  	var url = "http://www.mediavida.com/"+notifications[notificationId].url.split(base)[1];
@@ -224,10 +226,11 @@ init();
 	  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	  	console.log("+ MVN: Message event", request);
 
-    	if (request.mvnBadge == "num"){ sendResponse({farewell: _num}); }
-    	if (request.clear == "0")			{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
-    	if (request.test == "true")		{ sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación"); }
-    	if (request.options)					{ setMVNStorage(request.options, true); }
+			if (request.options)						{ setMVNStorage(request.options, true); }
+    	if (request.clear == "0")				{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
+    	if (request.test == "true")			{ sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación", true); }
+    	if (request.mvnBadge == "num")	{ sendResponse({farewell: _num}); }
+    	if (request.getUser == "object"){ sendResponse({farewell: user}); }
   	});
 
 

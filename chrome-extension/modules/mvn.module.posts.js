@@ -56,7 +56,7 @@ $.fn.tipsy = function() {
 			//console.log("Loaded post: " + in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 			//console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
 
-			if(in_post && (current_page < last_page)){
+			if(_user.scroll && in_post && (current_page < last_page)){
 				if($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)){
 					loadPage();
 				}

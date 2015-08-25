@@ -3,7 +3,7 @@
 
   "name": "Mediavida Notifier",
   "description": "Enhances the Mediavida Experience.",
-  "version": "0.5",
+  "version": "0.51",
   "icons": {
     "16": "assets/MVN_16x16.png",
     "48": "assets/MVN_48x48.png",
