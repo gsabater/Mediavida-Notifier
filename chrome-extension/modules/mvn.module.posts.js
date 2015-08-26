@@ -163,23 +163,21 @@ $.fn.tipsy = function() {
 
 	  //| + Find quotes in every post
   	//+-------------------------------------------------------
-	  	for (i = 0; i <= _posts.length - 1; i++){
+  		for(i in _posts){
+  			
+  			var quotes = $(_posts[i]).find(".cuerpo").find("a.quote").get();
+  			//console.log(i, quotes.length, quotes);
 
-	  		var quotes = $(_posts[i]).find("a.quote");
-	  		if(quotes.length){
+  			for(q in quotes){
+	  			if(mentions[quotes[q].rel]){
+						mentions[quotes[q].rel].push(_posts[i].id.substring(4));
+	  			}else{
+						mentions[quotes[q].rel] = [_posts[i].id.substring(4)];
+	  			}
 
-		  		for(q = 0; q <= quotes.length - 1; q++){
-
-		  			if(mentions[quotes[q].rel]){
-							mentions[quotes[q].rel].push(_posts[i].id.substring(4));
-		  			}else{
-							mentions[quotes[q].rel] = [_posts[i].id.substring(4)];
-		  			}
-
-		  			mentors[_posts[i].id.substring(4)] = $("#post"+_posts[i].id.substring(4)).find(".autor dt a").text();
-		  		}
-	  		}
-	  	}
+	  			mentors[_posts[i].id.substring(4)] = $("#post"+_posts[i].id.substring(4)).find(".autor dt a").text();
+  			}
+  		}
 
 
 	  //| + Print quotes in posts

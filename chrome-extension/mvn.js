@@ -16,16 +16,22 @@
 
 console.log("MV Notifier background");
 
-var v = 0.51;
+var v = 0.52;
+
+var _audio;
 var _num = 0;
-var _audio, _fade;
 var notifications = { };
 
 var ls = { };
 var user = {
-	https		: false,
-	scroll	: true,
-	audio		: "notification.mp3"
+	v : v,
+
+	notifications	: true,
+	onlyGroups		: false,
+	audio					: "notification_1up.mp3",
+
+	https					: false,
+	scroll				: true,
 };
 
 init();
@@ -55,34 +61,34 @@ init();
   //| + Loads the information from MV every 30 sec
   //+-------------------------------------------------------
 		function MVNStorage(localstorage){
-			//console.log(localstorage, localstorage['MVN-user'].v, v);
 
-			user.v = v;
-
-			if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){ 
-				setMVNStorage(localstorage);
-				notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
-				sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true); 
-			}else{
-				user = localstorage['MVN-user'];
-				_audio.src = "assets/" + user.audio;
+			if(localstorage['MVN-user']){
+				for(option in localstorage['MVN-user']){
+					user[option] = localstorage['MVN-user'][option]; }
+					_audio.src = "assets/" + user.audio;
 			}
 
+			if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){ 
+				setMVNStorage(user);
+				notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
+				sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true); 
+			}
+
+			console.log(user);
 		}
 
 		function setMVNStorage(ls, options){
 			if(options){
-				user.https = ls.https;
-				user.audio = ls.audio;
-				user.scroll = ls.scroll;
-				ls = {};
+				for(i in ls){ user[i] = ls[i]; }
 			}
 
-			ls['MVN-user'] = user;
-			chrome.storage.local.set(ls);
+			var obj = {};
+			obj['MVN-user'] = user;
+
+			chrome.storage.local.set(obj);
 			if(user.audio){ _audio.src = "assets/" + user.audio; }
 
-			console.log("Setting", ls);
+			console.log("Setting", obj);
 		}
 
   //+-------------------------------------------------------
@@ -91,15 +97,21 @@ init();
   //+-------------------------------------------------------
 		function checkNotifications(){
 
-			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "http://www.mediavida.com/notificaciones/fly", true);
-			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-			xhr.onreadystatechange = function() {
-			  if (xhr.readyState == 4) {
-			    parseMV(xhr.responseText);
-			  }
+			if(user.notifications){
+
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", "http://www.mediavida.com/notificaciones/fly", true);
+				xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+				xhr.onreadystatechange = function() {
+				  if (xhr.readyState == 4) {
+				    parseMV(xhr.responseText);
+				  }
+				}
+				xhr.send();
+
+			}else{
+				console.log("not checking");
 			}
-			xhr.send();
 
 		}
 
@@ -190,31 +202,6 @@ init();
   //+-------------------------------------------------------
 	  function clearNotification(notificationId){
 	  	chrome.notifications.clear(notificationId);
-
-	  	if(!_fade){
-		  	_fade = true;
-				var vol = 1;
-				var interval = 100; // 200ms interval
-
-				var fadeout = setInterval(
-				  function() {
-				    // Reduce volume by 0.05 as long as it is above 0
-				    // This works as long as you start with a multiple of 0.05!
-				    if (vol > 0.1) {
-				      vol -= 0.1;
-				      _audio.volume = vol; console.log(vol);
-				    }
-				    else {
-				      // Stop the setInterval when 0 is reached
-				      _fade = false;
-				      _audio.pause();
-				      _audio.volume = 1;
-							_audio.currentTime = 0;
-							clearInterval(fadeout);
-				    }
-				  }, interval);	  		
-	  	}
-
 	  }
 
 

@@ -91,6 +91,10 @@
 	    padding: 10px 25px;
 	  }
 
+	  .card.agradecimientos p{
+	  	margin-left: 15px;
+	  }
+
 	  .option{
 	  	margin: 20px 0;
 	  }
@@ -142,7 +146,7 @@
 	    position: fixed;
 	    left: 0;
 	    /* margin-left: -250px; */
-	    top: 30vh;
+	    bottom: 0;
 	    text-align: center;
 	    color: #FFF;
 	    height: 200px;
@@ -150,13 +154,19 @@
 	    line-height: 190px;
 	    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.43);
 	  }
+
+	  hr{
+	  	width: 80%;
+    	border: 1px solid #EAEAEA;
+	  }
+
 	</style>
 </head>
 <body>
 
 <header>
 	<h1>MEDIAVIDA NOTIFIER</h1>
-	<!-- <h2>OPCIONES, ajustes y varios</h2> -->
+	<h2>Version <span class="version"></span></h2>
 </header>
 
 <div id="container">
@@ -167,8 +177,25 @@
 		
 		<div class="option">
 			<label class="option-label">
+				<input type="checkbox" data-option="notifications">
+				<span class="option-title">Recibir notificaciones de Mediavida</span></label>
+			<div class="option-desc">Recibirás notificaciones de avisos por mensajes en tus grupos.</div>
+		</div>
+
+		<!-- 
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" data-option="onlyGroups">
+				<span class="option-title">Recibir solamente notificaciones de grupos</span></label>
+			<div class="option-desc">Recibirás notificaciones de avisos por mensajes en tus grupos.</div>
+		</div>
+
+		<hr>-->
+
+		<div class="option">
+			<label class="option-label">
 				<input type="checkbox" id="option-notif-audio">
-				<span class="option-title">Reproducir un sonido al recibir notificaciones en Mediavida</span></label>
+				<span class="option-title">Reproducir un sonido al crear notificaciones de Mediavida</span></label>
 			<div class="option-desc">Activar esta opción hará que se reproduzca un sonido al recibir una nueva notificación.</div>
 		</div>
 
@@ -177,8 +204,10 @@
 				<span class="option-title">Sonido de notificación:&nbsp;&nbsp;</span>
 				<select id="notification-audio">
 					<option value="notification.mp3">Half Life</option>
-					<option value="notification_tone.mp3">Tubular</option>
 					<option value="notification_1up.mp3">1UP</option>
+					<option value="notification_tone.mp3">Tubular</option>
+					<option value="notification_mockingjay.mp3">Mockingjay</option>
+					<option value="notification_listen.mp3">Hey Listen!</option>
 				</select>
 			</label>
 			<div class="option-desc">Activar esta opción hará que se reproduzca un sonido al recibir una nueva notificación.</div>
@@ -221,19 +250,15 @@
 
 <!-- Donaciones y créditos -->
 	<h1 class="card-header">Agradecimientos y donaciones</h1>
-	<div class="card">
+	<div class="card agradecimientos">
 		<div style="width: 150px; float: right; text-align: right; margin-right: -15px;"><img src="assets/MVN_128x128.png" style="width: 128px;" /></div>
 		<h4 style="margin-bottom: -5px;">Agradecimientos</h4>
 		<p>Quisiera agradecer el apoyo y la colaboración de todos los participantes en el <a href="http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508" target="_blank">hilo de la extensión</a>, que han contribuido aportando materiales, bugs e ideas. La extensión es gracias a vosotros. </p>
-		
-		<hr>
 		
 		<h4 style="margin-bottom: -5px;">Agradecimientos especiales</h4>
 		<p>· <a href="http://www.mediavida.com/id/AmyMorgan" target="_blank">AmyMorgan</a> por su aportación con el icono de la extensión. <br>
 		· <a href="http://www.mediavida.com/id/Vegon" target="_blank">Vegon</a> y a <a href="http://www.mediavida.com/id/cm07" target="_blank">cm07</a> por su excelente trabajo en las <a href="http://www.mediavida.com/foro/mediavida/mv-usertools-extension-para-firefox-chrome-opera-safari-413818" target="_blank">MV Usertools</a>.<br>
 		· <a href="http://www.mediavida.com/id/ItNaS" target="_blank">ItNaS</a> por su igualmente especial <a href="http://www.mediavida.com/foro/mediavida/mv-power-tools-scroll-infinito-live-preview-etc-487327" target="_blank">MV Power Tools</a></p>
-
-		<hr>
 
 		<h4 style="margin-bottom: -5px;">Donaciones</h4>
 		<p>Si te gusta la extensión, crees que es útil, y te gustaría demostrarme tu apoyo, invitame a una cerveza.<br>Si no tienes dinero, quizás haya algo de <a href="http://steamcommunity.com/id/Gohrum/wishlist/?sort=added" target="_blank">mi wishlist</a> que te sobre.
@@ -241,7 +266,7 @@
 
 
 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center;">
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center; padding: 15px;">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
 ">
@@ -249,7 +274,7 @@
 <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
 </form>
 </p>
-<div style="color: #989898">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
+<div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
 
 	</div>
 </div>

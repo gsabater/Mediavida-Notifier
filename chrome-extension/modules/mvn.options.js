@@ -30,6 +30,13 @@ $(function(ready){
         options[$(el).attr('data-option')] = $(el).is(":checked");
       });
 
+      if(!options.notifications){
+        $("input[data-option='notifications']").closest(".card").animate({height: 64}, 'slow', function(){ 
+          $(this).css("overflow", "hidden"); });
+      }else{
+        $("input[data-option='notifications']").closest(".card").removeAttr("style");
+      }
+
       console.log(options);
 
       chrome.runtime.sendMessage({options: options});
@@ -53,7 +60,9 @@ $(function(ready){
   //| + Sets the notifications into the options page
   //+-------------------------------------------------------
     function initSettings(options){
+
       user = options['MVN-user'];
+      console.log(user);
 
       for(option in user){
         if((user[option] == true)&&($("input[data-option='"+option+"']").length > 0)){ 
@@ -66,5 +75,14 @@ $(function(ready){
         $("#notification-audio").val(user.audio);
       }
 
+      if(!user.notifications){
+        $("input[data-option='notifications']")
+        .closest(".card")
+        .animate({height: 64}, 'slow', function(){ 
+          $(this).css("overflow", "hidden"); 
+        });
+      }
+
+      $(".version").text(user.v);
     }
 });
