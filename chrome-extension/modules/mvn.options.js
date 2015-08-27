@@ -31,7 +31,7 @@ $(function(ready){
       });
 
       if(!options.notifications){
-        $("input[data-option='notifications']").closest(".card").animate({height: 64}, 'slow', function(){ 
+        $("input[data-option='notifications']").closest(".card").animate({height: 58}, 'slow', function(){ 
           $(this).css("overflow", "hidden"); });
       }else{
         $("input[data-option='notifications']").closest(".card").removeAttr("style");
@@ -78,7 +78,7 @@ $(function(ready){
       if(!user.notifications){
         $("input[data-option='notifications']")
         .closest(".card")
-        .animate({height: 64}, 'slow', function(){ 
+        .animate({height: 58}, 'slow', function(){ 
           $(this).css("overflow", "hidden"); 
         });
       }

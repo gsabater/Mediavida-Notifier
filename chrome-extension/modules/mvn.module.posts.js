@@ -126,12 +126,17 @@ $.fn.tipsy = function() {
 	//| insertXHR
 	//| + Inserts the loaded posts in DOM
 	//+-------------------------------------------------------
-	  function insertXHR(xhr, inArray){
+	  function insertXHR(xhr, withoutPagination){
 	  	var posts = $('.post', xhr);
 
-		  if(!inArray){
+		  if(!withoutPagination){
 		  	$("#bottompanel").replaceWith($("#bottompanel", xhr));
-		  	var bottom = $("#bottompanel", xhr).clone().removeAttr("id").addClass("mvn-ajax-pagination").insertBefore("#bottompanel");
+
+		  	var bottom = $("#bottompanel", xhr).clone();
+		  	bottom.removeAttr("id").addClass("mvn-ajax-pagination");
+		  	bottom.find(".tprev, .tnext, .paginas a").remove();
+		  	bottom.find(".paginas em").prepend("Página ").css("background-color", "transparent");
+		  	bottom.insertBefore("#bottompanel");
 		  	//$(".mvn-ajax-pagination .paginas a").each(function(i,e){ $(e).replaceWith("<span>"+$(e).text()+"</span>"); });
 		  }
 	  	
@@ -139,11 +144,11 @@ $.fn.tipsy = function() {
 	  		if(posts[i].id && !$(posts[i]).hasClass("postit")){
 	  			_posts[posts[i].id.substring(4)] = posts[i];
 	  			$(posts[i]).attr("data-likes", $(posts[i]).find(".mola").text()).addClass("mvn-post mvn-ajax");
-		  		if(!inArray){ $(posts[i]).insertBefore("#bottompanel"); }
+		  		if(!withoutPagination){ $(posts[i]).insertBefore("#bottompanel"); }
 		  	}
 	  	}
 
-	  	if(!inArray){
+	  	if(!withoutPagination){
 	  		userTools();
 	  		reverseQuote();
 	  	}
@@ -336,3 +341,13 @@ $.fn.tipsy = function() {
 			e.preventDefault();
 	  	return false;
     });
+
+
+	//+-------------------------------------------------------
+	//| Hide Nopost
+	//+-------------------------------------------------------
+		window.setTimeout(function(){ 
+			if(_user.hideNopost){
+				$("body").addClass("mvn-hide-nopost");
+			}
+		}, 200);

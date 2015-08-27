@@ -16,7 +16,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.52;
+var v = 0.53;
 
 var _audio;
 var _num = 0;
@@ -24,11 +24,11 @@ var notifications = { };
 
 var ls = { };
 var user = {
-	v : v,
-
 	notifications	: true,
 	onlyGroups		: false,
 	audio					: "notification_1up.mp3",
+
+	hideNopost 		: true,
 
 	https					: false,
 	scroll				: true,
@@ -82,6 +82,7 @@ init();
 				for(i in ls){ user[i] = ls[i]; }
 			}
 
+			user.v = v;
 			var obj = {};
 			obj['MVN-user'] = user;
 

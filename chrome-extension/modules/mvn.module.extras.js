@@ -23,6 +23,26 @@
   	}
 
   //+-------------------------------------------------------
+  //| Extra:
+  //| + Confirm before leaving a group
+  //+-------------------------------------------------------
+  $("#grupo .stats .acciones a").on("click", function(e){
+
+    var x;
+    var r=confirm("¿Seguro que quieres salir del grupo y no la estás liando porque vas con prisas?");
+    if(r===true){
+      return true;
+    }else{
+      e.preventDefault();
+      return false;
+    }
+
+  });
+
+      
+    
+
+  //+-------------------------------------------------------
   //| Basic extras:
   //| + Footer credit
   //| + init settings

@@ -51,6 +51,10 @@ dd.online{ display: none; }
   float: left;
 }
 
+.mvn-hide-nopost .nopost{
+  display: none;
+}
+
 
 /*** ORDER BY MANITA ***/
 
