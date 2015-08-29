@@ -9,6 +9,9 @@
 //   
 //=================================================================
 
+var _scroll = 1,
+		_first = 0;
+
 var in_post = false,
 		current_page = 1,
 		last_page = 1,
@@ -36,6 +39,7 @@ initPostTools();
 	  	current_page = (_url[4] && _url[4] !== "1" && !isNaN(_url[4]))? parseInt(_url[4]) : 1;
 	  	last_page = $(".tpag .paginas .last").text();
 	  	in_post = ($(".largecol > .post").length)? true : false;
+	  	_scroll = _first = current_page;
 
 	  	//Add flag to .post div that is a fake post
 	  	$("form .post").addClass("mvn-fake-post");
@@ -69,30 +73,29 @@ initPostTools();
 			//console.log("Loaded post: " + in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 			//console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
 
-			if(_user.scroll && in_post && (current_page < last_page)){
+			if(_user.scroll && in_post){
 				
-				if($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)){
+				if(($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)) && (current_page < last_page)){
 					loadPage();
 				}
-				
+
 				if($('.mvn-ajax-pagination').length){
 
-					_scroll = 1;
 					_pagination = [0];
 					var scrollPos = $(document).scrollTop();
 
 					$('.mvn-ajax-pagination').each(function(i,e){
-						_pagination[i] = $(e).position().top;
+						_pagination[(i+1)] = $(e).position().top; //$(e).attr("data-mvnpage")
 					});
 
 					for(i in _pagination){
 
 						if((scrollPos+100) >= _pagination[i]){
-								_scroll = parseInt(i)+2; //console.log("set "+_scroll,i);
+								_scroll = _first + parseInt(i); //console.log("set "+_scroll,i);
 
 							if(_pagination[i+1]){
 								if(scrollPos+100 < _pagination[i+1]){
-									_scroll = parseInt(i)+3; //console.log("_set "+_scroll,i);
+									//_scroll = parseInt(i)+3; //console.log("_set "+_scroll,i);
 								}
 							}
 						}
@@ -106,7 +109,7 @@ initPostTools();
 						_new.text(_scroll).insertAfter(prev);
 					}
 					$(".mvn-post-page[data-mvnpage='" + _scroll + "'").addClass("mvn-page-active").removeClass("mvn-page-not-active");
-					//console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
+					console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
 				}
 
 			}
@@ -252,21 +255,6 @@ initPostTools();
 	  		}
 
 	  		$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + m.join(", ") + "</span>");
-	  		/*
-	  		if(mentions[key].length > 1){
-	  			
-	  			var m = [];
-
-	  			for (var i = mentions[key].length - 1; i >= 0; i--) {
-	  				m[i] = mentors[mentions[key][i]] + " <a href='#"+mentions[key][i]+"' rel='"+mentions[key][i]+"' class='quote'>#" +mentions[key][i] + "</a>";
-	  			};
-
-	  			$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + m.join(" - ") + "</span>");
-
-	  		}else{
-					$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + mentors[mentions[key]] + " <a href='#"+mentions[key]+"' rel='"+mentions[key]+"' class='quote'>#" +mentions[key] + "</a>" + "</span>");
-	  		}
-	  		*/
 	  	}
 
 	  }
