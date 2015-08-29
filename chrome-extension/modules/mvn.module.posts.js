@@ -14,19 +14,18 @@ var in_post = false,
 		last_page = 1,
 		loadingPage = false;
 
-processPosts();
+initPostTools();
 
-$.fn.tipsy = function() {
-  console.log("placeholder");
-};
 
 	//+-------------------------------------------------------
-  //| processPosts()
+  //| initPostTools()
   //| + Gets an array of the posts on the page to 
   //| + attach and process the information
   //| - $(_posts['93']).css("color","red");
   //+-------------------------------------------------------
-  	function processPosts(){
+  	function initPostTools(){
+
+  		//for each post update the _posts object
   		var posts = $(".largecol .post:not(.mvn-post)");
   		for (i = 0; i <= posts.length - 1; i++){
   			_posts[posts[i].id.substring(4)] = posts[i];
@@ -38,12 +37,26 @@ $.fn.tipsy = function() {
 	  	last_page = $(".tpag .paginas .last").text();
 	  	in_post = ($(".largecol > .post").length)? true : false;
 
+	  	//Add flag to .post div that is a fake post
 	  	$("form .post").addClass("mvn-fake-post");
 	  	console.log("Loaded post: ",in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 
+	  	//Add flag to hidden posts that can be shown for not hide
+	  	$(".hiddenmsg").closest(".nopost").addClass("mvn-showpost");
+
+	  	//Add flag to pagination items
+	  	$("#scrollpages em").addClass("mvn-page-active");
+	  	$("#scrollpages > a:not(.togglefav), #scrollpages > em").each(function(i,e){
+	  		$(e).addClass("mvn-post-page").attr("data-mvnpage", $(e).text());
+	  	});
+
+	  	//init usertools and quote
 	  	userTools();
   		reverseQuote();
   		_pages[current_page] = true;
+
+  		//Create placeholder to avoid js error
+  		$.fn.tipsy = function(){ console.log("placeholder"); }
 
   	}
 
@@ -57,9 +70,45 @@ $.fn.tipsy = function() {
 			//console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
 
 			if(_user.scroll && in_post && (current_page < last_page)){
+				
 				if($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)){
 					loadPage();
 				}
+				
+				if($('.mvn-ajax-pagination').length){
+
+					_scroll = 1;
+					_pagination = [0];
+					var scrollPos = $(document).scrollTop();
+
+					$('.mvn-ajax-pagination').each(function(i,e){
+						_pagination[i] = $(e).position().top;
+					});
+
+					for(i in _pagination){
+
+						if((scrollPos+100) >= _pagination[i]){
+								_scroll = parseInt(i)+2; //console.log("set "+_scroll,i);
+
+							if(_pagination[i+1]){
+								if(scrollPos+100 < _pagination[i+1]){
+									_scroll = parseInt(i)+3; //console.log("_set "+_scroll,i);
+								}
+							}
+						}
+					}
+
+					$(".mvn-page-active").addClass("mvn-page-not-active");
+					if(!$(".mvn-post-page[data-mvnpage='" + _scroll + "'").length){
+						prev = $(".mvn-post-page[data-mvnpage='" + (_scroll-1) + "'");
+						_new = prev.clone();
+						_new.attr({"href":"javascript:void(0);", "data-mvnpage": _scroll});
+						_new.text(_scroll).insertAfter(prev);
+					}
+					$(".mvn-post-page[data-mvnpage='" + _scroll + "'").addClass("mvn-page-active").removeClass("mvn-page-not-active");
+					//console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
+				}
+
 			}
 
 		});
@@ -134,7 +183,9 @@ $.fn.tipsy = function() {
 
 		  	var bottom = $("#bottompanel", xhr).clone();
 		  	bottom.removeAttr("id").addClass("mvn-ajax-pagination");
-		  	bottom.find(".tprev, .tnext, .paginas a").remove();
+		  	bottom.attr("data-mvnpage", bottom.find(".paginas em").text());
+		  	
+		  	bottom.find(".tprev, .tnext, .paginas a, .paginas span").remove();
 		  	bottom.find(".paginas em").prepend("Página ").css("background-color", "transparent");
 		  	bottom.insertBefore("#bottompanel");
 		  	//$(".mvn-ajax-pagination .paginas a").each(function(i,e){ $(e).replaceWith("<span>"+$(e).text()+"</span>"); });
@@ -169,26 +220,39 @@ $.fn.tipsy = function() {
 	  //| + Find quotes in every post
   	//+-------------------------------------------------------
   		for(i in _posts){
-  			
   			var quotes = $(_posts[i]).find(".cuerpo").find("a.quote").get();
   			//console.log(i, quotes.length, quotes);
 
   			for(q in quotes){
-	  			if(mentions[quotes[q].rel]){
-						mentions[quotes[q].rel].push(_posts[i].id.substring(4));
-	  			}else{
-						mentions[quotes[q].rel] = [_posts[i].id.substring(4)];
-	  			}
-
-	  			mentors[_posts[i].id.substring(4)] = $("#post"+_posts[i].id.substring(4)).find(".autor dt a").text();
+  				//console.log(quotes[q]);
+  				quote = quotes[q];
+  				if(quote.rel){
+  					if(!mentions[quote.rel]){ mentions[quote.rel] = []; }
+  					if(mentions[quote.rel].indexOf(_posts[i].id.substring(4)) < 0){
+  						mentions[quote.rel].push( _posts[i].id.substring(4) );	
+  					}
+  				}
   			}
+
+  			mentors[_posts[i].id.substring(4)] = $(_posts[i]).find(".autor dt").text();
   		}
+
+  		//console.log(mentions, mentors);
 
 
 	  //| + Print quotes in posts
   	//+-------------------------------------------------------
   		$(".mvn-mention").remove();
 	  	for(key in mentions){
+
+	  		var m = [];
+
+	  		for(i in mentions[key]){
+	  			m[i] = mentors[mentions[key][i]] + " <a href='#"+mentions[key][i]+"' rel='"+mentions[key][i]+"' class='quote'>#" +mentions[key][i] + "</a>";
+	  		}
+
+	  		$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + m.join(", ") + "</span>");
+	  		/*
 	  		if(mentions[key].length > 1){
 	  			
 	  			var m = [];
@@ -202,9 +266,9 @@ $.fn.tipsy = function() {
 	  		}else{
 					$("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + mentors[mentions[key]] + " <a href='#"+mentions[key]+"' rel='"+mentions[key]+"' class='quote'>#" +mentions[key] + "</a>" + "</span>");
 	  		}
+	  		*/
 	  	}
 
-	  	//console.log(mentions, mentors);
 	  }
 
 	//+-------------------------------------------------------

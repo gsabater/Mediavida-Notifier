@@ -16,7 +16,7 @@
   	if(_url[1] == "foro" && $("div.tpag").length){
   		$("#togglecats2").closest(".tpanel").addClass("mvn-foro-top-panel");
   		$("#togglecats2").css({ "margin": "5px -5px 0px 10px", "float": "right" });
-  		$(".tpag").clone().css({"margin-top":"4px","margin-left": "-15px"}).appendTo($(".mvn-foro-top-panel"));
+  		$(".tpag").clone().addClass("mvn-pagination-clone").appendTo($(".mvn-foro-top-panel"));
   		$(".tnext, .tprev").clone().appendTo($(".mvn-foro-top-panel"));
   		$(".mvn-foro-top-panel .tnext").css("margin-top", "10px");
   		$(".mvn-foro-top-panel .tprev").css("margin-top", "10px");
@@ -52,6 +52,7 @@
 	  
 	//| + init settings
   //+--------------------------------
+  /*
 	  $("body").append("<div id='mvn-settings'>");
 	  $("#mvn-settings").load( chrome.extension.getURL("settings.html") );
 
@@ -62,3 +63,4 @@
 				mainClass: 'my-mfp-slide-bottom'
 			});
 	  });
+    */

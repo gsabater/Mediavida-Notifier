@@ -16,6 +16,16 @@ body.MVN-oscuro div.bwrap {
 	color: rgb(238, 238, 238) !important;
 }
 
+#scrollpages a.mvn-page-active, #scrollpages em.mvn-page-active{
+  color: #ef5000;
+  background-position: top left;
+}
+
+#scrollpages a.mvn-page-not-active, #scrollpages em.mvn-page-not-active{
+  color: #d7e1e7;
+  background-position: bottom left;
+}
+
 
 /*** USER TOOLS ***/
 
@@ -55,6 +65,11 @@ dd.online{ display: none; }
   display: none;
 }
 
+.mvn-hide-nopost .nopost.mvn-showpost{
+  display: block !important;
+}
+
+
 
 /*** ORDER BY MANITA ***/
 
@@ -76,6 +91,16 @@ div.post.mark{
   background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
   background-repeat: no-repeat !important;
   background-position: 100px top !important;
+}
+
+
+body .mvn-pagination-clone{
+  margin-top: 4px;
+  margin-left: -15px;
+}
+
+body.MVN-oscuro .mvn-pagination-clone{
+  margin-left: 0;
 }
 
 /*** Loading ***/
