@@ -24,24 +24,47 @@
 
   //+-------------------------------------------------------
   //| Extra:
-  //| + Confirm before leaving a group
+  //| + Duplicate tools on bottom of page
   //+-------------------------------------------------------
-  $("#grupo .stats .acciones a").on("click", function(e){
+    if(in_post){
+      var bottom_tools = $("#userinfo").clone();
+      bottom_tools.removeAttr("id").attr("id","mvn-bottom-tools");
 
-    var x;
-    var r=confirm("¿Seguro que quieres salir del grupo y no la estás liando porque vas con prisas?");
-    if(r===true){
-      return true;
-    }else{
-      e.preventDefault();
-      return false;
+      bottom_tools.prepend("<li><a href='/foro/spy'>Spy</a></li><li>|</li>")
+      bottom_tools.find(".logout").remove();
+
+      bottom_tools.insertAfter("#postform");
     }
 
-  });
 
+  //+-------------------------------------------------------
+  //| Extra:
+  //| + Confirm before leaving a group
+  //+-------------------------------------------------------
+    $("#grupo .stats .acciones a").on("click", function(e){
+
+      var x;
+      var r=confirm("¿Seguro que quieres salir del grupo y no la estás liando porque vas con prisas?");
+      if(r===true){ return true;
+      }else{
+        e.preventDefault();
+        return false;
+      }
+
+    });
+
+  //+-------------------------------------------------------
+  //| Extra:
+  //| + Include font-awesome so we can use it in the project
+  //+-------------------------------------------------------
+    var styleNode           = document.createElement ("link");
+    styleNode.rel           = "stylesheet";
+    styleNode.id            = "MVN-FA";
+    styleNode.href          = "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";
+
+    document.head.appendChild (styleNode);
       
     
-
   //+-------------------------------------------------------
   //| Basic extras:
   //| + Footer credit

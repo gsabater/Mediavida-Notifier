@@ -39,6 +39,7 @@ initPostTools();
 	  	current_page = (_url[4] && _url[4] !== "1" && !isNaN(_url[4]))? parseInt(_url[4]) : 1;
 	  	last_page = $(".tpag .paginas .last").text();
 	  	in_post = ($(".largecol > .post").length)? true : false;
+	  	if(in_post){ in_post = ($("body#live").length)? false : true; }
 	  	_scroll = _first = current_page;
 
 	  	//Add flag to .post div that is a fake post
@@ -109,7 +110,11 @@ initPostTools();
 						_new.text(_scroll).insertAfter(prev);
 					}
 					$(".mvn-post-page[data-mvnpage='" + _scroll + "'").addClass("mvn-page-active").removeClass("mvn-page-not-active");
-					console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
+					if($("em.mvn-post-page").length){
+						em = $("em.mvn-post-page");
+						em.replaceWith( '<a href="'+ window.location.href +'" class="'+em.attr("class")+'" data-mvnpage="'+em.attr("data-mvnpage")+'">'+em.text()+'</a>' );
+					}
+					//console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
 				}
 
 			}
@@ -263,8 +268,17 @@ initPostTools();
   //| orderbyManitas()
   //| + Loads the whole post and sorts the posts by manitas
   //+-------------------------------------------------------
-  	if(in_post){ $("#scrollpages").append("<em class='mvn-orderby-manita'><img src='/style/img/botones/thumb_up.png' alt='Ordenar por manitas' width='14' height='14'></em>"); }
-  	$(".mvn-orderby-manita").on("click", function(){ orderbyManitas(); });
+  	if(in_post){ $("#scrollpages").append("<em class='mvn-orderby-manita'><i class='fa fa-thumbs-o-up' style='font-size: 15px;'></i></em>"); } //<img src='/style/img/botones/thumb_up.png' alt='Ordenar por manitas' width='14' height='14'>
+  	
+  	$(".mvn-orderby-manita").on("click", function(){
+
+  		if($(this).hasClass("MVN-reset-post")){ location.reload(); return false; }
+  		
+  		orderbyManitas();
+  		$(this).addClass("MVN-reset-post");
+  		$(this).find("i").removeClass("fa-thumbs-o-up").addClass("fa-undo");
+  	});
+
 
   	function orderbyManitas(){
 	  	console.log("+ MVN: orderbyManitas()");
@@ -273,6 +287,7 @@ initPostTools();
 	  	$("#main").prepend("<div class='indicator'><span class='spinner'>Cargando y ordenando posts, espera...</span><span class='status-page'></span></div>");
 	  	$(".largecol").prepend("<div id='mvn-order-results'></div>");	  	
 	  	$("#main").addClass("mvn-loading-all");
+	  	$(".mvn-post-page").css({"opacity":"0.2", "cursor":"default"});
 
 	  	//Start loading everything
 	  	loadPage(false,"manitas");
@@ -394,7 +409,6 @@ initPostTools();
 	  	return false;
     });
 
-
 	//+-------------------------------------------------------
 	//| Hide Nopost
 	//+-------------------------------------------------------
@@ -403,3 +417,25 @@ initPostTools();
 				$("body").addClass("mvn-hide-nopost");
 			}
 		}, 200);
+
+	//+-------------------------------------------------------
+	//| Live post action: click to quote and post
+	//+-------------------------------------------------------
+		$("#liveposts").on("click", ".info a", function(e){
+
+ 				var cursorPos = $("#cuerpo").prop('selectionStart'),
+		    v = $("#cuerpo").val(),
+		    textBefore = v.substring(0,  cursorPos ),
+		    textAfter  = v.substring( cursorPos, v.length ),
+		    quoteNum = $(this).attr("href") + " ";
+		    
+		    $('#cuerpo').val( textBefore + quoteNum + textAfter );
+
+	  	$("#postform").show();
+			$("html, body").animate({ scrollTop: 0 }, "slow", function(){
+				$("#cuerpo").focus();
+			});
+
+	  	e.preventDefault();
+	  	return false;
+	  });	

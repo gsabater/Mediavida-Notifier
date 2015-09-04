@@ -19,11 +19,13 @@ body.MVN-oscuro div.bwrap {
 #scrollpages a.mvn-page-active, #scrollpages em.mvn-page-active{
   color: #ef5000;
   background-position: top left;
+  cursor: pointer;
 }
 
 #scrollpages a.mvn-page-not-active, #scrollpages em.mvn-page-not-active{
   color: #d7e1e7;
   background-position: bottom left;
+  cursor: pointer;
 }
 
 
@@ -69,7 +71,21 @@ dd.online{ display: none; }
   display: block !important;
 }
 
+#mvn-bottom-tools{
+  margin-top: 15px;
+  border: 1px solid #C7C9C3 !important;
+  border-top: 1px solid #C7C9C3 !important;
+  border-bottom: 1px solid #BABCB6 !important;
+  background: linear-gradient(to top, #E8EBE3, #D6D8D2) !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#D6D8D2), to(#E8EBE3)) !important;
+}
 
+#mvn-bottom-tools li:last-child{ margin-right: 5px; }
+#mvn-bottom-tools a{ color: #777; background-image: none; padding-left: 0px; padding: 0 2px; }
+#mvn-bottom-tools a:hover{ color: #444; }
+#mvn-bottom-tools strong.bubble { left: -17px; }
+
+ul.ut-linksfooter.ut-linksfooter-blanco{ display: none; }
 
 /*** ORDER BY MANITA ***/
 
