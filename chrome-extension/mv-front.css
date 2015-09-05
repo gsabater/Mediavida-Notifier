@@ -71,13 +71,16 @@ dd.online{ display: none; }
   display: block !important;
 }
 
+
+/*** Bottom tools ***/
+
 #mvn-bottom-tools{
   margin-top: 15px;
-  border: 1px solid #C7C9C3 !important;
-  border-top: 1px solid #C7C9C3 !important;
-  border-bottom: 1px solid #BABCB6 !important;
-  background: linear-gradient(to top, #E8EBE3, #D6D8D2) !important;
-  background: -webkit-gradient(linear, left top, left bottom, from(#D6D8D2), to(#E8EBE3)) !important;
+  border: 1px solid #C7C9C3;
+  border-top: 1px solid #C7C9C3;
+  border-bottom: 1px solid #BABCB6;
+  background: linear-gradient(to top, #E8EBE3, #D6D8D2);
+  background: -webkit-gradient(linear, left top, left bottom, from(#D6D8D2), to(#E8EBE3));
 }
 
 #mvn-bottom-tools li:last-child{ margin-right: 5px; }
@@ -85,7 +88,20 @@ dd.online{ display: none; }
 #mvn-bottom-tools a:hover{ color: #444; }
 #mvn-bottom-tools strong.bubble { left: -17px; }
 
-ul.ut-linksfooter.ut-linksfooter-blanco{ display: none; }
+.MVN-oscuro #mvn-bottom-tools{
+  border-color: #0e1113;
+  border-top: 1px solid #555f66;
+  border-bottom: 1px solid #0e1113;
+  -moz-box-shadow: inset -1px 0 1px -1px #ffffff,inset 1px 0 1px -1px #ffffff;
+  background-image: -moz-linear-gradient(top, #010101, #1c252b);
+  background-image: -o-linear-gradient(top, #010101, #1c252b);
+  background-image: linear-gradient(to bottom, #010101, #1c252b);
+}
+
+.MVN-oscuro #mvn-bottom-tools a{ color: #EF5000; }
+.MVN-oscuro #mvn-bottom-tools a:hover{ color: white; }
+
+ul.bar.ut-linksfooter{ display: none; }
 
 /*** ORDER BY MANITA ***/
 

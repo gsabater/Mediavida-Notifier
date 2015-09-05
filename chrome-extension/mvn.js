@@ -13,7 +13,7 @@
 // mvn user: 		userTools
 // mvn extras: 	Settings injection and upper pagination
 //=================================================================
-// 0.6 -> menu inferior MV-usertools -> click to post en live -> opcion no hace reverse
+// opcion no hace reverse
 
 console.log("MV Notifier background");
 
