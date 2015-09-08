@@ -450,8 +450,9 @@ initPostTools();
   //+-------------------------------------------------------
 		function applyFont(){
 
-			window.setTimeout(function(){console.log(_user);
-				if(_user.scroll && in_post){
+			window.setTimeout(function(){
+				console.log(_user);
+				if(in_post){
 
 					$("#MVN-font-family, #MVN-font-style").remove();
 
@@ -481,8 +482,6 @@ initPostTools();
 		          "}</style>"
 		      ).appendTo("head");
 				}
-			}, 50);
-
-      
+			}, 50); 
 
     }

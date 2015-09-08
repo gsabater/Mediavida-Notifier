@@ -13,8 +13,9 @@ $(function(ready){
   console.log("MV Notifier Options page");
   user = { };
 
-  window.setTimeout(function(){ chrome.storage.local.get("MVN-user", function(result){ initSettings(result); });  }, 100);
-  
+  chrome.runtime.sendMessage({getUser: "object"}, function(response) {
+    initSettings(response.farewell);
+  }); 
 
   //+-------------------------------------------------------
   //| + Capture changes on the settings page and save it
@@ -99,8 +100,8 @@ $(function(ready){
   //+-------------------------------------------------------
     function initSettings(options){
 
-      user = options['MVN-user'];
-      console.log(user);
+      user = options;
+      console.log(options);
 
       for(option in user){
         if((user[option] == true)&&($("input[data-option='"+option+"']").length > 0)){ 

@@ -33,6 +33,13 @@ var user = {
 
 	https					: false,
 	scroll				: true,
+
+	font: {
+		family: "Verdana",
+		letter: 0,
+		line:   "18px",
+		size:   "12px"
+	}
 };
 
 init();
