@@ -15,37 +15,55 @@ $(function(ready){
 
   window.setTimeout(function(){ chrome.storage.local.get("MVN-user", function(result){ initSettings(result); });  }, 100);
   
+
   //+-------------------------------------------------------
   //| + Capture changes on the settings page and save it
   //| + Each element with data-option attribute is passed
   //| + to the options object in mvn.js
   //+-------------------------------------------------------
-    $("input, select").change(function(){
+    $("input, select").change(function(){ saveOptions(); });
 
+    function saveOptions(){
+
+      // Start object with audio
       options = {
         audio : ($("#option-notif-audio").is(":checked"))? $("#notification-audio").val() : false
       };
 
+      //For every option, insert itself in object
       $("[data-option]").each(function(i, el){
         options[$(el).attr('data-option')] = $(el).is(":checked");
       });
 
+/*
+      // Animate the notifications visually
       if(!options.notifications){
         $("input[data-option='notifications']").closest(".card").animate({height: 58}, 'slow', function(){ 
           $(this).css("overflow", "hidden"); });
       }else{
         $("input[data-option='notifications']").closest(".card").removeAttr("style");
       }
+      */
+
+      // Gather the font object
+      options['font'] = {
+        family: $("select[data-font='family']").val(),
+        size: $("select[data-font='size']").val(),
+        letter: $("select[data-font='letter']").val(),
+        line: $("select[data-font='line']").val()
+      };
 
       console.log(options);
 
-      chrome.runtime.sendMessage({options: options});
+      // Feedback
       saved();
-    });
+      previewFont(options.font);
+      chrome.runtime.sendMessage({options: options}); 
+    }
 
     function saved(){
       $(".saved").fadeIn(300);
-      window.setTimeout(function(){$(".saved").fadeOut(300);}, 1000);
+      window.setTimeout(function(){$(".saved").fadeOut(300);}, 700);
     }
 
   //+-------------------------------------------------------
@@ -53,6 +71,26 @@ $(function(ready){
   //+-------------------------------------------------------
     $(".js-test-notification").on("click", function(){
       chrome.runtime.sendMessage({test: "true"});
+    });
+
+  //+-------------------------------------------------------
+  //| + Reset the font values
+  //+-------------------------------------------------------
+    $(".js-reset-font").on("click", function(){
+
+      var font = {};
+
+      font.family   = "Verdana";
+      font.size     = "12px";
+      font.letter   = "0";
+      font.line     = "18px";
+
+      $("select[data-font='family']").val(font.family);
+      $("select[data-font='size']").val(font.size);
+      $("select[data-font='letter']").val(font.letter);
+      $("select[data-font='line']").val(font.line);
+
+      saveOptions();
     });
 
   //+-------------------------------------------------------
@@ -83,6 +121,57 @@ $(function(ready){
         });
       }
 
+      $("select[data-font='family']").val(user.font.family);
+      $("select[data-font='size']").val(user.font.size);
+      $("select[data-font='letter']").val(user.font.letter);
+      $("select[data-font='line']").val(user.font.line);
+      previewFont(user.font);
+
       $(".version").text(user.v);
     }
+
+  //+-------------------------------------------------------
+  //| Font options()
+  //| + Sets settings for text styles on posts
+  //+-------------------------------------------------------    
+    function previewFont(font){
+      //console.log(font);
+
+      $("#MVN-font-family, #MVN-font-style").remove();
+
+      if(font.family !== "Verdana"){
+        var styleNode           = document.createElement ("link");
+        styleNode.rel           = "stylesheet";
+        styleNode.type          = "text/css";
+        styleNode.id            = "MVN-font-family";
+        styleNode.href          = "https://fonts.googleapis.com/css?family="+ font.family.replace(" ", "+") +":400,300,600,700";
+        document.head.appendChild (styleNode);
+      }
+
+      $( "<style id='MVN-font-style'>.font-preview p{ " +
+          "font-family: '"+ font.family +"' !important;"+
+          "font-size: "+ font.size +" !important;"+
+          "line-height: "+ font.line +" !important;"+
+          "letter-spacing: "+ font.letter +" !important;"+
+          "}</style>"
+      ).appendTo("head");
+    }
+
+  //+-------------------------------------------------------
+  //| + Menu Tabs
+  //+-------------------------------------------------------
+    $(".menu span").on("click", function(){
+      
+      var index = $(this).index();
+
+      $("#container h1, .card").hide();
+      $("[data-item="+ index +"]").show();
+
+      $(".menu span.active").removeClass("active");
+      $(this).addClass("active");
+
+    });
+
 });
+
+//<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>

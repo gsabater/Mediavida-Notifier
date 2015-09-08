@@ -57,6 +57,7 @@ initPostTools();
 
 	  	//init usertools and quote
 	  	userTools();
+	  	applyFont();
   		reverseQuote();
   		_pages[current_page] = true;
 
@@ -439,3 +440,49 @@ initPostTools();
 	  	e.preventDefault();
 	  	return false;
 	  });	
+
+
+	//+-------------------------------------------------------
+  //| initPostTools()
+  //| + Gets an array of the posts on the page to 
+  //| + attach and process the information
+  //| - $(_posts['93']).css("color","red");
+  //+-------------------------------------------------------
+		function applyFont(){
+
+			window.setTimeout(function(){console.log(_user);
+				if(_user.scroll && in_post){
+
+					$("#MVN-font-family, #MVN-font-style").remove();
+
+		      if(_user.font.family !== "Verdana"){
+		        var styleNode           = document.createElement ("link");
+		        styleNode.rel           = "stylesheet";
+		        styleNode.type          = "text/css";
+		        styleNode.id            = "MVN-font-family";
+		        styleNode.href          = "https://fonts.googleapis.com/css?family="+ _user.font.family.replace(" ", "+") +":400,300,600,700";
+		        document.head.appendChild (styleNode);
+		      }
+
+
+		      var d = new Date();
+		      if((d.getDate() == 28)&&(d.getMonth() == 10)){
+						_user.font.family = "Comic Sans MS";
+						_user.font.size = "14px";
+						_user.font.line = "19px";
+		      }
+
+
+		      $( "<style id='MVN-font-style'>div.post .msg .body .cuerpo{ " +
+		          "font-family: '"+ _user.font.family +"' !important;"+
+		          "font-size: "+ _user.font.size +" !important;"+
+		          "line-height: "+ _user.font.line +" !important;"+
+		          "letter-spacing: "+ _user.font.letter +" !important;"+
+		          "}</style>"
+		      ).appendTo("head");
+				}
+			}, 50);
+
+      
+
+    }

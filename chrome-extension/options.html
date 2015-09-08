@@ -95,6 +95,13 @@
 	  	margin-left: 15px;
 	  }
 
+	  .bottom-action{
+	  	background-color: #F5F5F5;
+	  	padding: 5px;
+	  	margin: 10px -33px -10px -25px;
+	  	text-align: right;
+	  }
+
 	  .option{
 	  	margin: 20px 0;
 	  }
@@ -160,6 +167,44 @@
     	border: 1px solid #EAEAEA;
 	  }
 
+	  .font-preview{
+    background-color: #E7E9E4;
+    padding: 5px 14px;
+    border-radius: 6px;
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: 5px;
+	  }
+
+		.font-preview p{
+			font-family: 'Verdana';
+			font-size: 12px;
+			line-height: 18px;
+			letter-spacing: 0;
+		}	  
+
+		.menu{
+			width: 700px;
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 40px;
+	    margin-bottom: -15px;
+		}
+
+		.menu span{
+	    font-size: 13px;
+	    /* font-weight: 500; */
+	    border-bottom: 1px solid rgba(181, 181, 181, 0.21);
+	    padding-bottom: 10px;
+	    cursor: pointer;
+		}
+
+		.menu span.active{
+	    color: #FCA940;
+    	text-shadow: 1px 1px 1px white;
+		}
+
 	</style>
 </head>
 <body>
@@ -171,9 +216,16 @@
 
 <div id="container">
 
-<!-- Notificacion -->
-	<h1 class="card-header">Ajustes de notificación</h1>
-	<div class="card">
+	<div class="menu">
+		<span class="active">Ajustes de notificación</span>
+		<span>Ajustes de navegación</span>
+		<span>Ajustes de Hilo</span>
+		<span>Agradecimientos y donaciones</span>
+	</div>
+
+	<!-- Notificacion -->
+	<h1 class="card-header" data-item="0">Ajustes de notificación</h1>
+	<div class="card" data-item="0">
 		
 		<div class="option">
 			<label class="option-label">
@@ -212,14 +264,14 @@
 			</label>
 		</div>		
 
-		<div class="test-notification" style="background-color: #F5F5F5; padding: 5px; margin: 10px -33px -10px -25px; text-align: right;">
+		<div class="bottom-action">
 			<span class="button js-test-notification">Probar notificación</span>
 		</div>
 	</div>
 
 <!-- Navegación -->
-	<h1 class="card-header">Ajustes de navegación</h1>
-	<div class="card">
+	<h1 class="card-header" style="display:none;" data-item="1">Ajustes de navegación</h1>
+	<div class="card" style="display:none;" data-item="1">
 		
 		<div class="option">
 			<label class="option-label">
@@ -233,9 +285,9 @@
 
 	</div>	
 
-<!-- Navegación -->
-	<h1 class="card-header">Ajustes de Hilo</h1>
-	<div class="card">
+<!-- Ajustes de hilo -->
+	<h1 class="card-header" style="display:none;" data-item="2">Ajustes de Hilo</h1>
+	<div class="card" style="position: relative; display:none;" data-item="2">
 		
 		<div class="option">
 			<label class="option-label">
@@ -250,12 +302,83 @@
 				<span class="option-title">Ocultar mensajes borrados</span></label>
 			<div class="option-desc">Elimina los mensajes de "Mensaje borrado por no cumplir las normas".</div>
 		</div>		
+
+		<hr>
+
+		<div class="option" style="margin-bottom: 10px;">
+			<label class="option-label">
+				<span class="option-title">Ajustes fuente para la lectura</span></label>
+<!--				<div class="option-desc">Modifica los valores del estilo de la fuente para el cuerpo de los mensajes.</div>
+				<div style="color: #989898; padding: 10px; padding-left: 15px;">Los valores por defecto son: Verdana, 12px, 0, 18px</div> -->
+		</div>	
+
+		<div style="width: 35%; display: inline-block;">
+			<div class="option" style="margin-top: 5px; margin-bottom: 10px">
+				<label class="option-label" style="margin-left: 17px;">
+					<select class="font-options" data-font="family" style="width: 100px;">
+						<option value="Verdana">Verdana</option>
+						<option value="Open Sans">Open Sans</option>
+						<option value="Roboto">Roboto</option>
+						<option value="Lato">Lato</option>
+						<option value="Source Sans Pro">Source Sans</option>
+					</select>
+					<span class="option-title"> Font Family</span>
+				</label>
+			</div>	
+
+			<div class="option" style="margin-top: 5px; margin-bottom: 10px">
+				<label class="option-label" style="margin-left: 17px;">
+					<select class="font-options" data-font="size" style="width: 100px;">
+						<option value="9px">9px</option>
+						<option value="10px">10px</option>
+						<option value="11px">11px</option>
+						<option value="12px">12px</option>
+						<option value="13px">13px</option>
+						<option value="14px">14px</option>
+					</select>
+					<span class="option-title"> Font Size</span>
+				</label>
+			</div>	
+		</div>
+
+		<div style="width: 49%; display: inline-block;">
+			<div class="option" style="margin-top: 5px; margin-bottom: 10px">
+				<label class="option-label" style="margin-left: 17px;">
+					<select class="font-options" data-font="letter" style="width: 100px;">
+						<option value="-1px">-1px</option>
+						<option value="0">0</option>
+						<option value="1px">1px</option>
+						<option value="2px">2px</option>
+					</select>
+					<span class="option-title"> Letter spacing</span>
+				</label>
+			</div>	
+
+			<div class="option" style="margin-top: 5px; margin-bottom: 10px">
+				<label class="option-label" style="margin-left: 17px;">
+					<select class="font-options" data-font="line" style="width: 100px;">
+						<option value="16px">16px</option>
+						<option value="17px">17px</option>
+						<option value="18px">18px</option>
+						<option value="19px">19px</option>
+						<option value="20px">20px</option>
+					</select>
+					<span class="option-title"> Line height</span>
+				</label>
+			</div>	
+		</div>
 		
+		<div class="font-preview"><p>Después de más de 5 años con el look actual estamos preparando un rediseño de la web. Principalmente queremos adaptarnos a los tiempos que corren con un diseño adaptable (responsive) que proporcione una buena experiencia de uso independientemente del tamaño y resolución de nuestra pantalla, y aprovecharemos para darle un lavado de cara al look de la web, que ha envejecido de manera notable estos años.</p></div>
+
+		<div class="bottom-action">
+			<span class="button js-reset-font">Reestablecer valores</span>
+		</div>
+
 	</div>	
 
-<!-- Donaciones y créditos -->
-	<h1 class="card-header">Agradecimientos y donaciones</h1>
-	<div class="card agradecimientos">
+	<!-- Donaciones y créditos -->
+	<h1 class="card-header" style="display: none;" data-item="3">Agradecimientos y donaciones</h1>
+	<div class="card agradecimientos" style="display: none;" data-item="3">
 		<div style="width: 150px; float: right; text-align: right; margin-right: -15px;"><img src="assets/MVN_128x128.png" style="width: 128px;" /></div>
 		<h4 style="margin-bottom: -5px;">Agradecimientos</h4>
 		<p>Quisiera agradecer el apoyo y la colaboración de todos los participantes en el <a href="http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508" target="_blank">hilo de la extensión</a>, que han contribuido aportando materiales, bugs e ideas. La extensión es gracias a vosotros. </p>
@@ -268,24 +391,20 @@
 		<h4 style="margin-bottom: -5px;">Donaciones</h4>
 		<p>Si te gusta la extensión, crees que es útil, y te gustaría demostrarme tu apoyo, invitame a una cerveza.<br>Si no tienes dinero, quizás haya algo de <a href="http://steamcommunity.com/id/Gohrum/wishlist/?sort=added" target="_blank">mi wishlist</a> que te sobre.
 		
-
-
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center; padding: 15px;">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-">
-<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
-<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
-</form>
-</p>
-<div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center; padding: 15px;">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+		">
+		<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
+		<img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
+		</form>
+		</p>
+		<div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
 
 	</div>
 </div>
 
 <div class="saved">Guardado correctamente</div>
 
-  
 </body>
 </html>
