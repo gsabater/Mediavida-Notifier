@@ -38,6 +38,7 @@ body.MVN-oscuro div.bwrap {
 .mvn-ajax .buttons .propuesta:hover, .mvn-ajax .buttons .report:hover { opacity: 0.2; }
 
 dd.online{ display: none; }
+
 .mvn-online{
   display: inline-block;
   background-color: rgba(0, 128, 0, 0.74);
@@ -52,7 +53,9 @@ dd.online{ display: none; }
 }
 
 .mark .mvn-online{
-  display: none;
+  width: 6px;
+  height: 6px;
+  margin-bottom: 1px;
 }
 
 .usertools .online-pos{
@@ -122,7 +125,8 @@ em.mvn-orderby-manita {
 div.post.mark{
   background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
   background-repeat: no-repeat !important;
-  background-position: 100px top !important;
+  background-position: 105px top !important;
+  background-size: 40px;
 }
 
 

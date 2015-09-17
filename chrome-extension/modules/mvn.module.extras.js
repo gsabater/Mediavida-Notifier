@@ -30,7 +30,8 @@
       var bottom_tools = $("#userinfo").clone();
       bottom_tools.removeAttr("id").attr("id","mvn-bottom-tools");
 
-      bottom_tools.prepend("<li><a href='/foro/spy'>Spy</a></li><li>|</li>")
+      bottom_tools.prepend("<li><a href='/foro/spy'>Spy</a></li><li>|</li>");
+      bottom_tools.append("<li><a href='/foro/buscar.php'><i class='fa fa-search'></i></a></li>");
       bottom_tools.find(".logout").remove();
 
       bottom_tools.insertAfter("#postform");

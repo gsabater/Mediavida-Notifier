@@ -451,7 +451,7 @@ initPostTools();
 		function applyFont(){
 
 			window.setTimeout(function(){
-				console.log(_user);
+				//console.log(_user);
 				if(in_post){
 
 					$("#MVN-font-family, #MVN-font-style").remove();
@@ -473,9 +473,10 @@ initPostTools();
 						_user.font.line = "19px";
 		      }
 
+		      var newFont = (_user.font.family == "Verdana")? "Verdana','Geneva','sans-serif" : _user.font.family;
 
 		      $( "<style id='MVN-font-style'>div.post .msg .body .cuerpo{ " +
-		          "font-family: '"+ _user.font.family +"' !important;"+
+		          "font-family: '"+ newFont +"' !important;"+
 		          "font-size: "+ _user.font.size +" !important;"+
 		          "line-height: "+ _user.font.line +" !important;"+
 		          "letter-spacing: "+ _user.font.letter +" !important;"+
