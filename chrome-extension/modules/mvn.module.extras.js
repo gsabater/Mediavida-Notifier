@@ -37,7 +37,6 @@
       bottom_tools.insertAfter("#postform");
     }
 
-
   //+-------------------------------------------------------
   //| Extra:
   //| + Confirm before leaving a group
@@ -45,13 +44,11 @@
     $("#grupo .stats .acciones a").on("click", function(e){
 
       var x;
-      var r=confirm("¿Seguro que quieres salir del grupo y no la estás liando porque vas con prisas?");
+      var r=confirm("¿Estás seguro de querer hacer esto?");
       if(r===true){ return true;
       }else{
         e.preventDefault();
-        return false;
-      }
-
+        return false; }
     });
 
   //+-------------------------------------------------------
@@ -65,7 +62,42 @@
 
     document.head.appendChild (styleNode);
       
+  //+-------------------------------------------------------
+  //| Extra:
+  //| + Check for dark theme
+  //+-------------------------------------------------------
+    oscuro = ($("link[href*='oscuro.css']").length)? true : false;
+    if(oscuro){ $("body").addClass("MVN-oscuro"); }
     
+  //+-------------------------------------------------------
+  //| Replace MARK for MVN-MARK
+  //+-------------------------------------------------------
+    $(".mark").removeClass("mark").addClass("mvn-mark");
+
+  //+-------------------------------------------------------
+  //| + Check for usertools installed
+  //| + Print init DOM modifications
+  //+-------------------------------------------------------
+    MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    //| + Check for UT
+    //+-------------------------------------------------------  
+      var observer = new MutationObserver(function(mutations, observer){
+        //console.log(mutations);
+        if(mutations[0].type == "childList"){
+          if(mutations[0].addedNodes[1].href == "http://mvusertools.com/"){ 
+            UT = true; 
+            $("body").addClass("has-ut"); 
+          }
+        }
+      });
+
+      observer.observe($(".f_info > p").get(0), {
+        subtree: true,
+        childList: true,
+        attributes: true
+      });
+
   //+-------------------------------------------------------
   //| Basic extras:
   //| + Footer credit

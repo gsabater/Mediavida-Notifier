@@ -36,16 +36,6 @@ $(function(ready){
         options[$(el).attr('data-option')] = $(el).is(":checked");
       });
 
-/*
-      // Animate the notifications visually
-      if(!options.notifications){
-        $("input[data-option='notifications']").closest(".card").animate({height: 58}, 'slow', function(){ 
-          $(this).css("overflow", "hidden"); });
-      }else{
-        $("input[data-option='notifications']").closest(".card").removeAttr("style");
-      }
-      */
-
       // Gather the font object
       options['font'] = {
         family: $("select[data-font='family']").val(),
@@ -53,6 +43,14 @@ $(function(ready){
         letter: $("select[data-font='letter']").val(),
         line: $("select[data-font='line']").val()
       };
+
+      // Gather the media
+      options['media'] = {
+        detect: $("input[data-media='detect']").is(":checked"),
+        hover: $("input[data-media='hover']").is(":checked"),
+        magnific: $("input[data-media='magnific']").is(":checked"),
+        autoembed: $("input[data-media='autoembed']").is(":checked")
+      };      
 
       console.log(options);
 
@@ -114,6 +112,7 @@ $(function(ready){
         $("#notification-audio").val(user.audio);
       }
 
+      /*
       if(!user.notifications){
         $("input[data-option='notifications']")
         .closest(".card")
@@ -121,6 +120,12 @@ $(function(ready){
           $(this).css("overflow", "hidden"); 
         });
       }
+      */
+
+      if(user.media.detect){     $("input[data-media='detect']").attr("checked", "checked"); }
+      if(user.media.hover){      $("input[data-media='hover']").attr("checked", "checked"); }
+      if(user.media.magnific){   $("input[data-media='magnific']").attr("checked", "checked"); }
+      if(user.media.autoembed){  $("input[data-media='autoembed']").attr("checked", "checked"); }
 
       $("select[data-font='family']").val(user.font.family);
       $("select[data-font='size']").val(user.font.size);

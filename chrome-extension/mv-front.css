@@ -29,6 +29,46 @@ body.MVN-oscuro div.bwrap {
 }
 
 
+/*** BOOKMARKS ***/
+#content #foros-fav-float {
+  top: 300px;
+}
+
+#mvn-forum-bookmarks{
+  position: absolute;
+  top: 200px;
+  margin-left: 1005px;
+  opacity: 0.2;
+  margin-top: 10px;
+  transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+}
+
+#mvn-forum-bookmarks:hover{
+  opacity: 1;
+}
+
+#mvn-forum-bookmarks ul li {
+  margin: 0 0 5px;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+#mvn-forum-bookmarks ul li a {
+  background: #ccc;
+  border-radius: 3px 3px 3px 3px;
+  border: 1px solid #EEEEEE;
+  vertical-align: middle;
+  padding: 3px 4px;
+  display: inline-block;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+#mvn-forum-bookmarks ul li a:hover {
+  background: #999;
+}
+
 /*** USER TOOLS ***/
 
 .mvn-post .post_controls .buttons{ display: none; }
@@ -108,8 +148,21 @@ ul.bar.ut-linksfooter{ display: none; }
 
 /*** ORDER BY MANITA ***/
 
+em.mvn-toggle-infiniteScroll {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+em.mvn-infinite-disabled {
+    opacity: 0.2;
+}
+
+em.mvn-infinite-disabled i {
+    color: #666;
+}
+
 em.mvn-orderby-manita {
-    margin-top: 20px;
+    margin-top: 5px;
     cursor: pointer;
     /* padding-top: 2px; */
 }
@@ -121,14 +174,170 @@ em.mvn-orderby-manita {
 }
 
 
-/*** Extras ***/
-div.post.mark{
-  background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: 105px top !important;
-  background-size: 40px;
+/*** EMBED ***/
+
+.mvn-tooltip, .mvn-embed-highlight {
+  display: inline;
+  position: relative;
+  z-index: 999;
+
+  cursor: pointer;
+  display: inline-block;
+
+  background-color: rgba(239, 188, 45, 0.13);
+  border-bottom: 1px solid rgba(239, 80, 0, 0.64);
+
+  border-radius: 4px;
+  padding: 2px 10px;
+  padding-right: 1px;
+  margin: 1px 0;
+  font-size: inherit;
+  font-weight: 400;
 }
 
+/* Gap filler */
+
+.tooltip-item::after {
+  content: '';
+  position: absolute;
+  width: 360px;
+  height: 20px;
+  bottom: 100%;
+  left: 50%;
+  pointer-events: none;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.mvn-tooltip:hover .tooltip-item::after {
+  pointer-events: auto;
+}
+
+/* Tooltip */
+
+.tooltip-content {
+  position: absolute;
+  z-index: 9999;
+  width: auto;
+  left: 50%;
+    left: auto;
+    right: 0;
+
+  margin: 0 0 20px -180px;
+    margin: 0 0 5px 0px;
+
+  bottom: 100%;
+  text-align: left;
+  font-size: 0.765em;
+  line-height: 1.4;
+  box-shadow: -5px -5px 15px rgba(48,54,61,0.2);
+  background: #2a3035;
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+
+  background-color: rgba(42, 48, 53, 0.75);
+  border-radius: 5px;
+  overflow: hidden;  
+}
+
+.tooltip-effect-1 .tooltip-content {
+  -webkit-transform: translate3d(0,-10px,0);
+  transform: translate3d(0,-10px,0);
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.mvn-tooltip:hover .tooltip-content {
+  pointer-events: auto;
+  opacity: 1;
+  -webkit-transform: translate3d(0,0,0) rotate3d(0,0,0,0);
+  transform: translate3d(0,0,0) rotate3d(0,0,0,0);
+}
+
+/* Arrow */
+
+.tooltip-content::after {
+  content: '';
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-top-color: #2a3035;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+/* Tooltip content*/
+
+div.post.mvn-overflow-visible:hover, div.post.mvn-overflow-visible:hover .msg .body .cuerpo {
+  overflow: visible;
+}
+
+.cuerpo.div.embedded{
+  padding-top: 10px;
+  margin: 0;
+}
+
+.tooltip-content img, .tooltip-content video {
+  position: relative;
+  display: block;
+  float: left;
+
+  width: auto;
+  height: auto;
+  margin: 0;
+  max-width: 400px;
+  max-height: 350px;  
+}
+
+iframe.mvn-embed-vine{
+  width: 480px;
+  height: 480px;
+}
+
+video.mvn-embed {
+  max-height: 500px;
+  max-width: 100%;
+}
+
+i.fa.mvn-ico-embed {
+  margin-left: 5px;
+  border-radius: 4px;
+  padding: 3px;
+  color: rgba(0, 0, 0, 0.73);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.MVN-oscuro i.fa.mvn-ico-embed {
+    color: rgba(255, 255, 255, 0.48);
+}
+
+.mfp-content{
+  text-align: center !important;
+}
+
+.mfp-content video{
+  max-width: 90vw;
+}
+
+
+/*** Extras ***/
+div.post.mvn-mark{
+  border: 1px solid #f0b89c;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/assets/marcapaginas2.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: 125px top !important;
+  background-size: 35px;
+}
+
+div.post.mvn-mark .info { padding-left: 20px; }
+div.post.mvn-mark .autor{ width: 118px; }
 
 body .mvn-pagination-clone{
   margin-top: 4px;

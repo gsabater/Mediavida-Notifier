@@ -185,11 +185,12 @@
 		}	  
 
 		.menu{
-			width: 700px;
+			width: 800px;
 	    display: flex;
 	    justify-content: space-between;
 	    margin-top: 40px;
 	    margin-bottom: -15px;
+	    margin-left: -50px;
 		}
 
 		.menu span{
@@ -220,6 +221,7 @@
 		<span class="active">Ajustes de notificación</span>
 		<span>Ajustes de navegación</span>
 		<span>Ajustes de Hilo</span>
+		<span>Embed Media</span>
 		<span>Agradecimientos y donaciones</span>
 	</div>
 
@@ -258,6 +260,7 @@
 					<option value="notification.mp3">Half Life</option>
 					<option value="notification_1up.mp3">1UP</option>
 					<option value="notification_tone.mp3">Tubular</option>
+					<option value="notification_mgs.mp3">Metal Gear</option>
 					<option value="notification_mockingjay.mp3">Mockingjay</option>
 					<option value="notification_listen.mp3">Hey Listen!</option>
 				</select>
@@ -307,7 +310,7 @@
 
 		<div class="option" style="margin-bottom: 10px;">
 			<label class="option-label">
-				<span class="option-title">Ajustes fuente para la lectura</span></label>
+				<span class="option-title">Ajustar la fuente de lectura</span></label>
 <!--				<div class="option-desc">Modifica los valores del estilo de la fuente para el cuerpo de los mensajes.</div>
 				<div style="color: #989898; padding: 10px; padding-left: 15px;">Los valores por defecto son: Verdana, 12px, 0, 18px</div> -->
 		</div>	
@@ -378,9 +381,54 @@
 
 	</div>	
 
+	<!-- EMBED MEDIA -->
+	<h1 class="card-header" style="display: none;" data-item="3">Ajustes de contenido multimedia</h1>
+	<div class="card" style="display:none;" data-item="3">
+		
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" data-media="detect">
+				<span class="option-title">Detectar automáticamente media sin insertar</span>
+			</label>
+			<div class="option-desc">Activar esta opción buscará automáticamente enlaces a imágenes, galerias de imgur, vídeos, enlaces de youtube, archivos de audio, etc, y los marcará para ser tratados por la extensión.</div>
+		</div>
+
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" data-media="hover">
+				<span class="option-title">Previsualizar on hover</span>
+			</label>
+			<div class="option-desc">
+				Los enlaces detectados serán marcados, y al pasar el ratón sobre ellos aparecerá una vista previa del contenido.<br>
+				No disponible para vídeos de youtube, vine, imágenes de instagram o archivos de audio.
+				<div style="color: #989898;">No recomendable para conexiones muy lentas.</div>
+			</div>
+		</div>
+
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" data-media="autoembed">
+				<span class="option-title">Autoinsertar YouTube, Vine, audio mp3 e Instagram</span>
+			</label>
+			<div class="option-desc">Los enlaces de youtube se insertarán (sin cargar el vídeo) automáticamente encima del enlace.<br>
+			Los enlaces de Vine se insertarán con su formato especial.<br>
+			Las imágenes de instagram se insertarán con su formato especial.<br>
+			Los archivos de audio se insertarán sobre el enlace.</div>
+		</div>		
+
+		<div class="option">
+			<label class="option-label">
+				<input type="checkbox" data-media="magnific">
+				<span class="option-title">Visualizar on click</span>
+			</label>
+			<div class="option-desc">Utilizar el moderno visor de la extensión para ver el contenido insertado en la web, y así evitar que se abra una pestaña nueva con el enlace.</div>
+		</div>
+
+	</div>	
+
 	<!-- Donaciones y créditos -->
-	<h1 class="card-header" style="display: none;" data-item="3">Agradecimientos y donaciones</h1>
-	<div class="card agradecimientos" style="display: none;" data-item="3">
+	<h1 class="card-header" style="display: none;" data-item="4">Agradecimientos y donaciones</h1>
+	<div class="card agradecimientos" style="display: none;" data-item="4">
 		<div style="width: 150px; float: right; text-align: right; margin-right: -15px;"><img src="assets/MVN_128x128.png" style="width: 128px;" /></div>
 		<h4 style="margin-bottom: -5px;">Agradecimientos</h4>
 		<p>Quisiera agradecer el apoyo y la colaboración de todos los participantes en el <a href="http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508" target="_blank">hilo de la extensión</a>, que han contribuido aportando materiales, bugs e ideas. La extensión es gracias a vosotros. </p>
@@ -404,6 +452,7 @@
 		<div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
 
 	</div>
+
 </div>
 
 <div class="saved">Guardado correctamente</div>

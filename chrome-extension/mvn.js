@@ -17,7 +17,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.72;
+var v = 0.8;
 
 var _audio;
 var _num = 0;
@@ -34,15 +34,25 @@ var user = {
 	https					: false,
 	scroll				: true,
 
+	media: {
+		detect: true,
+		hover: true,
+		magnific: true,
+		autoembed: true
+	},
+
 	font: {
 		family: "Verdana",
 		letter: 0,
 		line:   "18px",
 		size:   "12px"
 	}
+
 };
 
+
 init();
+
 
   //+-------------------------------------------------------
   //| init()
@@ -99,6 +109,7 @@ init();
 
 			console.log("Setting", obj);
 		}
+
 
   //+-------------------------------------------------------
   //| checkNotifications()

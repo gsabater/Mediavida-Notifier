@@ -8,23 +8,26 @@
 //  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
 //   
 //=================================================================
+// At post load, call initPostTools, which creates an array with
+// all the posts on of the page. After that, detects the current thread
+// page and adds some flags to some not useful elements.
+// Calls userTools(); embedMedia(); reverseQuote();
+//=================================================================
 
 var _scroll = 1,
 		_first = 0;
 
-var in_post = false,
-		current_page = 1,
-		last_page = 1,
-		loadingPage = false;
-
-initPostTools();
+var in_post = false,			// true or false depending if the page is a post
+		current_page = 1,			// int of the current post number
+		last_page = 1,				// int of the last thread page
+		loadingPage = false;	// loading boolean flag to control ajax
 
 
 	//+-------------------------------------------------------
   //| initPostTools()
   //| + Gets an array of the posts on the page to 
   //| + attach and process the information
-  //| - $(_posts['93']).css("color","red");
+  //| usage: $(_posts['93']).css("color","red");
   //+-------------------------------------------------------
   	function initPostTools(){
 
@@ -44,7 +47,7 @@ initPostTools();
 
 	  	//Add flag to .post div that is a fake post
 	  	$("form .post").addClass("mvn-fake-post");
-	  	console.log("Loaded post: ",in_post, "- Current page: " + current_page, "- Last page: " + last_page);
+	  	console.log("Loaded post: ", in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 
 	  	//Add flag to hidden posts that can be shown for not hide
 	  	$(".hiddenmsg").closest(".nopost").addClass("mvn-showpost");
@@ -52,13 +55,22 @@ initPostTools();
 	  	//Add flag to pagination items
 	  	$("#scrollpages em").addClass("mvn-page-active");
 	  	$("#scrollpages > a:not(.togglefav), #scrollpages > em").each(function(i,e){
-	  		$(e).addClass("mvn-post-page").attr("data-mvnpage", $(e).text());
-	  	});
+	  		$(e).addClass("mvn-post-page").attr("data-mvnpage", $(e).text()); });
 
-	  	//init usertools and quote
-	  	userTools();
-	  	applyFont();
-  		reverseQuote();
+	  	// Add infinite scroll toggler
+	  	if(in_post && last_page){
+	  		_disabledScroll = (!_user.scroll)? "mvn-infinite-disabled":"";
+	  		$("#scrollpages").append("<em class='mvn-toggle-infiniteScroll" + _disabledScroll + "' alt='Toggle infinite Scroll' title='Toggle infinite Scroll' ><i class='fa fa-sort-amount-desc' style='font-size: 15px;'></i></em>"); }
+
+	  	//Add orderby button
+			if(in_post){ 
+				$("#scrollpages").append("<em class='mvn-orderby-manita' alt='Ordenar por manitas' title='Ordenar por manitas'><i class='fa fa-thumbs-o-up' style='font-size: 15px;'></i></em>"); }	  	
+	  	
+	  	//Hide deleted posts if user wants
+			if(_user.hideNopost){ $("body").addClass("mvn-hide-nopost"); }	  	
+	  	
+	  	//init postTools
+	  	postTools();
   		_pages[current_page] = true;
 
   		//Create placeholder to avoid js error
@@ -66,11 +78,22 @@ initPostTools();
 
   	}
 
+  	function postTools(){
+  		userTools();
+  		reverseQuote();
+
+  		if(_user.media.detect){ embedMedia(); }
+  	}
 
 	//+-------------------------------------------------------
 	//| Infinite scroll
 	//| + Loads next page if any.
 	//+-------------------------------------------------------
+		$("body").on("click", ".mvn-toggle-infiniteScroll", function(e){
+			$(this).toggleClass("mvn-infinite-disabled");
+			_user.scroll = !_user.scroll;
+		});
+
 		$(window).scroll(function(){
 			//console.log("Loaded post: " + in_post, "- Current page: " + current_page, "- Last page: " + last_page);
 			//console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
@@ -210,6 +233,7 @@ initPostTools();
 
 	  	if(!withoutPagination){
 	  		userTools();
+	  		embedMedia();
 	  		reverseQuote();
 	  	}
 
@@ -264,31 +288,32 @@ initPostTools();
 	  	}
 
 	  }
+		
 
 	//+-------------------------------------------------------
   //| orderbyManitas()
   //| + Loads the whole post and sorts the posts by manitas
   //+-------------------------------------------------------
-  	if(in_post){ $("#scrollpages").append("<em class='mvn-orderby-manita'><i class='fa fa-thumbs-o-up' style='font-size: 15px;'></i></em>"); } //<img src='/style/img/botones/thumb_up.png' alt='Ordenar por manitas' width='14' height='14'>
-  	
-  	$(".mvn-orderby-manita").on("click", function(){
+		$("body").on("click", ".mvn-orderby-manita", function(e){	
 
   		if($(this).hasClass("MVN-reset-post")){ location.reload(); return false; }
   		
-  		orderbyManitas();
   		$(this).addClass("MVN-reset-post");
   		$(this).find("i").removeClass("fa-thumbs-o-up").addClass("fa-undo");
-  	});
 
+  		$(".mvn-post-page, .mvn-toggle-infiniteScroll").css({"opacity":"0.2", "cursor":"default"});
+
+  		orderbyManitas();
+  		
+  	});
 
   	function orderbyManitas(){
 	  	console.log("+ MVN: orderbyManitas()");
 
 	  	//First prepare the visual feedback
+	  	$("#main").addClass("mvn-loading-all");
 	  	$("#main").prepend("<div class='indicator'><span class='spinner'>Cargando y ordenando posts, espera...</span><span class='status-page'></span></div>");
 	  	$(".largecol").prepend("<div id='mvn-order-results'></div>");	  	
-	  	$("#main").addClass("mvn-loading-all");
-	  	$(".mvn-post-page").css({"opacity":"0.2", "cursor":"default"});
 
 	  	//Start loading everything
 	  	loadPage(false,"manitas");
@@ -330,6 +355,7 @@ initPostTools();
 			$(".mvn-loading-all").removeClass("mvn-loading-all");
 
 			userTools();
+			embedMedia();
 			reverseQuote();
 	  }
 
@@ -411,15 +437,6 @@ initPostTools();
     });
 
 	//+-------------------------------------------------------
-	//| Hide Nopost
-	//+-------------------------------------------------------
-		window.setTimeout(function(){ 
-			if(_user.hideNopost){
-				$("body").addClass("mvn-hide-nopost");
-			}
-		}, 200);
-
-	//+-------------------------------------------------------
 	//| Live post action: click to quote and post
 	//+-------------------------------------------------------
 		$("#liveposts").on("click", ".info a", function(e){
@@ -441,7 +458,6 @@ initPostTools();
 	  	return false;
 	  });	
 
-
 	//+-------------------------------------------------------
   //| initPostTools()
   //| + Gets an array of the posts on the page to 
@@ -450,39 +466,34 @@ initPostTools();
   //+-------------------------------------------------------
 		function applyFont(){
 
-			window.setTimeout(function(){
-				//console.log(_user);
-				if(in_post){
+			$("#MVN-font-family, #MVN-font-style").remove();
 
-					$("#MVN-font-family, #MVN-font-style").remove();
-
-		      if(_user.font.family !== "Verdana"){
-		        var styleNode           = document.createElement ("link");
-		        styleNode.rel           = "stylesheet";
-		        styleNode.type          = "text/css";
-		        styleNode.id            = "MVN-font-family";
-		        styleNode.href          = "https://fonts.googleapis.com/css?family="+ _user.font.family.replace(" ", "+") +":400,300,600,700";
-		        document.head.appendChild (styleNode);
-		      }
+      if(_user.font.family !== "Verdana"){
+        var styleNode           = document.createElement ("link");
+        styleNode.rel           = "stylesheet";
+        styleNode.type          = "text/css";
+        styleNode.id            = "MVN-font-family";
+        styleNode.href          = "https://fonts.googleapis.com/css?family="+ _user.font.family.replace(" ", "+") +":400,300,600,700";
+        document.head.appendChild (styleNode);
+      }
 
 
-		      var d = new Date();
-		      if((d.getDate() == 28)&&(d.getMonth() == 10)){
-						_user.font.family = "Comic Sans MS";
-						_user.font.size = "14px";
-						_user.font.line = "19px";
-		      }
+      var d = new Date();
+      if((d.getDate() == 28)&&(d.getMonth() == 10)){
+				_user.font.family = "Comic Sans MS";
+				_user.font.size = "15px";
+				_user.font.line = "19px";
+				$( "<style id='MVN-font-style-inocente'>div.post .msg .body .cuerpo{ color: #D6596F; }.MVN-oscuro div.post .msg .body .cuerpo{ color: pink; }</style>" ).appendTo("head");				
+      }
 
-		      var newFont = (_user.font.family == "Verdana")? "Verdana','Geneva','sans-serif" : _user.font.family;
+      var newFont = (_user.font.family == "Verdana")? "Verdana','Geneva','sans-serif" : _user.font.family;
 
-		      $( "<style id='MVN-font-style'>div.post .msg .body .cuerpo{ " +
-		          "font-family: '"+ newFont +"' !important;"+
-		          "font-size: "+ _user.font.size +" !important;"+
-		          "line-height: "+ _user.font.line +" !important;"+
-		          "letter-spacing: "+ _user.font.letter +" !important;"+
-		          "}</style>"
-		      ).appendTo("head");
-				}
-			}, 50); 
+      $( "<style id='MVN-font-style'>div.post .msg .body .cuerpo{ " +
+          "font-family: '"+ newFont +"' !important;"+
+          "font-size: "+ _user.font.size +" !important;"+
+          "line-height: "+ _user.font.line +" !important;"+
+          "letter-spacing: "+ _user.font.letter +" !important;"+
+          "}</style>"
+      ).appendTo("head");
 
     }
