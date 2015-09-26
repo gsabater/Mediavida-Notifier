@@ -49,6 +49,7 @@ $(function(ready){
         detect: $("input[data-media='detect']").is(":checked"),
         hover: $("input[data-media='hover']").is(":checked"),
         magnific: $("input[data-media='magnific']").is(":checked"),
+        magnificMV: $("input[data-media='magnificMV']").is(":checked"),
         autoembed: $("input[data-media='autoembed']").is(":checked")
       };      
 
@@ -125,6 +126,7 @@ $(function(ready){
       if(user.media.detect){     $("input[data-media='detect']").attr("checked", "checked"); }
       if(user.media.hover){      $("input[data-media='hover']").attr("checked", "checked"); }
       if(user.media.magnific){   $("input[data-media='magnific']").attr("checked", "checked"); }
+      if(user.media.magnificMV){   $("input[data-media='magnificMV']").attr("checked", "checked"); }
       if(user.media.autoembed){  $("input[data-media='autoembed']").attr("checked", "checked"); }
 
       $("select[data-font='family']").val(user.font.family);

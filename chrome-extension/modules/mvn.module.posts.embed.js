@@ -17,7 +17,9 @@
 	var iconMP3 		= "<i class='fa fa-volume-up mvn-ico-embed'></i>";
 	var iconVINE 		= "<i class='fa fa-vine mvn-ico-embed'></i>";
 	var iconINST 		= "<i class='fa fa-instagram mvn-ico-embed'></i>";
-	var iconVIDEO  	= "<i class='fa fa-video-camera mvn-ico-embed'></i>";  		
+	var iconVIDEO  	= "<i class='fa fa-video-camera mvn-ico-embed'></i>";
+	var iconCHROME 	= "<i class='fa fa-chrome mvn-ico-embed'></i>";
+	var iconLOADING	= "<i class='fa fa-circle-o-notch fa-spin mvn-ico-embed'></i>";
 
 
 	var embedIMG 		= "<img src='placeholder' class='mvn-embed' />";
@@ -82,15 +84,19 @@
 				}else{
 
 					imgurID = (imgURL.indexOf(".") > -1)? imgURL.split(".")[0] : imgURL ;
-					
+					$(e).append( iconLOADING );
+
 					$.ajax({
 					  url: "https://api.imgur.com/3/image/"+imgurID,
 					  beforeSend: function(xhr){ xhr.setRequestHeader ("Authorization", "Client-ID bc9b5d3961e99d2"); }
 					}).done(function( data ){
-						//console.log(data.data);
-						media = (data.data.gifv)? embedIMGUR.replace("placeholder", 'http://i.imgur.com/'+data.data.id+'.webm') : embedIMG.replace("placeholder", data.data.link);
 						
+						//console.log(data.data);
+						
+						$(e).find("i").remove();
 						$(e).append( (data.data.gifv)? iconVIDEO : iconIMG );
+
+						media = (data.data.gifv)? embedIMGUR.replace("placeholder", 'http://i.imgur.com/'+data.data.id+'.webm') : embedIMG.replace("placeholder", data.data.link);
 						if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
 
 						if(data.data.gifv){ $(e).attr("data-magnific", "imgur-vid").attr("data-magnificsrc", 'http://i.imgur.com/'+data.data.id+'.webm');
@@ -134,7 +140,9 @@
 				ytbURL = ytbURL[ytbURL.length -1];
 				media = embedYTB.replace("placeholder", ytbURL).replace("thumbnailholder", "url('https://i.ytimg.com/vi/"+ytbURL+"/hqdefault.jpg')");
 				
-				if(_user.media.autoembed){ $( media ).insertBefore( e ); }
+				if(_user.media.autoembed){ $( media ).insertBefore( e ); }else{
+				if(_user.media.hover){ $(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); }}
+
 				$(e).attr("data-magnific", "youtube").attr("data-magnificsrc", ytbURL );
 
 			});
@@ -148,10 +156,13 @@
 				ytbURL = $(e).attr("href").split("v=");
 				ytbURL = ytbURL[ytbURL.length -1].split("&");
 				ytbURL = ytbURL[0];
-				media = embedYTB.replace("placeholder", ytbURL).replace("thumbnailholder", "url('https://i.ytimg.com/vi/"+ytbURL+"/hqdefault.jpg')");
 
-				if(_user.media.autoembed){ $( media ).insertBefore( e ); }
+				media = embedYTB.replace("placeholder", ytbURL).replace("thumbnailholder", "url('https://i.ytimg.com/vi/"+ytbURL+"/hqdefault.jpg')");
 				$(e).attr("data-magnific", "youtube").attr("data-magnificsrc", ytbURL );
+
+				if(_user.media.autoembed){ $( media ).insertBefore( e ); }else{ 
+				if(_user.media.hover){ $(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); }}
+				
 
 			});		
 
@@ -212,6 +223,25 @@
 				
 			});
 
+
+		//| + Mediavida intern
+  	//+-------------------------------------------------------
+  		if(_user.media.magnificMV){
+	  		var mediaMV 		= $('.post .msg a[href*="mediavida.com"]:not(.mvn-embeded)');
+				mediaMV.each(function(i,e){
+
+					$(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
+					$(e).append( iconCHROME );
+
+					var URL = $(e).attr("href").replace("http://","//").replace("https://","//");
+					lastChar = URL.slice(-1);
+					URL = ((lastChar == ".")||(lastChar == ","))? URL.slice(0,URL.length-1) : URL;
+
+					$(e).attr("data-magnific", "mediavida").attr("data-magnificsrc", location.protocol + URL );
+					
+				});
+			}	
+
 		}
 
 
@@ -248,7 +278,13 @@
 					$.magnificPopup.open({
 					  items: {
 			      src: embedMP3.replace("placeholder", $(this).attr("data-magnificsrc")),
-			      type: 'inline' }	 }); }	
+			      type: 'inline' }	 }); }
+
+			  if($(this).data("magnific") == "mediavida"){ console.warn("mediavida", $(this).attr("data-magnificsrc") );
+					$.magnificPopup.open({
+						items: { src: $(this).attr("data-magnificsrc") },
+  					type: 'iframe',
+  					mainClass: 'mvn-magnific-iframe' }); }
 
 
 				e.preventDefault();

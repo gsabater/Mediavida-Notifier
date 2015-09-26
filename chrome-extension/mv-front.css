@@ -326,6 +326,14 @@ i.fa.mvn-ico-embed {
   max-width: 90vw;
 }
 
+.mvn-magnific-square .mfp-content {
+  max-width: 900px !important;
+}
+
+.mvn-magnific-iframe .mfp-content {
+  max-width: 1150px !important;
+}
+
 
 /*** Extras ***/
 div.post.mvn-mark{

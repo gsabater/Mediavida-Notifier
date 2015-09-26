@@ -17,7 +17,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.81;
+var v = 0.82;
 
 var _audio;
 var _num = 0;
@@ -38,6 +38,7 @@ var user = {
 		detect: true,
 		hover: true,
 		magnific: true,
+		magnificMV: true,
 		autoembed: true
 	},
 
