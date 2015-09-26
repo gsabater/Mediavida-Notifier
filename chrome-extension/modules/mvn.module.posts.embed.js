@@ -37,7 +37,7 @@
 
 		//| + Plain images
   	//+-------------------------------------------------------
-  		var mediaIMG 		= $('.post a[href*=".gif"]:not(.mvn-embeded), .post a[href*=".jpg"]:not(.mvn-embeded), .post a[href*=".png"]:not(.mvn-embeded)');
+  		var mediaIMG 		= $('.post .msg a[href*=".gif"]:not(.mvn-embeded), .post .msg a[href*=".jpg"]:not(.mvn-embeded), .post .msg a[href*=".png"]:not(.mvn-embeded)');
 			mediaIMG.each(function(i,e){
 
 				if($(e).attr("href").indexOf(".gifv") > -1){ return true; } //do not track gifv from imgur.
@@ -58,7 +58,7 @@
 
 		//| + Imgur
   	//+-------------------------------------------------------
-			var mediaIMGUR 	= $('.post a[href*="imgur.com"]:not(.mvn-embeded)');  	
+			var mediaIMGUR 	= $('.post .msg a[href*="imgur.com"]:not(.mvn-embeded)');  	
 			mediaIMGUR.each(function(i,e){
 
 				if($(e).find("img").length){ return true; }
@@ -106,7 +106,7 @@
 
 	  //| + Videos MP4 & webm
 	  //+-------------------------------------------------------
-			var mediaVIDEO 	= $('.post a[href*=".mp4"]:not(.mvn-embeded), .post a[href*=".webm"]:not(.mvn-embeded)');
+			var mediaVIDEO 	= $('.post .msg a[href*=".mp4"]:not(.mvn-embeded), .post .msg a[href*=".webm"]:not(.mvn-embeded)');
 	 		mediaVIDEO.each(function(i,e){
 
 				$(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1").removeAttr("title").removeAttr("title");
@@ -124,7 +124,7 @@
 
 	  //| + Videos Youtube
 	  //+-------------------------------------------------------
-	  	var mediaYTB 		= $('.post a[href*="://youtu.be"]:not(.mvn-embeded)');
+	  	var mediaYTB 		= $('.post .msg a[href*="://youtu.be"]:not(.mvn-embeded)');
 			mediaYTB.each(function(i,e){
 
 				$(e).addClass("mvn-embeded");
@@ -139,7 +139,7 @@
 
 			});
 
-			mediaYTB = $('.post a[href*="://youtube.com"]:not(.mvn-embeded), .post a[href*="://www.youtube.com"]:not(.mvn-embeded)');
+			mediaYTB = $('.post .msg a[href*="://youtube.com"]:not(.mvn-embeded), .post .msg a[href*="://www.youtube.com"]:not(.mvn-embeded)');
 			mediaYTB.each(function(i,e){
 
 				$(e).addClass("mvn-embeded");
@@ -159,7 +159,7 @@
 
 	  //| + Vine
 	  //+-------------------------------------------------------
-			var mediaVINE = $('.post a[href*="//vine.co"]:not(.mvn-embeded)');
+			var mediaVINE = $('.post .msg a[href*="//vine.co"]:not(.mvn-embeded)');
 	 		mediaVINE.each(function(i,e){
 
 				$(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
@@ -179,7 +179,7 @@
 
 		//| + INSTAGRAM
   	//+-------------------------------------------------------
-			var mediaINST 	= $('.post a[href*="instagram.com"]:not(.mvn-embeded)');  	
+			var mediaINST 	= $('.post .msg a[href*="instagram.com"]:not(.mvn-embeded)');  	
 			mediaINST.each(function(i,e){
 
 				if($(e).find("img").length){ return true; }
@@ -189,17 +189,17 @@
 
 				imgURL = $(e).attr("href").split("/");
 				imgURL = (imgURL[imgURL.length -1].length > 1)? imgURL[imgURL.length -1] : imgURL[imgURL.length -2];
-				media = embedINST.replace("placeholder", "http://instagram.com/p/" + imgURL + "/embed/");
+				media = embedINST.replace("placeholder", location.protocol+"//instagram.com/p/" + imgURL + "/embed/");
 
 				if(_user.media.autoembed){ $( media ).insertBefore( e ); }
-				$(e).attr("data-magnific", "iframe").attr("data-magnificsrc", "http://instagram.com/p/" + imgURL + "/embed/" );
+				$(e).attr("data-magnific", "iframe").attr("data-magnificsrc", location.protocol+"//instagram.com/p/" + imgURL + "/embed/" );
 
 			});
 
 
 		//| + MP3 AUDIO
   	//+-------------------------------------------------------
-  		var mediaMP3 		= $('.post a[href*=".mp3"]:not(.mvn-embeded)');
+  		var mediaMP3 		= $('.post .msg a[href*=".mp3"]:not(.mvn-embeded)');
 			mediaMP3.each(function(i,e){
 
 				$(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
