@@ -32,6 +32,7 @@ body.MVN-oscuro div.bwrap {
 /*** BOOKMARKS ***/
 #content #foros-fav-float {
   top: 300px;
+  display: none-;
 }
 
 #mvn-forum-bookmarks{
@@ -67,6 +68,11 @@ body.MVN-oscuro div.bwrap {
 
 #mvn-forum-bookmarks ul li a:hover {
   background: #999;
+}
+
+.mvn-bookmarks-fixed #mvn-forum-bookmarks{
+  position: fixed;
+  top:0;
 }
 
 /*** USER TOOLS ***/
@@ -190,12 +196,28 @@ em.mvn-orderby-manita {
   border-radius: 4px;
   padding: 2px 10px;
   padding-right: 1px;
+    padding-bottom: 0px;
+    padding-left: 7px;
+    
   margin: 1px 0;
+    margin-right: 1px;
+
   font-size: inherit;
   font-weight: 400;
+
 }
 
-/* Gap filler */
+.mvn-embed-removed{
+  background-color: rgba(239, 45, 45, 0.13);
+  border-bottom: 1px solid rgba(239, 80, 0, 0.64);
+  border-radius: 4px;
+  padding: 2px 10px;
+  padding-right: 1px;
+  padding-bottom: 0px;
+  padding-left: 7px;
+  margin: 1px 0;
+  margin-right: 1px;
+}
 
 .tooltip-item::after {
   content: '';

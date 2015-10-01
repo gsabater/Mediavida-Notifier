@@ -69,6 +69,9 @@ var in_post = false,			// true or false depending if the page is a post
 	  	//Hide deleted posts if user wants
 			if(_user.hideNopost){ $("body").addClass("mvn-hide-nopost"); }	  	
 	  	
+	  	//Add bottom tools only once per post
+	  	if(in_post){ bottomTools(); }
+
 	  	//init postTools
 	  	postTools();
   		_pages[current_page] = true;
@@ -142,6 +145,8 @@ var in_post = false,			// true or false depending if the page is a post
 				}
 
 			}
+
+			if($(window).scrollTop() >= 200){ $("body").addClass("mvn-bookmarks-fixed"); }else{ $("body").removeClass("mvn-bookmarks-fixed"); }
 
 		});
 

@@ -26,7 +26,7 @@
   //| Extra:
   //| + Duplicate tools on bottom of page
   //+-------------------------------------------------------
-    if(in_post){
+    function bottomTools(){
       var bottom_tools = $("#userinfo").clone();
       bottom_tools.removeAttr("id").attr("id","mvn-bottom-tools");
 

@@ -8,29 +8,34 @@
 //  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
 //   
 //=================================================================
-// Modules:
-// mvn posts: 	Reverse quote, orderByManitas
-// mvn user: 		userTools
-// mvn extras: 	Settings injection and upper pagination
+// Main Background page
+// Used mainly for notification checks, and the main location
+// for localstorage.
 //=================================================================
-// opcion no hace reverse
 
 console.log("MV Notifier background");
 
-var v = 0.82;
+var v = 0.85;
 
 var _audio;
 var _num = 0;
 var notifications = { };
 
-var ls = { };
+var ls = {};
+
+var mvnLS = {
+	tags: {},
+	posts: {},
+	nicks: {},
+	forums: {},
+	ignored: {}
+};
+
 var user = {
 	notifications	: true,
 	onlyGroups		: false,
 	audio					: "notification_1up.mp3",
-
 	hideNopost 		: true,
-
 	https					: false,
 	scroll				: true,
 
@@ -48,7 +53,6 @@ var user = {
 		line:   "18px",
 		size:   "12px"
 	}
-
 };
 
 
@@ -58,7 +62,7 @@ init();
   //+-------------------------------------------------------
   //| init()
   //| + Creates the first ul element used to parse 
-  //| + the response from server
+  //| + response from server
   //+--------------------------------
   //| + Also inits localstorage
   //+-------------------------------------------------------
@@ -71,13 +75,19 @@ init();
 	  	_audio.src = "assets/" + user.audio;
 
 	  	window.MV = setInterval(checkNotifications, 30000);
-	  	window.setTimeout(function(){ chrome.storage.local.get("MVN-user", function(result){ MVNStorage(result); });  }, 100);
+	  	
+	  	//window.setTimeout(function(){ chrome.storage.local.get("MVN-user", 		function(result){ MVNStorage(result); });  }, 100);
+	  	//window.setTimeout(function(){ chrome.storage.local.get("tags", 				function(result){ checkStorage("tags", result); });  }, 100);
+	  	//window.setTimeout(function(){ chrome.storage.local.get("posts", 			function(result){ checkStorage("posts", result); });  }, 100);
+	  	//window.setTimeout(function(){ chrome.storage.local.get("nicks", 			function(result){ checkStorage("nicks", result); });  }, 100);
+	  	//window.setTimeout(function(){ chrome.storage.local.get("forums", 			function(result){ checkStorage("forums", result); });  }, 100);
+
 	  }
 
 
   //+-------------------------------------------------------
   //| MVNStorage()
-  //| + Loads the information from MV every 30 sec
+  //| + Inits user settings
   //+-------------------------------------------------------
 		function MVNStorage(localstorage){
 
@@ -96,6 +106,10 @@ init();
 			console.log(user);
 		}
 
+  //+-------------------------------------------------------
+  //| setMVNStorage()
+  //| + Sets user settings
+  //+-------------------------------------------------------
 		function setMVNStorage(ls, options){
 			if(options){
 				for(i in ls){ user[i] = ls[i]; }
@@ -111,6 +125,21 @@ init();
 			console.log("Setting", obj);
 		}
 
+
+  //+-------------------------------------------------------
+  //| checkStorage() + setStorage
+  //| + Sets and saves information from localstorage.
+  //+-------------------------------------------------------
+		function checkStorage(table, db){ mvnLS[table] = db[table] || {}; console.log(table, db, mvnLS); }
+		
+		function setStorage(db){ 
+			var obj = {};
+			for (key in db){
+			  obj[key] = db[key]; }
+
+			mvnLS = obj;
+			chrome.storage.local.set(obj);
+		}
 
   //+-------------------------------------------------------
   //| checkNotifications()
@@ -235,10 +264,14 @@ init();
 	  	console.log("+ MVN: Message event", request);
 
 			if (request.options)						{ setMVNStorage(request.options, true); }
+			if (request.mvnLS)							{ setStorage(request.mvnLS); }
+
     	if (request.clear == "0")				{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
     	if (request.test == "true")			{ sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación", true); }
     	if (request.mvnBadge == "num")	{ sendResponse({farewell: _num}); }
     	if (request.getUser == "object"){ sendResponse({farewell: user}); }
+
+    	if (request.getUser == "full")	{ sendResponse({user: user, ls: mvnLS}); }
   	});
 
 

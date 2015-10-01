@@ -19,11 +19,10 @@ var oscuro = false;
 var _user  = [];
 var _posts = [];
 var _pages = [];
+var _mvnLS = [];
 
 var fullURL = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
 var _url = window.location.pathname.split( '/' );
-
-//console.log(localStorage['ut-Tags']);
 
   //+-------------------------------------------------------
   //| init()
@@ -37,10 +36,16 @@ var _url = window.location.pathname.split( '/' );
 			  printFrontNotifications(response.farewell);
 			});
 
-			chrome.runtime.sendMessage({getUser: "object"}, function(response) {
-			  _user = response.farewell;
-			  doMVN();
+			chrome.runtime.sendMessage({getUser: "full"}, function(response) {
+				//console.log("localStorage from background", response);
+			  _user = response.user;
+			  _mvnLS = response.ls;
+				
+				doMVN();
+				//checkLocalStorage();
 			});
+
+	
 	  }  
 
   //+-------------------------------------------------------
@@ -55,6 +60,35 @@ var _url = window.location.pathname.split( '/' );
 	  	forumBookmarks();
 
 	  }
+
+	//+-------------------------------------------------------
+  //| + checkLocalStorage()
+  //| + Print number of notifications in the upper bar
+  //| + Clear notifications from bar and button on check
+  //+-------------------------------------------------------
+		function checkLocalStorage(){
+
+			if(localStorage['ut-Tags'] && 
+				(localStorage['ut-Tags'] !== "[]") &&
+				(!_mvnLS.tags['mvn-set'])){
+
+				_mvnLS.tags = JSON.parse(localStorage['ut-Tags']); _mvnLS.tags['mvn-set'] = true;
+				console.warn(_mvnLS, _mvnLS.tags, localStorage['ut-Tags']);
+
+				chrome.runtime.sendMessage({mvnLS: _mvnLS});
+			}
+
+			if(localStorage['ut-forosFav'] && 
+				(localStorage['ut-forosFav'] !== "[]") &&
+				(!_mvnLS.forums.length)){
+
+				_mvnLS.forums = JSON.parse(localStorage['ut-forosFav']);
+				console.warn(_mvnLS, _mvnLS.forums, localStorage['ut-forosFav']);
+
+				chrome.runtime.sendMessage({mvnLS: _mvnLS});
+			}
+
+		}
 
 	//+-------------------------------------------------------
   //| + printFrontNotifications()

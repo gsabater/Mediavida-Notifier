@@ -21,13 +21,17 @@
 	var iconCHROME 	= "<i class='fa fa-chrome mvn-ico-embed'></i>";
 	var iconLOADING	= "<i class='fa fa-circle-o-notch fa-spin mvn-ico-embed'></i>";
 
+	var iconERROR  	= "<i class='fa fa-ban mvn-ico-embed'></i>";
+
 
 	var embedIMG 		= "<img src='placeholder' class='mvn-embed' />";
-	var embedIMGUR 	= '<video autoplay="" loop="" muted=""><source type="video/webm" src="placeholder"></video>';
 	var embedYTB 		= "<div class='embedded'><div class='youtube_lite'><a href='javascript:void(0)' data-youtube='placeholder' data-width='620' data-height='349' data-init='false' style=\"background-image:thumbnailholder\"><span class='play'></span></a></div></div>";
+	var embedMP3		= "<br><audio controls><source src='placeholder' type='audio/mpeg'></audio><br>";
+	var embedMP3_		= "<audio controls autoplay=''><source src='placeholder' type='audio/mpeg'></audio>";
 	var embedVINE		= "<iframe src='placeholder' width='480' height='480' frameborder='0' class='mvn-embed-vine'></iframe><script src='https://platform.vine.co/static/scripts/embed.js'></script>";
 	var embedINST 	= '<br><iframe allowtransparency="true" frameborder="0" height="533" scrolling="no" src="placeholder" width="459"></iframe>';
-	var embedMP3		= "<br><audio controls><source src='placeholder' type='audio/mpeg'></audio><br>";
+	var embedGIFV 	= '<video autoplay="" loop="" muted=""><source type="video/webm" src="placeholder"></video>';
+	var embedGIFV_ 	= '<video autoplay="" loop="" controls><source type="video/webm" src="placeholder"></video>';
 
 	//+-------------------------------------------------------
   //| embedMedia()
@@ -96,18 +100,23 @@
 						$(e).find("i").remove();
 						$(e).append( (data.data.gifv)? iconVIDEO : iconIMG );
 
-						media = (data.data.gifv)? embedIMGUR.replace("placeholder", 'http://i.imgur.com/'+data.data.id+'.webm') : embedIMG.replace("placeholder", data.data.link);
+						media = (data.data.gifv)? embedGIFV.replace("placeholder", 'http://i.imgur.com/'+data.data.id+'.webm') : embedIMG.replace("placeholder", data.data.link);
 						if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
 
-						if(data.data.gifv){ $(e).attr("data-magnific", "imgur-vid").attr("data-magnificsrc", 'http://i.imgur.com/'+data.data.id+'.webm');
+						if(data.data.gifv){ $(e).attr("data-magnific", "gifv").attr("data-magnificsrc", 'http://i.imgur.com/'+data.data.id+'.webm');
 						}else{ 							$(e).attr("data-magnific", "imgur-img").attr("data-magnificsrc", data.data.link); }
 
-					});	
+					})
+					.fail(function() {
+				    $(e).find("i").remove();
+				    $(e).append( iconERROR );
+				    $(e).removeClass("mvn-tooltip tooltip-effect-1");
+				    $(e).addClass("mvn-embed-removed");
+				  });	
 
 				}
 
 			});
-
 
 
 	  //| + Videos MP4 & webm
@@ -118,11 +127,11 @@
 				$(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1").removeAttr("title").removeAttr("title");
 				$(e).closest(".post").addClass("mvn-overflow-visible");
 
-				media = embedIMGUR.replace("placeholder",$(e).attr("href"));
+				media = embedGIFV.replace("placeholder",$(e).attr("href"));
 				$(e).append( iconVIDEO );
 				
 				if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>');	}
-				$(e).attr("data-magnific", "imgur-vid").attr("data-magnificsrc", $(e).attr("href"));
+				$(e).attr("data-magnific", "gifv").attr("data-magnificsrc", $(e).attr("href"));
 
 			});
 
@@ -141,7 +150,10 @@
 				media = embedYTB.replace("placeholder", ytbURL).replace("thumbnailholder", "url('https://i.ytimg.com/vi/"+ytbURL+"/hqdefault.jpg')");
 				
 				if(_user.media.autoembed){ $( media ).insertBefore( e ); }else{
-				if(_user.media.hover){ $(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); }}
+				if(_user.media.hover){ 
+					$(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); 
+					$(e).closest(".post").addClass("mvn-overflow-visible");
+				}}
 
 				$(e).attr("data-magnific", "youtube").attr("data-magnificsrc", ytbURL );
 
@@ -161,7 +173,10 @@
 				$(e).attr("data-magnific", "youtube").attr("data-magnificsrc", ytbURL );
 
 				if(_user.media.autoembed){ $( media ).insertBefore( e ); }else{ 
-				if(_user.media.hover){ $(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); }}
+				if(_user.media.hover){ 
+					$(e).addClass("mvn-tooltip tooltip-effect-1").append('<span class="tooltip-content"><img src="'+ location.protocol +'//img.youtube.com/vi/'+ytbURL+'/mqdefault.jpg" /></span>'); 
+					$(e).closest(".post").addClass("mvn-overflow-visible");
+				}}
 				
 
 			});		
@@ -176,7 +191,7 @@
 				$(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
 				$(e).append( iconVINE );
 
-				vineURL = $(e).attr("href").split("/");
+				vineURL = $(e).attr("href").replace("/embed","").split("/");
 				vineURL = vineURL[vineURL.length -1];
 				media = embedVINE.replace("placeholder", "https://vine.co/v/"+vineURL+"/embed/simple");
 
@@ -258,10 +273,10 @@
 					  items: { src: $(this).attr("data-magnificsrc") },
 					  type: 'image' }); }	
 
-				if($(this).data("magnific") == "imgur-vid"){ console.warn("imgur-vid", $(this).attr("data-magnificsrc") );
+				if($(this).data("magnific") == "gifv"){ console.warn("gifv", $(this).attr("data-magnificsrc") );
 					$.magnificPopup.open({
 					  items: {
-			      src: embedIMGUR.replace("placeholder", $(this).attr("data-magnificsrc")),
+			      src: embedGIFV_.replace("placeholder", $(this).attr("data-magnificsrc")),
 			      type: 'inline' }	 }); }			
 
 				if($(this).data("magnific") == "youtube"){ console.warn("youtube", $(this).attr("data-magnificsrc") );
@@ -277,7 +292,7 @@
 				if($(this).data("magnific") == "audio"){ console.warn("audio", $(this).attr("data-magnificsrc") );
 					$.magnificPopup.open({
 					  items: {
-			      src: embedMP3.replace("placeholder", $(this).attr("data-magnificsrc")),
+			      src: embedMP3_.replace("placeholder", $(this).attr("data-magnificsrc")),
 			      type: 'inline' }	 }); }
 
 			  if($(this).data("magnific") == "mediavida"){ console.warn("mediavida", $(this).attr("data-magnificsrc") );
