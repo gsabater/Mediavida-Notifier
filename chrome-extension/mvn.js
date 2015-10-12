@@ -15,7 +15,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.85;
+var v = 0; //0.86; no notificar
 
 var _audio;
 var _num = 0;
@@ -27,6 +27,7 @@ var mvnLS = {
 	tags: {},
 	posts: {},
 	nicks: {},
+	macros: {},
 	forums: {},
 	ignored: {}
 };
@@ -76,7 +77,7 @@ init();
 
 	  	window.MV = setInterval(checkNotifications, 30000);
 	  	
-	  	//window.setTimeout(function(){ chrome.storage.local.get("MVN-user", 		function(result){ MVNStorage(result); });  }, 100);
+	  	window.setTimeout(function(){ chrome.storage.local.get("MVN-user", 		function(result){ MVNStorage(result); });  }, 100);
 	  	//window.setTimeout(function(){ chrome.storage.local.get("tags", 				function(result){ checkStorage("tags", result); });  }, 100);
 	  	//window.setTimeout(function(){ chrome.storage.local.get("posts", 			function(result){ checkStorage("posts", result); });  }, 100);
 	  	//window.setTimeout(function(){ chrome.storage.local.get("nicks", 			function(result){ checkStorage("nicks", result); });  }, 100);
@@ -269,8 +270,8 @@ init();
     	if (request.clear == "0")				{ _num = 0; chrome.browserAction.setBadgeText({text:""}); }
     	if (request.test == "true")			{ sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación", true); }
     	if (request.mvnBadge == "num")	{ sendResponse({farewell: _num}); }
-    	if (request.getUser == "object"){ sendResponse({farewell: user}); }
 
+    	if (request.getUser == "object"){ sendResponse({farewell: user}); }
     	if (request.getUser == "full")	{ sendResponse({user: user, ls: mvnLS}); }
   	});
 
