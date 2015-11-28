@@ -57,7 +57,7 @@ var _url = window.location.pathname.split( '/' );
 
 	  	applyFont();
 	  	initPostTools();
-	  	forumBookmarks();
+	  	//forumBookmarks();
 
 	  }
 

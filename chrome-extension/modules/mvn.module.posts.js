@@ -482,7 +482,8 @@ var in_post = false,			// true or false depending if the page is a post
         document.head.appendChild (styleNode);
       }
 
-
+      /* 
+      Fail xDD
       var d = new Date();
       if((d.getDate() == 28)&&(d.getMonth() == 10)){
 				_user.font.family = "Comic Sans MS";
@@ -490,6 +491,7 @@ var in_post = false,			// true or false depending if the page is a post
 				_user.font.line = "19px";
 				$( "<style id='MVN-font-style-inocente'>div.post .msg .body .cuerpo{ color: #D6596F; }.MVN-oscuro div.post .msg .body .cuerpo{ color: pink; }</style>" ).appendTo("head");				
       }
+      */
 
       var newFont = (_user.font.family == "Verdana")? "Verdana','Geneva','sans-serif" : _user.font.family;
 
