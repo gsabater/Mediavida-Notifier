@@ -12,22 +12,22 @@
 //=================================================================
 
 
-	//+-------------------------------------------------------
+  //+-------------------------------------------------------
   //| embedMedia()
   //| + Try to autoembed image links and youtube links into 
   //| + posts with a hover tooltip
   //+-------------------------------------------------------
-		function forumBookmarks(){
+    function forumBookmarks(){
 
-			$("#content").prepend("<div id='mvn-forum-bookmarks'><ul>"+
-				"<li><a href='"+ chrome.extension.getURL("/options.html") +"' target='_blank'><i class='fa fa-shield' style='font-size: 15px; text-shadow: 0px 0px 10px rgb(0, 0, 0);'></i></a></li>"+
-				//"<li><a href='/foro/4'><i class='ifid fid_4'></i></a><div class='ut-foros-fav-borrar'><i class='sprite UT-trash'></i></div></li>"+
-				"</ul></div>");
+      $("#content").prepend("<div id='mvn-forum-bookmarks'><ul>"+
+        "<li><a href='"+ chrome.extension.getURL("/options.html") +"' target='_blank'><i class='fa fa-shield' style='font-size: 15px; text-shadow: 0px 0px 10px rgb(0, 0, 0);'></i></a></li>"+
+        //"<li><a href='/foro/4'><i class='ifid fid_4'></i></a><div class='ut-foros-fav-borrar'><i class='sprite UT-trash'></i></div></li>"+
+        "</ul></div>");
 
-		}
+    }
 
 
 
 function postBookmarks(){
-	
+  
 }

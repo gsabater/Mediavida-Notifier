@@ -12,7 +12,7 @@
 //=================================================================
 
 
-	// + Load all posts (foreach page, Loadpage)
-	// + Loadpage =  insert in _posts, append, function
-	// + insert xhr = insert the loaded post in DOM
-	// + post actions for dynamic dom posts
+  // + Load all posts (foreach page, Loadpage)
+  // + Loadpage =  insert in _posts, append, function
+  // + insert xhr = insert the loaded post in DOM
+  // + post actions for dynamic dom posts
