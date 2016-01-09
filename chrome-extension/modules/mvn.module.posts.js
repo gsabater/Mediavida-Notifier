@@ -109,6 +109,8 @@ var in_post = false,      // true or false depending if the page is a post
 
         if($('.mvn-ajax-pagination').length){
 
+          //var pushStateCounter = (pushStateCounter)? pushStateCounter : 1;
+
           _pagination = [0];
           var scrollPos = $(document).scrollTop();
 
@@ -136,12 +138,20 @@ var in_post = false,      // true or false depending if the page is a post
             _new.attr({"href":"javascript:void(0);", "data-mvnpage": _scroll});
             _new.text(_scroll).insertAfter(prev);
           }
+
           $(".mvn-post-page[data-mvnpage='" + _scroll + "'").addClass("mvn-page-active").removeClass("mvn-page-not-active");
           if($("em.mvn-post-page").length){
             em = $("em.mvn-post-page");
             em.replaceWith( '<a href="'+ window.location.href +'" class="'+em.attr("class")+'" data-mvnpage="'+em.attr("data-mvnpage")+'">'+em.text()+'</a>' );
           }
-          //console.log(_pagination, scrollPos+100, "pagina "+ _scroll);
+          
+          if(pushStateCounter !== _scroll){
+            //pushStateCounter = _scroll;
+            //window.history.pushState("", "", '/'+_url[1]+'/'+_url[2]+'/'+_url[3]+'/'+_scroll);
+          }
+          
+          //console.log(_pagination, scrollPos+100, "pagina "+ _scroll, "counter "+pushStateCounter);
+
         }
 
       }

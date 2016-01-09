@@ -15,7 +15,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.86; //no notificar
+var v = 0.88; //no notificar
 
 var _audio;
 var _num = 0;
@@ -36,6 +36,7 @@ var user = {
   notifications : true,
   onlyGroups    : false,
   audio         : "notification_1up.mp3",
+  volume        : 98,
   hideNopost    : true,
   https         : false,
   scroll        : true,
@@ -184,9 +185,10 @@ init();
 
         if(lis[i].classList.contains("unread")){
           text = lis[i].getElementsByTagName("blockquote")[0].innerText;
+          time = lis[i].getElementsByTagName("span")[0].innerText;
           _url = lis[i].getElementsByTagName("a")[0].href;
 
-          sendPush(lis[i].id, text);
+          sendPush(lis[i].id, text, false, time);
           notifications[lis[i].id] = {url:_url};
         }
       }
@@ -197,23 +199,34 @@ init();
   //| sendPush()
   //| + Sends a notification to the browser with details
   //+-------------------------------------------------------
-    function sendPush(notID, text, badge){
+    function sendPush(notID, text, badge, subtext){
 
       if(!badge){ _num++; }
 
       var options = {
         type: "basic",
         iconUrl: "/assets/MVN_128x128.png",
+
         title: "Mediavida Notifier",
         message: text,
-        //contextMessage: "testinger",
-        priority: 2
+        contextMessage: (subtext)? (subtext.charAt(0).toUpperCase() + subtext.slice(1)) : "",
+
+        priority: 2,
+        /*
+        buttons: [{
+            title: "Yes, get me there",
+            iconUrl: "/assets/MVN_128x128.png"
+        }, {
+            title: "Get out of my way",
+            iconUrl: "/assets/MVN_128x128.png"
+        }]
+        */
       }
 
       chrome.notifications.create(notID, options);
       if(!badge){ chrome.browserAction.setBadgeText({text: (_num>0)?_num.toString():""}); }
 
-      if(user.audio){ _audio.play(); }
+      if(user.audio){ _audio.volume = user.volume / 100 ; _audio.play(); }
       window.setTimeout(function(){ updatePush(notID); }, 4000);
       window.setTimeout(function(){ clearNotification(notID); }, 10000);
     }
@@ -224,7 +237,7 @@ init();
   //| + Updates the options so the update lasts longer
   //+-------------------------------------------------------
     function updatePush(notID){
-      var options = { contextMessage: "..." }
+      var options = { priority: 1, }
       chrome.notifications.update(notID, options);
     }
 
@@ -268,7 +281,7 @@ init();
       if (request.mvnLS)              { setStorage(request.mvnLS); }
 
       if (request.clear == "0")       { _num = 0; chrome.browserAction.setBadgeText({text:""}); }
-      if (request.test == "true")     { sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación", true); }
+      if (request.test == "true")     { sendPush(Math.floor((Math.random() * 100) + 1).toString(), "Prueba de notificación", true, "Ahora mismo"); }
       if (request.mvnBadge == "num")  { sendResponse({farewell: _num}); }
 
       if (request.getUser == "object"){ sendResponse({farewell: user}); }

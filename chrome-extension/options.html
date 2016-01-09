@@ -7,6 +7,8 @@
   <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="modules/mvn.options.js"></script>
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
   <style type="text/css">
 
     ::-webkit-scrollbar{
@@ -160,6 +162,11 @@
       font-size: 30px;
       line-height: 190px;
       text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.43);
+
+      top: 0;
+      height: 45px;
+      border-width: 2px;
+      line-height: 39px;      
     }
 
     hr{
@@ -204,6 +211,102 @@
     .menu span.active{
       color: #FCA940;
       text-shadow: 1px 1px 1px white;
+    }
+
+
+/* Range of volume : http://codepen.io/thebabydino/pen/raqBMW */ 
+    input[type='range'] {
+      position: relative;
+      /*
+      top: 50%;
+      left: 50%;
+      */
+      border: solid 0 transparent;
+      border-width: 0 1em;
+      padding: 1em 0 0;
+      width: 32em;
+      height: 2em;
+      border-radius: .25em;
+      /* transform: translate(-50%, -50%); */
+      background: transparent;
+      font-size: 1em;
+      cursor: pointer;
+
+      margin: 0;
+      padding: 0;
+      transform: translate(-2%, 20%);
+    }
+    input[type='range'], input[type='range']::-webkit-slider-runnable-track, input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+    input[type='range']::-webkit-slider-runnable-track {
+      position: relative;
+      width: 32em;
+      height: 0.175em;
+      background: linear-gradient(90deg, #ffffff 0.125em, rgba(0, 0, 0, 0) 0.125em)-0.0625em 50%, linear-gradient(90deg, #73e600, #ace600, #e6e600, #e6ac00, #e67300, #e63900, #e60000);
+      background-size: 1em 100%, 100% 100%;
+    }
+    /*
+    input[type='range']::-moz-range-track {
+      width: 32em;
+      height: 0.375em;
+      background: linear-gradient(90deg, #ffffff 0.125em, rgba(0, 0, 0, 0) 0.125em)-0.0625em 50%, linear-gradient(90deg, #73e600, #ace600, #e6e600, #e6ac00, #e67300, #e63900, #e60000);
+      background-size: 2em 100%, 100% 100%;
+    }
+    input[type='range']::-ms-track {
+      border: none;
+      width: 32em;
+      height: 0.375em;
+      background: linear-gradient(90deg, #ffffff 0.125em, rgba(0, 0, 0, 0) 0.125em)-0.0625em 50%, linear-gradient(90deg, #73e600, #ace600, #e6e600, #e6ac00, #e67300, #e63900, #e60000);
+      background-size: 2em 100%, 100% 100%;
+      color: transparent;
+    }
+    */
+    input[type='range']::-ms-fill-lower {
+      display: none;
+    }
+    input[type='range']::-webkit-slider-thumb {
+      margin-top: -0.8125em;
+      box-sizing: border-box;
+      border: solid 1px transparent;
+      width: 2em;
+      height: 2em;
+      border-radius: 0;
+      transform: translateY(75%) rotate(30deg) skewY(30deg) scaleX(0.86603);
+      background: linear-gradient(135deg, #a7a6a2 25%, rgba(0, 0, 0, 0) 25%) content-box, linear-gradient(135deg, #ffffff 25%, rgba(0, 0, 0, 0) 25%) border-box;
+    }
+    input[type='range']::-moz-range-thumb {
+      box-sizing: border-box;
+      border: solid 1px transparent;
+      width: 2em;
+      height: 2em;
+      border-radius: 0;
+      transform: translateY(75%) rotate(30deg) skewY(30deg) scaleX(0.86603);
+      background: linear-gradient(135deg, #a7a6a2 25%, rgba(0, 0, 0, 0) 25%) content-box, linear-gradient(135deg, #ffffff 25%, rgba(0, 0, 0, 0) 25%) border-box;
+    }
+    input[type='range']::-ms-thumb {
+      box-sizing: border-box;
+      border: solid 1px transparent;
+      width: 2em;
+      height: 2em;
+      border-radius: 0;
+      transform: translateY(75%) rotate(30deg) skewY(30deg) scaleX(0.86603);
+      background: linear-gradient(135deg, #a7a6a2 25%, rgba(0, 0, 0, 0) 25%) content-box, linear-gradient(135deg, #ffffff 25%, rgba(0, 0, 0, 0) 25%) border-box;
+    }
+    input[type='range']::-webkit-slider-runnable-track:before, input[type='range']::-webkit-slider-runnable-track:after, input[type='range'] /deep/ #track:before, input[type='range'] /deep/ #track:after {
+      position: absolute;
+      bottom: 100%;
+      color: #2c2c2b;
+      font: 700 0.875em / 2 arial, sans-serif;
+    }
+    input[type='range']::-webkit-slider-runnable-track:before, input[type='range'] /deep/ #track:before {
+      left: 1em;
+      word-spacing: 15.6em;
+      content: '0 50 100';
+    }
+
+    input[type='range']:focus {
+      outline: none;
     }
 
   </style>
@@ -255,7 +358,8 @@
 
     <div class="option">
       <label class="option-label" style="margin-left: 17px;">
-        <span class="option-title">Sonido de notificación:&nbsp;&nbsp;</span>
+        <i class="fa fa-volume-up"></i>
+        <span class="option-title">Sonido:&nbsp;&nbsp;</span>
         <select id="notification-audio">
           <option value="notification.mp3">Half Life</option>
           <option value="notification_1up.mp3">1UP</option>
@@ -265,7 +369,14 @@
           <option value="notification_listen.mp3">Hey Listen!</option>
         </select>
       </label>
-    </div>    
+    </div>
+
+    <div class="option">
+      <label class="option-label" style="margin-left: 17px;">
+        <i class="fa fa-volume-up"></i>
+        <input data-option="volume" type='range' min='0' max='100' value='1' step='1'/>
+      </label>
+    </div>
 
     <div class="bottom-action">
       <span class="button js-test-notification">Probar notificación</span>
@@ -448,23 +559,17 @@
     · <a href="http://www.mediavida.com/id/ItNaS" target="_blank">ItNaS</a> por su igualmente especial <a href="http://www.mediavida.com/foro/mediavida/mv-power-tools-scroll-infinito-live-preview-etc-487327" target="_blank">MV Power Tools</a></p>
 
     <h4 style="margin-bottom: -5px;">Donaciones</h4>
-    <p>Si te gusta la extensión, crees que es útil, y te gustaría demostrarme tu apoyo, invitame a una cerveza.<br>Si no tienes dinero, quizás haya algo de <a href="http://steamcommunity.com/id/Gohrum/wishlist/?sort=added" target="_blank">mi wishlist</a> que te sobre.
-    
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center; padding: 15px;">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-    ">
-    <input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet.">
-    <img alt="" border="0" src="https://www.paypalobjects.com/es_ES/i/scr/pixel.gif" width="1" height="1">
-    </form>
-    </p>
-    <div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.50€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
+    <p>Si te gusta la extensión, crees que es útil, y te gustaría demostrarme tu apoyo, invitame a una cerveza.<br>Si no tienes dinero, quizás haya algo de <a href="http://steamcommunity.com/id/Gohrum/wishlist/?sort=added" target="_blank">mi wishlist en Steam</a> que te sobre.</p>
+    <div style="color: #989898; text-align: center;">Aviso importante: No donar menos de 0.75€ ya que en ese caso yo perdería dinero a causa de las comisiones. </div>
 
+    <div class="bottom-action">
+      <a href="https://www.paypal.me/gsabater" class="button">Donar vía Paypal <i class="fa fa-paypal" style="font-size: 15px; color: #070B42; margin-left: 5px;"></i></a>
+    </div>
   </div>
 
 </div>
 
-<div class="saved">Guardado correctamente</div>
+<div class="saved">Ajustes guardados correctamente</div>
 
 </body>
 </html>

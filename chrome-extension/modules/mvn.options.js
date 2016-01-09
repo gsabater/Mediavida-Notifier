@@ -8,6 +8,7 @@
 //  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
 //   
 //=================================================================
+
 $(function(ready){
 
   console.log("MV Notifier Options page");
@@ -52,6 +53,9 @@ $(function(ready){
         magnificMV: $("input[data-media='magnificMV']").is(":checked"),
         autoembed: $("input[data-media='autoembed']").is(":checked")
       };      
+
+      // Gather volume slider
+      options['volume'] = $("input[data-option='volume']").val();
 
       console.log(options);
 
@@ -102,26 +106,17 @@ $(function(ready){
       user = options;
       console.log(options);
 
+      // Set every checkbox
       for(option in user){
         if((user[option] == true)&&($("input[data-option='"+option+"']").length > 0)){ 
           $("input[data-option='"+option+"']").attr("checked", "checked");
-        }
+        } 
       }
 
       if(user.audio){ 
         $("#option-notif-audio").attr("checked", "checked");
-        $("#notification-audio").val(user.audio);
-      }
-
-      /*
-      if(!user.notifications){
-        $("input[data-option='notifications']")
-        .closest(".card")
-        .animate({height: 58}, 'slow', function(){ 
-          $(this).css("overflow", "hidden"); 
-        });
-      }
-      */
+        $("#notification-audio").val(user.audio); }
+      $("input[data-option='volume']").val(user.volume);
 
       if(user.media.detect){     $("input[data-media='detect']").attr("checked", "checked"); }
       if(user.media.hover){      $("input[data-media='hover']").attr("checked", "checked"); }
