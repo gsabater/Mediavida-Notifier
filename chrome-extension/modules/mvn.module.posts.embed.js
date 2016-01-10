@@ -10,8 +10,7 @@
 //=================================================================
 // 
 //=================================================================
-
-
+  
   var iconIMG     = "<i class='fa fa-picture-o mvn-ico-embed'></i>";
   var iconYTB     = "<i class='fa fa-youtube-play mvn-ico-embed'></i>";
   var iconMP3     = "<i class='fa fa-volume-up mvn-ico-embed'></i>";
@@ -59,7 +58,6 @@
           if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
         }
       });
-
 
 
     //| + Imgur
@@ -136,7 +134,6 @@
       });
 
 
-
     //| + Videos Youtube
     //+-------------------------------------------------------
       var mediaYTB    = $('.post .msg a[href*="://youtu.be"]:not(.mvn-embeded)');
@@ -182,7 +179,6 @@
       });   
 
 
-
     //| + Vine
     //+-------------------------------------------------------
       var mediaVINE = $('.post .msg a[href*="//vine.co"]:not(.mvn-embeded)');
@@ -198,9 +194,7 @@
         if(_user.media.autoembed){ $( media ).insertBefore( e ); }
         $(e).attr("data-magnific", "iframe").attr("data-magnificsrc", "https://vine.co/v/"+vineURL+"/embed/simple" );
 
-
       });
-
 
 
     //| + INSTAGRAM
@@ -239,7 +233,7 @@
       });
 
 
-    //| + Mediavida intern
+    //| + Mediavida intern links
     //+-------------------------------------------------------
       if(_user.media.magnificMV){
         var mediaMV     = $('.post .msg a[href*="mediavida.com"]:not(.mvn-embeded)');
@@ -306,6 +300,49 @@
         return false;
       }
     });
-  
 
 
+  //+-------------------------------------------------------
+  //| betterLigtbox()
+  //| + Replaces choppy fancybox for magnific popup.
+  //+-------------------------------------------------------
+    function betterLigtbox(){
+
+      //$(".post a[onclick='return false;']").off();
+      $(".post a[onclick='return false;']").each(function(i,e){
+        $(e).contents().unwrap(); // $(e).replaceWith( $(e).contents() );
+      });
+
+      $(".post img.lazy:not(.mvn-lightbox), img.mvn-embed").each(function(i,e){
+        $(e).addClass("mvn-lightbox");       
+      });
+
+
+      $(".post").magnificPopup({
+        delegate: ".mvn-lightbox",
+        type: 'image',
+        verticalFit: false, // Fits image in area vertically
+        gallery:{
+          enabled: true,
+          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        callbacks: { 
+          elementParse: function(item){ item.src = item.el[0].src; },
+          change: function(){
+
+            //console.log(this.currItem.el[0], $(this.currItem.el[0]).closest("div"));
+
+            if(!$(this.currItem.el[0]).closest("div").is(":visible")){ $(this.currItem.el[0]).closest("div").show(); }
+            $('html, body').animate({ 
+              scrollTop: $(this.currItem.el[0]).offset().top - 200 
+            }, 150);
+          }
+        }
+      });
+
+      // cyclic insertion
+      window.setTimeout(function(){
+        betterLigtbox();
+      }, 2500);
+
+    }

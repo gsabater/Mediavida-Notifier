@@ -86,6 +86,7 @@ var in_post = false,      // true or false depending if the page is a post
       reverseQuote();
 
       if(_user.media.detect){ embedMedia(); }
+      betterLigtbox();  // TODO option to enable and disable
     }
 
   //+-------------------------------------------------------
@@ -145,10 +146,13 @@ var in_post = false,      // true or false depending if the page is a post
             em.replaceWith( '<a href="'+ window.location.href +'" class="'+em.attr("class")+'" data-mvnpage="'+em.attr("data-mvnpage")+'">'+em.text()+'</a>' );
           }
           
+          /*
           if(pushStateCounter !== _scroll){
             //pushStateCounter = _scroll;
             //window.history.pushState("", "", '/'+_url[1]+'/'+_url[2]+'/'+_url[3]+'/'+_scroll);
+            // ^ use replacestate
           }
+          */
           
           //console.log(_pagination, scrollPos+100, "pagina "+ _scroll, "counter "+pushStateCounter);
 
@@ -247,9 +251,7 @@ var in_post = false,      // true or false depending if the page is a post
       }
 
       if(!withoutPagination){
-        userTools();
-        embedMedia();
-        reverseQuote();
+        postTools();
       }
 
     }
@@ -369,9 +371,7 @@ var in_post = false,      // true or false depending if the page is a post
       $("#mvn-order-results").append(_order);
       $(".mvn-loading-all").removeClass("mvn-loading-all");
 
-      userTools();
-      embedMedia();
-      reverseQuote();
+      postTools();
     }
 
   //+-------------------------------------------------------

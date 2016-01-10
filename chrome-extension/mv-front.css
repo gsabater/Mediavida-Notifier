@@ -356,6 +356,10 @@ i.fa.mvn-ico-embed {
   max-width: 1150px !important;
 }
 
+.mvn-lightbox{
+  cursor: pointer;
+  border: 1px solid white;
+}
 
 /*** Extras ***/
 div.post.mvn-mark{
