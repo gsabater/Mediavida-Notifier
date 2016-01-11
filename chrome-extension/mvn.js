@@ -15,7 +15,7 @@
 
 console.log("MV Notifier background");
 
-var v = 0.90; //no notificar
+var v = 1.0; //no notificar
 
 var _audio;
 var _num = 0;
@@ -83,6 +83,8 @@ init();
       //window.setTimeout(function(){ chrome.storage.local.get("posts",       function(result){ checkStorage("posts", result); });  }, 100);
       //window.setTimeout(function(){ chrome.storage.local.get("nicks",       function(result){ checkStorage("nicks", result); });  }, 100);
       //window.setTimeout(function(){ chrome.storage.local.get("forums",      function(result){ checkStorage("forums", result); });  }, 100);
+      window.setTimeout(function(){ chrome.storage.local.get("macros",        function(result){ checkStorage("macros", result); });  }, 100);
+      //window.setTimeout(function(){ chrome.storage.local.get("ignored",      function(result){ checkStorage("ignored", result); });  }, 100);
 
     }
 

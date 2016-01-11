@@ -1,4 +1,4 @@
-/* Posts */
+/*** Posts tools ***/
 
 div.post .binfo, div.post .binfo .bwrap {
   height: auto;
@@ -120,6 +120,157 @@ dd.online{ display: none; }
   display: block !important;
 }
 
+/*** Post Redactor ***/
+#ut-botonera2, .mvn-old-button-bar{ display: none !important; }
+textarea#cuerpo{ resize: none; }
+
+.mvn-redactor-container{ position: relative; }
+
+ul.mvn-redactor-bar {
+  background: white;
+  border-radius: 4px 4px 0 0;
+
+  height: 28px;
+  border: 1px solid #CCCCCC;
+  border-top: 4px solid black;
+  border-bottom: none;
+}
+
+ul.mvn-redactor-bar li{
+  float: left;
+  padding: 6px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: white;
+}
+
+ul.mvn-redactor-bar li:not(.separator):hover{
+  background-color: #ccc;
+}
+
+ul.mvn-redactor-bar li.separator{
+  cursor: default;
+  color: #ccc;
+  padding: 6px 6px;
+}
+
+.macros-panel{
+  display: none;
+  position: absolute;
+  top: 32px;
+  left: 1px;
+  padding: 10px;
+  width: 598px;
+  height: 158px;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.macros-panel span {
+  position: relative;
+  z-index: 999;
+  cursor: pointer;
+  display: inline-block;
+  background-color: rgba(239, 188, 45, 0.38);
+  font-size: inherit;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(239, 80, 0, 0.639216);
+  border-radius: 4px;
+  margin: 1px 1px 1px 0px;
+  color: white;
+
+  margin-right: 10px;
+  padding: 3px 8px;
+  text-shadow: rgba(0, 0, 0, 0.69) 1px 1px 1px;
+}
+
+.macros-panel i{
+  margin-left: 0px;
+  color: rgb(255, 255, 255);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.macros-panel .add-macro{
+  position: absolute;
+  bottom: 10px;
+  left: 100px;
+  color: white;
+}
+
+.macros-panel .add-macro input{
+  background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #C85B14;
+    color: #C85B14;
+    width: 100px;
+    border-radius: 2px;
+    padding-bottom: 0;
+    margin: 0 3px;
+}
+
+.macros-panel .add-macro button{
+  background-color: #826E38;
+  border: 0;
+  border: 1px solid rgba(200, 91, 20, 0.24);
+  color: #FAFFEB;
+  /* width: 100px; */
+  border-radius: 2px;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+#smilies{
+  position: absolute;
+  margin-top: 9px;
+  width: 146px !important;
+  right: 0;
+}
+
+.mvn-dropzone{
+  display: none;
+  position: absolute;
+  top: 33px;
+  left: 1px;
+  /* width: 625px; */
+  width: 618px;
+  height: 177px;
+  background-color: #c8dadf;
+  text-align: center;
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  color: #5D6B6D;
+  text-shadow: 1px 1px 2px #EAEAEA;
+}
+
+.mvn-dropzone span{
+  font-family: Tahoma;
+  font-size: 17px;
+  line-height: 160px;
+}
+
+.mvn-dropzone .close{
+  position: absolute;
+  right: 15px;
+  top: 11px;
+  font-size: 13px;
+  color: #B90A0A;
+  cursor: pointer;
+}
+
+.mvn-dropzone .uploading, .mvn-dropzone .error{
+  display: none;
+}
+
+.big .macros-panel {
+  width: 938px;
+  height: 279px;
+}
+.big .mvn-dropzone {
+  width: 958px;
+  height: 298px;
+}
 
 /*** Bottom tools ***/
 
@@ -207,6 +358,13 @@ em.mvn-orderby-manita {
 
 }
 
+.mvn-redactor-bar .mvn-tooltip {
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  margin: 0;
+}
+
 .mvn-embed-removed{
   background-color: rgba(239, 45, 45, 0.13);
   border-bottom: 1px solid rgba(239, 80, 0, 0.64);
@@ -268,6 +426,24 @@ em.mvn-orderby-manita {
   transform: translate3d(0,-10px,0);
   -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
   transition: opacity 0.3s, transform 0.3s;
+}
+
+.tooltip-effect-2 .tooltip-content {
+  -webkit-transform: translate3d(0,-10px,0);
+  transform: translate3d(0,-10px,0);
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
+
+  bottom: -20px;
+  display: block;
+  border-radius: 2px;
+  padding: 4px;
+  color: white;
+  right: auto;
+  left: -150%;
+  margin: auto;
+  width: 100px;
+  text-align: center;  
 }
 
 .mvn-tooltip:hover .tooltip-content {
@@ -538,8 +714,6 @@ body.MVN-oscuro .mvn-pagination-clone{
 #modal-lang .detalles-archivo .borrar{
   color: #A32340;
 }
-
-
 
 #modal-lang .bottom-save{
   position: absolute;

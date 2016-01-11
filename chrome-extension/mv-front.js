@@ -37,11 +37,18 @@ var _url = window.location.pathname.split( '/' );
       });
 
       chrome.runtime.sendMessage({getUser: "full"}, function(response) {
-        //console.log("localStorage from background", response);
-        _user = response.user;
-        _mvnLS = response.ls;
-        
-        doMVN();
+        console.log("localStorage from background", response);
+
+        // Sometimes localstorage has delay
+        if(response){
+          _user = response.user;
+          _mvnLS = response.ls;
+          doMVN();
+        }else{
+          console.log("localStorage not available, retrying...");
+          init();
+        }
+
         //checkLocalStorage();
       });
 
@@ -50,13 +57,14 @@ var _url = window.location.pathname.split( '/' );
 
   //+-------------------------------------------------------
   //| doMVN()
-  //+--------------------------------
-  //| + inits MVN functions according to _user settings.
+  //+-------------------------------------------------------
+  //| + inits MVN functionalities
   //+-------------------------------------------------------
     function doMVN(){
 
-      applyFont();
-      initPostTools();
+      redactor();             // mvn.module.posts.redactor
+      applyFont();            // mvn.module.posts
+      initPostTools();        // mvn.module.posts
       //forumBookmarks();
 
     }

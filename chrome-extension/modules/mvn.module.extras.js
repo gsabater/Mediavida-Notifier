@@ -42,7 +42,6 @@
   //| + Confirm before leaving a group
   //+-------------------------------------------------------
     $("#grupo .stats .acciones a").on("click", function(e){
-
       var x;
       var r=confirm("¿Estás seguro de querer hacer esto?");
       if(r===true){ return true;
@@ -58,7 +57,7 @@
     var styleNode           = document.createElement ("link");
     styleNode.rel           = "stylesheet";
     styleNode.id            = "MVN-FA";
-    styleNode.href          = "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css";
+    styleNode.href          = "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css";
 
     document.head.appendChild (styleNode);
       
@@ -105,18 +104,3 @@
   //+-------------------------------------------------------
 
     //$(".f_info").append("<p><a href='http://www.mediavida.com/foro/mediavida/mediavida-notifier-chrome-extension-541508'>Mediavida Notifier</a> v." + version + "</p>");
-    
-  //| + init settings
-  //+--------------------------------
-  /*
-    $("body").append("<div id='mvn-settings'>");
-    $("#mvn-settings").load( chrome.extension.getURL("settings.html") );
-
-    $("body").on("click", '.mvn-open-settings', function(){
-      $.magnificPopup.open({
-        items: { src: '#mvn-settings-mfp' },
-        type: 'inline',
-        mainClass: 'my-mfp-slide-bottom'
-      });
-    });
-    */

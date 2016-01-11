@@ -90,35 +90,37 @@ var in_post = false,      // true or false depending if the page is a post
     }
 
   //+-------------------------------------------------------
-  //| Infinite scroll
-  //| + Loads next page if any.
+  //| Toggle infinite scroll with option
   //+-------------------------------------------------------
     $("body").on("click", ".mvn-toggle-infiniteScroll", function(e){
       $(this).toggleClass("mvn-infinite-disabled");
       _user.scroll = !_user.scroll;
     });
 
+  //+-------------------------------------------------------
+  //| Infinite scroll
+  //| + Loads next page if any.
+  //+-------------------------------------------------------
     $(window).scroll(function(){
-      //console.log("Loaded post: " + in_post, "- Current page: " + current_page, "- Last page: " + last_page);
+      //console.log("Loaded post: " + in_post, "- Current page: " + current_page, "- Last page: " + last_page, fullURL, _url);
       //console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
 
       if(_user.scroll && in_post){
         
         if(($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)) && (current_page < last_page)){
-          loadPage();
-        }
+          loadPage(); }
 
         if($('.mvn-ajax-pagination').length){
-
-          //var pushStateCounter = (pushStateCounter)? pushStateCounter : 1;
 
           _pagination = [0];
           var scrollPos = $(document).scrollTop();
 
+          // build for a list of pages
           $('.mvn-ajax-pagination').each(function(i,e){
             _pagination[(i+1)] = $(e).position().top; //$(e).attr("data-mvnpage")
           });
 
+          // for every page, check position
           for(i in _pagination){
 
             if((scrollPos+100) >= _pagination[i]){
@@ -132,6 +134,12 @@ var in_post = false,      // true or false depending if the page is a post
             }
           }
 
+          // Update history status
+          var replaceURL = ($(".headlink").length)? $(".headlink").attr("href") + "/" + _scroll : window.location.pathname + "/" + _scroll;
+          window.history.replaceState("", "", replaceURL);
+
+          // Update page status in sidebar
+          // and create pages not available
           $(".mvn-page-active").addClass("mvn-page-not-active");
           if(!$(".mvn-post-page[data-mvnpage='" + _scroll + "'").length){
             prev = $(".mvn-post-page[data-mvnpage='" + (_scroll-1) + "'");
@@ -140,21 +148,12 @@ var in_post = false,      // true or false depending if the page is a post
             _new.text(_scroll).insertAfter(prev);
           }
 
+          // Set active in current page
           $(".mvn-post-page[data-mvnpage='" + _scroll + "'").addClass("mvn-page-active").removeClass("mvn-page-not-active");
           if($("em.mvn-post-page").length){
             em = $("em.mvn-post-page");
             em.replaceWith( '<a href="'+ window.location.href +'" class="'+em.attr("class")+'" data-mvnpage="'+em.attr("data-mvnpage")+'">'+em.text()+'</a>' );
           }
-          
-          /*
-          if(pushStateCounter !== _scroll){
-            //pushStateCounter = _scroll;
-            //window.history.pushState("", "", '/'+_url[1]+'/'+_url[2]+'/'+_url[3]+'/'+_scroll);
-            // ^ use replacestate
-          }
-          */
-          
-          //console.log(_pagination, scrollPos+100, "pagina "+ _scroll, "counter "+pushStateCounter);
 
         }
 
