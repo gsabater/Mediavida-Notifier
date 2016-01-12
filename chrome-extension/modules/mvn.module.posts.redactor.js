@@ -76,7 +76,7 @@
         macros = macros + "<span data-macro='"+ _mvnLS.macros[i].value +"'>" + _mvnLS.macros[i].name + "</span>"}
 
       var macrosPanel = "<div class='macros-panel'>" + macros +
-        "<div class='add-macro'>Añadir texto seleccionado con el nombre <input type='text' /><button>Guardar</button></div>" +
+        "<div class='add-macro'>Añadir texto seleccionado con el nombre <input type='text' /><div class='save-macro'>Guardar</div></div>" +
       "</div>";
 
       $( macrosPanel ).insertAfter(".mvn-dropzone");
@@ -149,17 +149,17 @@
       insertText($(this).attr("data-macro"), "");
     });
 
-    $("body").on("click", ".macros-panel button", function(e){
+    $("body").on("click", ".macros-panel .save-macro", function(e){
 
       var textArea = $('#cuerpo');
       var inputValue = ($(".macros-panel input").val())? $(".macros-panel input").val() : Math.random().toString(36).substring(4);
 
       var start = textArea[0].selectionStart;
       var end = textArea[0].selectionEnd;
-      var selectedText = textArea.val().substring(start, end);
+      var selectedText = textArea.val().substring(start, end).replace(/'/g, "&#39;");
 
       $("<span data-macro='" + selectedText + "'>" + inputValue + "</span>").insertBefore(".add-macro");
-      $(".macros-panel").toggle();
+      //$(".macros-panel").toggle();
       $(".macros-panel input").val("");
 
       var obj = {"name": inputValue, "value": selectedText};
@@ -209,8 +209,11 @@
         $(".mvn-dropzone .uploading").show();
 
         var base64 = reader.result;
-        base64 = base64.split(";base64,");
-        base64 = base64[1];
+        if(base64){
+          base64 = base64.split(";base64,");
+          base64 = base64[1];
+        }
+
         //console.log(base64);
 
         $.ajax({ 

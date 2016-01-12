@@ -28,6 +28,11 @@ body.MVN-oscuro div.bwrap {
   cursor: pointer;
 }
 
+.post.mvn-thread-op .msg .info .qn {
+  background: rgba(173, 90, 36, 0.66);
+  color: white;
+  box-shadow: 1px 1px 3px rgba(237, 94, 0, 0.12);
+}
 
 /*** BOOKMARKS ***/
 #content #foros-fav-float {
@@ -175,10 +180,8 @@ ul.mvn-redactor-bar li.separator{
   font-weight: 400;
   border-bottom: 1px solid rgba(239, 80, 0, 0.639216);
   border-radius: 4px;
-  margin: 1px 1px 1px 0px;
   color: white;
-
-  margin-right: 10px;
+  margin: 1px 10px 10px 0px;
   padding: 3px 8px;
   text-shadow: rgba(0, 0, 0, 0.69) 1px 1px 1px;
 }
@@ -210,15 +213,18 @@ ul.mvn-redactor-bar li.separator{
     margin: 0 3px;
 }
 
-.macros-panel .add-macro button{
+.macros-panel .add-macro .save-macro{
   background-color: #826E38;
   border: 0;
   border: 1px solid rgba(200, 91, 20, 0.24);
   color: #FAFFEB;
   /* width: 100px; */
   border-radius: 2px;
-  margin: 0 3px;
   cursor: pointer;
+  display: inline-block;
+  width: 70px;
+  text-align: center;
+  margin: 0 5px;
 }
 
 #smilies{
@@ -533,8 +539,7 @@ i.fa.mvn-ico-embed {
 }
 
 .mvn-lightbox{
-  cursor: pointer;
-  border: 1px solid white;
+  cursor: zoom-in;
 }
 
 /*** Extras ***/

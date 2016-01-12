@@ -21,7 +21,7 @@ var _posts = [];
 var _pages = [];
 var _mvnLS = [];
 
-var fullURL = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
+var fullURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname;
 var _url = window.location.pathname.split( '/' );
 
   //+-------------------------------------------------------

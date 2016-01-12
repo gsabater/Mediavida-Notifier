@@ -11,6 +11,8 @@
 // 
 //=================================================================
   
+  var items = [];
+
   var iconIMG     = "<i class='fa fa-picture-o mvn-ico-embed'></i>";
   var iconYTB     = "<i class='fa fa-youtube-play mvn-ico-embed'></i>";
   var iconMP3     = "<i class='fa fa-volume-up mvn-ico-embed'></i>";
@@ -159,6 +161,8 @@
       mediaYTB = $('.post .msg a[href*="://youtube.com"]:not(.mvn-embeded), .post .msg a[href*="://www.youtube.com"]:not(.mvn-embeded)');
       mediaYTB.each(function(i,e){
 
+        if($(e).attr("href").indexOf("/user") > -1){ return true; } //do not track profiles.
+
         $(e).addClass("mvn-embeded");
         $(e).append( iconYTB ).addClass("mvn-embed-highlight");
 
@@ -209,10 +213,10 @@
 
         imgURL = $(e).attr("href").split("/");
         imgURL = (imgURL[imgURL.length -1].length > 1)? imgURL[imgURL.length -1] : imgURL[imgURL.length -2];
-        media = embedINST.replace("placeholder", location.protocol+"//instagram.com/p/" + imgURL + "/embed/");
+        media = embedINST.replace("placeholder", "//instagram.com/p/" + imgURL + "/embed/");
 
         if(_user.media.autoembed){ $( media ).insertBefore( e ); }
-        $(e).attr("data-magnific", "iframe").attr("data-magnificsrc", location.protocol+"//instagram.com/p/" + imgURL + "/embed/" );
+        $(e).attr("data-magnific", "iframe").attr("data-magnificsrc", "//instagram.com/p/" + imgURL + "/embed/" );
 
       });
 
@@ -256,7 +260,7 @@
 
     $("body").on("click", "a.mvn-embeded", function(e){
       if(_user.media.magnific){ 
-
+/*
         if($(this).data("magnific") == "image"){ console.warn("image", $(this).attr("href"));
           $.magnificPopup.open({
             items: { src: $(this).attr("href") },
@@ -277,18 +281,18 @@
           $.magnificPopup.open({
             items: { src: "http://www.youtube.com/watch?v="+$(this).attr("data-magnificsrc") },
             type: 'iframe' }); }  
-
-        if($(this).data("magnific") == "iframe"){ console.warn("youtube", $(this).attr("data-magnificsrc") );
+*/
+        if($(this).data("magnific") == "iframe"){ console.warn("iframe", $(this).attr("data-magnificsrc") );
           $.magnificPopup.open({
             items: { src: $(this).attr("data-magnificsrc") },
             type: 'iframe' }); }  
-
+/*
         if($(this).data("magnific") == "audio"){ console.warn("audio", $(this).attr("data-magnificsrc") );
           $.magnificPopup.open({
             items: {
             src: embedMP3_.replace("placeholder", $(this).attr("data-magnificsrc")),
             type: 'inline' }   }); }
-
+*/
         if($(this).data("magnific") == "mediavida"){ console.warn("mediavida", $(this).attr("data-magnificsrc") );
           $.magnificPopup.open({
             items: { src: $(this).attr("data-magnificsrc") },
@@ -308,41 +312,77 @@
   //+-------------------------------------------------------
     function betterLigtbox(){
 
+      //console.log(items, items.length);
+      var i = items.length;
+
+      // Remove <a for every image, to avoid default lightbox
       //$(".post a[onclick='return false;']").off();
       $(".post a[onclick='return false;']").each(function(i,e){
         $(e).contents().unwrap(); // $(e).replaceWith( $(e).contents() );
       });
 
-      $(".post img.lazy:not(.mvn-lightbox), img.mvn-embed").each(function(i,e){
-        $(e).addClass("mvn-lightbox");       
+      // Add lightbox class to every image and add it to items
+      // also include embeded items, to help create a full gallery
+      $(".post img.lazy:not(.mvn-lightbox), .mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed)").each(function(i,e){
+        
+        // Add lightbox, which is a flag to not process again, and also
+        // the magnific initiator
+        var anchor = items.length;
+        $(e).addClass("mvn-lightbox").attr("data-mgf", anchor);
+
+        if(!$(e).hasClass("mvn-embeded")){ items.push({src: $(e).attr("src"), anchor: anchor }); return true; }
+
+        // add to items, some already embedded media
+        // title: $(e).attr("href")
+        if(($(e).data("magnific") == "imgur-img")&&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
+        if(($(e).data("magnific") == "gifv")&&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
+        if($(e).data("magnific") == "iframe"){ $(e).removeClass("mvn-lightbox"); return true; }
+        if($(e).data("magnific") == "mediavida"){ $(e).removeClass("mvn-lightbox"); return true; }
+
+        if($(e).data("magnific") == "image"){      items.push({src: $(e).attr("href"), anchor: anchor }); }
+        if($(e).data("magnific") == "imgur-img"){  items.push({src: $(e).attr("data-magnificsrc"), anchor: anchor }); }
+        if($(e).data("magnific") == "gifv"){       items.push({src: embedGIFV_.replace("placeholder", $(e).attr("data-magnificsrc")), type: 'inline', anchor: anchor }); }
+        if($(e).data("magnific") == "youtube"){    items.push({src: "http://www.youtube.com/watch?v="+$(e).attr("data-magnificsrc"), type: 'iframe', anchor: anchor }); }
+        if($(e).data("magnific") == "audio"){      items.push({src: embedMP3_.replace("placeholder", $(e).attr("data-magnificsrc")), type: 'inline', anchor: anchor }); }
+
       });
+      
+      // Update magnific if has not changed in the loop
+      var magnificPopup = $.magnificPopup.instance;
+      if(magnificPopup.items){ magnificPopup.updateItemHTML(); }
 
-
-      $(".post").magnificPopup({
-        delegate: ".mvn-lightbox",
-        type: 'image',
-        verticalFit: false, // Fits image in area vertically
-        gallery:{
-          enabled: true,
-          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-        },
-        callbacks: { 
-          elementParse: function(item){ item.src = item.el[0].src; },
-          change: function(){
-
-            //console.log(this.currItem.el[0], $(this.currItem.el[0]).closest("div"));
-
-            if(!$(this.currItem.el[0]).closest("div").is(":visible")){ $(this.currItem.el[0]).closest("div").show(); }
-            $('html, body').animate({ 
-              scrollTop: $(this.currItem.el[0]).offset().top - 200 
-            }, 150);
-          }
-        }
-      });
-
-      // cyclic insertion
+        
+      // cyclic insertion to update missing or freshly added pages
       window.setTimeout(function(){
         betterLigtbox();
       }, 2500);
 
     }
+
+  //+-------------------------------------------------------
+  //| Initialize magnific
+  //+-------------------------------------------------------
+
+    $("body").on("click", ".mvn-lightbox", function(){
+
+      $.magnificPopup.open({
+        items: items,
+        type: 'image', // this is default type
+        verticalFit: false, // Fits image in area vertically
+        gallery: {
+          enabled: true,
+          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        callbacks: { 
+          //elementParse: function(item){ item.src = item.el[0].src; },
+          change: function(){
+            $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
+            if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
+            $('html, body').animate({ 
+              scrollTop: $item.offset().top - 200 
+            }, 150);
+          }
+        }
+      }, parseInt($(this).attr("data-mgf")));
+
+    });    

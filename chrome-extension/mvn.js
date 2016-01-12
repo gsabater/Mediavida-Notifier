@@ -15,7 +15,7 @@
 
 console.log("MV Notifier background");
 
-var v = 1.0; //no notificar
+var v = 1.01; //no notificar
 
 var _audio;
 var _num = 0;
@@ -38,6 +38,7 @@ var user = {
   audio         : "notification_1up.mp3",
   volume        : 98,
   hideNopost    : true,
+  flagOp        : true,
   https         : false,
   scroll        : true,
 

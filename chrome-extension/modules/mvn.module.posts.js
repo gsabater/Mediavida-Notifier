@@ -14,13 +14,17 @@
 // Calls userTools(); embedMedia(); reverseQuote();
 //=================================================================
 
-var _scroll = 1,
-    _first = 0;
+var _scroll       = 1,      // int of the current page in screen
+    _first        = 0;      // int of the first loaded page
 
-var in_post = false,      // true or false depending if the page is a post
-    current_page = 1,     // int of the current post number
-    last_page = 1,        // int of the last thread page
-    loadingPage = false;  // loading boolean flag to control ajax
+var in_post       = false,  // true or false depending if the page is a post
+    current_page  = 1,      // int of the current loaded xhr page number
+    last_page     = 1,      // int of the last thread page
+    loadingPage   = false;  // loading boolean flag to control ajax
+
+var _op           = false;  // name of the post OP
+var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : window.location.pathname;
+    thread_url    = window.location.protocol + "//" + window.location.host + thread_url;
 
 
   //+-------------------------------------------------------
@@ -44,6 +48,7 @@ var in_post = false,      // true or false depending if the page is a post
       in_post = ($(".largecol > .post").length)? true : false;
       if(in_post){ in_post = ($("body#live").length)? false : true; }
       _scroll = _first = current_page;
+      _pages[current_page] = true;
 
       //Add flag to .post div that is a fake post
       $("form .post").addClass("mvn-fake-post");
@@ -74,7 +79,6 @@ var in_post = false,      // true or false depending if the page is a post
 
       //init postTools
       postTools();
-      _pages[current_page] = true;
 
       //Create placeholder to avoid js error
       $.fn.tipsy = function(){ console.log("placeholder"); }
@@ -82,6 +86,7 @@ var in_post = false,      // true or false depending if the page is a post
     }
 
     function postTools(){
+      getOP();          // TODO option to enable and disable
       userTools();
       reverseQuote();
 
@@ -135,8 +140,7 @@ var in_post = false,      // true or false depending if the page is a post
           }
 
           // Update history status
-          var replaceURL = ($(".headlink").length)? $(".headlink").attr("href") + "/" + _scroll : window.location.pathname + "/" + _scroll;
-          window.history.replaceState("", "", replaceURL);
+          window.history.replaceState("", "", thread_url + "/" + _scroll);
 
           // Update page status in sidebar
           // and create pages not available
@@ -207,7 +211,11 @@ var in_post = false,      // true or false depending if the page is a post
               if(callback=="manitas"){
                 insertXHR(data, true);
                 loadPage(false,"manitas");
-              }else{
+              }
+              if(callback=="op"){
+                extractOP(data);
+              }
+              if(!callback){
                 insertXHR(data);
                 if(page == (current_page+1)){ current_page++; }
               }
@@ -255,6 +263,45 @@ var in_post = false,      // true or false depending if the page is a post
 
     }
 
+
+  //+-------------------------------------------------------
+  //| getOP()
+  //| + Flags OP if _op is available
+  //| else calls for extraction
+  //+-------------------------------------------------------
+    function getOP(){
+
+      if(_op){ 
+        $(".post").each(function(i,e){
+          poster = $(e).find(".autor dl dt a").text();
+          if(poster == _op){ $(e).addClass("mvn-thread-op"); }
+        });
+        return true;
+      }
+      
+      extractOP();
+    }
+
+  //+-------------------------------------------------------
+  //| extractOP()
+  //| + Parse html to get op name, loads page 1 if needed.
+  //+-------------------------------------------------------
+    function extractOP(xhr){
+
+      if($("#post1").length){
+        var post = $('#post1');
+      }else{
+        if(xhr){ var post = $('#post1', xhr); }
+        else{
+          // Load page #1 if needed
+          loadPage(1, "op");
+          return false;
+        }
+      }
+
+      _op = post.find(".autor dl dt a").text();
+      getOP();
+    }    
 
   //+-------------------------------------------------------
   //| reverseQuote()
