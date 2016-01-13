@@ -88,12 +88,12 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
     }
 
     function postTools(){
-      getOP();          // TODO option to enable and disable
       userTools();
       reverseQuote();
 
+      if(_user.flagOp){       getOP(); }
+      if(_user.makeGallery){  betterLigtbox(); }
       if(_user.media.detect){ embedMedia(); }
-      betterLigtbox();  // TODO option to enable and disable
     }
 
   //+-------------------------------------------------------

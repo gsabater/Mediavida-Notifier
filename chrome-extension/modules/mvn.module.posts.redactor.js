@@ -35,7 +35,7 @@
                     "<li class='separator'>·</li>" +
 
                     "<li data-open='[spoiler=]' data-close='[/spoiler]'><i class='fa fa-eye-slash'></i></li>" +
-                    "<li style='color: #B90A0A;' data-open='[spoiler=NSFW]' data-close='[/spoiler]'><i class='fa fa-female'></i></li>" +
+                    "<li data-open='[spoiler=NSFW]' data-close='[/spoiler]'><i class='fa fa-female' style='color: #B90A0A !important;'></i></li>" +
 
                     "<li class='separator'>·</li>" +
 
@@ -73,7 +73,7 @@
       // Create macros panel, _mvnLS is not accessible on top
       var macros = "";
       for(i in _mvnLS.macros){
-        macros = macros + "<span data-macro='"+ _mvnLS.macros[i].value +"'>" + _mvnLS.macros[i].name + "</span>"}
+        macros = macros + "<div data-id='"+i+"'><span data-macro='"+ _mvnLS.macros[i].value +"'>" + _mvnLS.macros[i].name + "</span> <i class='fa fa-times'></i></div>"}
 
       var macrosPanel = "<div class='macros-panel'>" + macros +
         "<div class='add-macro'>Añadir texto seleccionado con el nombre <input type='text' /><div class='save-macro'>Guardar</div></div>" +
@@ -106,7 +106,7 @@
     }
 
   //+-------------------------------------------------------
-  //| + action on button bar element
+  //| + action on redactor bar element
   //+-------------------------------------------------------
     $("body").on("click", "ul.mvn-redactor-bar li", function(e){
 
@@ -158,7 +158,7 @@
       var end = textArea[0].selectionEnd;
       var selectedText = textArea.val().substring(start, end).replace(/'/g, "&#39;");
 
-      $("<span data-macro='" + selectedText + "'>" + inputValue + "</span>").insertBefore(".add-macro");
+      $("<div><span data-macro='" + selectedText + "'>" + inputValue + "</span></div>").insertBefore(".add-macro");
       //$(".macros-panel").toggle();
       $(".macros-panel input").val("");
 
@@ -171,6 +171,28 @@
       e.stopPropagation();
       return false;
     });
+
+
+  //+-------------------------------------------------------
+  //| + Macros remove
+  //+-------------------------------------------------------
+    $("body").on("click", ".macros-panel i", function(e){
+      var x;
+      var r = confirm("¿Estás seguro de querer eliminar esta macro?");
+      if(!r){
+        e.preventDefault();
+        return false; }
+
+      $(this).closest("div").remove();
+
+      // Remove from array
+      var item = $(this).closest("div").attr("data-id");
+      _mvnLS.macros.splice(item,1);
+
+      // Store DB
+      chrome.runtime.sendMessage({mvnLS: _mvnLS});
+    });
+
 
   //+-------------------------------------------------------
   //| + Dropzone handling and upload

@@ -29,9 +29,18 @@ body.MVN-oscuro div.bwrap {
 }
 
 .post.mvn-thread-op .msg .info .qn {
+  background: #FF8D00 !important;
+  color: white;
+  box-shadow: 1px 1px 3px rgba(237, 94, 0, 0.12);
+}
+
+body.MVN-oscuro .post.mvn-thread-op .msg .info .qn {
   background: rgba(173, 90, 36, 0.66);
   color: white;
   box-shadow: 1px 1px 3px rgba(237, 94, 0, 0.12);
+
+  background-color: rgba(255, 141, 0, 0.67) !important;
+  color: #2F383E !important;
 }
 
 /*** BOOKMARKS ***/
@@ -139,6 +148,12 @@ ul.mvn-redactor-bar {
   border: 1px solid #CCCCCC;
   border-top: 4px solid black;
   border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+
+body.MVN-oscuro ul.mvn-redactor-bar {
+  background-color: #252C31;
 }
 
 ul.mvn-redactor-bar li{
@@ -149,8 +164,20 @@ ul.mvn-redactor-bar li{
   background-color: white;
 }
 
+body.MVN-oscuro ul.mvn-redactor-bar li {
+  background-color: #252C31;
+}
+
 ul.mvn-redactor-bar li:not(.separator):hover{
   background-color: #ccc;
+}
+
+body.MVN-oscuro ul.mvn-redactor-bar li:not(.separator):hover{
+  background-color: #192127;;
+}
+
+.MVN-oscuro .mvn-redactor-bar li i {
+  color: #88949A;
 }
 
 ul.mvn-redactor-bar li.separator{
@@ -170,6 +197,10 @@ ul.mvn-redactor-bar li.separator{
   background-color: rgba(0, 0, 0, 0.75);
 }
 
+.macros-panel div{
+  display: inline-block;
+}
+
 .macros-panel span {
   position: relative;
   z-index: 999;
@@ -187,12 +218,19 @@ ul.mvn-redactor-bar li.separator{
 }
 
 .macros-panel i{
-  margin-left: 0px;
   color: rgb(255, 255, 255);
-  font-size: 13px;
   cursor: pointer;
   border-radius: 4px;
-  padding: 3px;
+  font-size: 13px;
+
+  margin: 0;
+  padding: 0;
+  margin-left: -10px;
+  margin-right: 10px;
+}
+
+.MVN-oscuro .macros-panel i{
+  color: #88949A;
 }
 
 .macros-panel .add-macro{

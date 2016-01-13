@@ -382,26 +382,27 @@
   //+-------------------------------------------------------
   //| Initialize magnific
   //+-------------------------------------------------------
+    if(_user.makeGallery){
+      $("body").on("click", ".mvn-lightbox", function(){
 
-    $("body").on("click", ".mvn-lightbox", function(){
-
-      $.magnificPopup.open({
-        items: items,
-        type: 'image', // this is default type
-        verticalFit: false, // Fits image in area vertically
-        gallery: {
-          enabled: true,
-          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-        },
-        callbacks: { 
-          //elementParse: function(item){ item.src = item.el[0].src; },
-          change: function(){
-            $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
-            if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
-            if($item.offset()){
-              $('html, body').animate({ scrollTop: $item.offset().top - 200 }, 150);  }
+        $.magnificPopup.open({
+          items: items,
+          type: 'image', // this is default type
+          verticalFit: false, // Fits image in area vertically
+          gallery: {
+            enabled: true,
+            preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+          },
+          callbacks: { 
+            //elementParse: function(item){ item.src = item.el[0].src; },
+            change: function(){
+              $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
+              if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
+              if($item.offset()){
+                $('html, body').animate({ scrollTop: $item.offset().top - 200 }, 150);  }
+            }
           }
-        }
-      }, parseInt($(this).attr("data-mgf")));
+        }, parseInt($(this).attr("data-mgf")));
 
-    });    
+      }); 
+    }   
