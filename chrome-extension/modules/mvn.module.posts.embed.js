@@ -162,6 +162,7 @@
       mediaYTB.each(function(i,e){
 
         if($(e).attr("href").indexOf("/user") > -1){ return true; } //do not track profiles.
+        if($(e).attr("href").indexOf("playlist?") > -1){ return true; } //do not track playlists.
 
         $(e).addClass("mvn-embeded");
         $(e).append( iconYTB ).addClass("mvn-embed-highlight");
@@ -316,28 +317,47 @@
       var i = items.length;
 
       // Remove <a for every image, to avoid default lightbox
-      //$(".post a[onclick='return false;']").off();
+      //console.log($(".post a[onclick='return false;']").length);
       $(".post a[onclick='return false;']").each(function(i,e){
+        //$("<span>LINK REMOVED</span><br>").insertBefore(e);
         $(e).contents().unwrap(); // $(e).replaceWith( $(e).contents() );
       });
 
       // Add lightbox class to every image and add it to items
       // also include embeded items, to help create a full gallery
-      $(".post img.lazy:not(.mvn-lightbox), .mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed)").each(function(i,e){
+      $(".post img.lazy:not(.mvn-lightbox), "+
+        ".mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed), "+
+        "a[data-youtube]:not(.mvn-lightbox), "+
+        "iframe.vine-embed:not(.mvn-lightbox)").each(function(i,e){
         
         // Add lightbox, which is a flag to not process again, and also
         // the magnific initiator
         var anchor = items.length;
         $(e).addClass("mvn-lightbox").attr("data-mgf", anchor);
 
-        if(!$(e).hasClass("mvn-embeded")){ items.push({src: $(e).attr("src"), anchor: anchor }); return true; }
 
-        // add to items, some already embedded media
-        // title: $(e).attr("href")
-        if(($(e).data("magnific") == "imgur-img")&&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
-        if(($(e).data("magnific") == "gifv")&&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
-        if($(e).data("magnific") == "iframe"){ $(e).removeClass("mvn-lightbox"); return true; }
+        //| 1. Include images
+        //+-------------------------------------------------------        
+          if($(e).hasClass("lazy") && !$(e).hasClass("mvn-embeded")){ items.push({src: $(e).attr("src"), anchor: anchor }); return true; }
+
+
+        //| 2. Include youtube embeds
+        //+-------------------------------------------------------
+          if($(e).data("youtube")){ items.push({src: "http://www.youtube.com/watch?v="+$(e).data("youtube"), type: 'iframe', anchor: anchor }); return true; }
+        
+
+        //| 3. Include vines
+        //+-------------------------------------------------------
+          if($(e).hasClass("vine-embed")){ items.push({src: "<iframe src='"+ $(e).attr("src") +"' width='600' height='600' frameborder='0' class='mvn-embed-vine'></iframe>", type: 'inline', anchor: anchor }); return true; } 
+        
+
+        //| 3. Include already processed media, excluding iframe and Mediavida
+        //+-------------------------------------------------------
+        if($(e).data("magnific") == "iframe"){    $(e).removeClass("mvn-lightbox"); return true; }
         if($(e).data("magnific") == "mediavida"){ $(e).removeClass("mvn-lightbox"); return true; }
+
+        if(($(e).data("magnific") == "imgur-img") &&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
+        if(($(e).data("magnific") == "gifv")      &&(!$(e).attr("data-magnificsrc"))){ $(e).removeClass("mvn-lightbox"); return true; }
 
         if($(e).data("magnific") == "image"){      items.push({src: $(e).attr("href"), anchor: anchor }); }
         if($(e).data("magnific") == "imgur-img"){  items.push({src: $(e).attr("data-magnificsrc"), anchor: anchor }); }
@@ -349,7 +369,7 @@
       
       // Update magnific if has not changed in the loop
       var magnificPopup = $.magnificPopup.instance;
-      if(magnificPopup.items){ magnificPopup.updateItemHTML(); }
+      if(magnificPopup.items){ }//magnificPopup.updateItemHTML(); }
 
         
       // cyclic insertion to update missing or freshly added pages
@@ -378,9 +398,8 @@
           change: function(){
             $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
             if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
-            $('html, body').animate({ 
-              scrollTop: $item.offset().top - 200 
-            }, 150);
+            if($item.offset()){
+              $('html, body').animate({ scrollTop: $item.offset().top - 200 }, 150);  }
           }
         }
       }, parseInt($(this).attr("data-mgf")));

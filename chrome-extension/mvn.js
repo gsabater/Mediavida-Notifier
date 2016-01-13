@@ -39,6 +39,7 @@ var user = {
   volume        : 98,
   hideNopost    : true,
   flagOp        : true,
+  makeGallery   : true,
   https         : false,
   scroll        : true,
 

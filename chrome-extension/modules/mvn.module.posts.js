@@ -25,6 +25,8 @@ var in_post       = false,  // true or false depending if the page is a post
 var _op           = false;  // name of the post OP
 var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : window.location.pathname;
     thread_url    = window.location.protocol + "//" + window.location.host + thread_url;
+    thread_url    = (thread_url.slice(-2) == "/1")? thread_url.substr(0, thread_url.length -2) : thread_url;
+
 
 
   //+-------------------------------------------------------
@@ -193,10 +195,8 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
             if(!found){ return applyOrder(); }
           }
 
-          var postURL = ($(".headlink").length)? $(".headlink").attr("href") + "/" + page : window.location.pathname + "/" + page;
-
           $.ajax({
-            url: postURL,
+            url: thread_url + "/" + page,
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               //handler("XMLHttpRequest".responseText);
