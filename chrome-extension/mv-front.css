@@ -137,6 +137,9 @@ dd.online{ display: none; }
 /*** Post Redactor ***/
 #ut-botonera2, .mvn-old-button-bar{ display: none !important; }
 textarea#cuerpo{ resize: none; }
+div[style='overflow: hidden;margin: 0 0px 10px -5px;clear: both'],
+div[style='overflow: hidden;margin: 10px 0;clear: both'],
+div[style='overflow: hidden;margin-bottom: 10px;clear: both']{ display: none; }
 
 .mvn-redactor-container{ position: relative; }
 
@@ -145,15 +148,18 @@ ul.mvn-redactor-bar {
   border-radius: 4px 4px 0 0;
 
   height: 28px;
+
   border: 1px solid #CCCCCC;
   border-top: 4px solid black;
   border-bottom: none;
-  border-left: none;
-  border-right: none;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #CCCCCC;  
 }
 
 body.MVN-oscuro ul.mvn-redactor-bar {
   background-color: #252C31;
+  border-left: none;
+  border-right: none;
 }
 
 ul.mvn-redactor-bar li{
@@ -270,6 +276,16 @@ ul.mvn-redactor-bar li.separator{
   margin-top: 9px;
   width: 146px !important;
   right: 0;
+
+  float: left;
+  width: 131px !important;
+  padding: 0;
+  background: #DCDCDC;
+  margin-right: 11px;
+  margin-top: 1px;
+  height: 172px;
+  border-left: 1px solid #CCCCCC;
+  padding-top: 5px !important;
 }
 
 .mvn-dropzone{
@@ -314,6 +330,14 @@ ul.mvn-redactor-bar li.separator{
 .big .mvn-dropzone {
   width: 958px;
   height: 298px;
+}
+
+
+textarea.mvn-redactor-enabled {
+    margin: 0 0 0 0 !important;
+    resize: none;
+    width: 610px !important;
+    min-height: 169px !important;
 }
 
 /*** Bottom tools ***/
@@ -399,6 +423,7 @@ em.mvn-orderby-manita {
 
   font-size: inherit;
   font-weight: 400;
+  text-decoration: inherit;
 
 }
 
@@ -574,6 +599,7 @@ i.fa.mvn-ico-embed {
 
 .mvn-magnific-iframe .mfp-content {
   max-width: 1150px !important;
+  max-width: 80vw !important;
 }
 
 .mvn-lightbox{

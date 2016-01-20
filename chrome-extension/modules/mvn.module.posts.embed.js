@@ -35,6 +35,21 @@
   var embedGIFV_  = '<video autoplay="" loop="" controls><source type="video/webm" src="placeholder"></video>';
 
   //+-------------------------------------------------------
+  // Notes:
+  // .mvn-lightbox is applied as a flag for element processed
+  // and also fires the magnific popup element.
+  // ---
+  // .mvn-embeded is applied to already processed embed media
+  // ---
+  // .mvn-tooltip & .tooltip-effect-1 are applied for elements
+  // that have preview on hover
+  // ---
+  // .mvn-embed-highlight is just a CSS alias for the effect
+  // applied to the .mvn-tooltip elements
+  //+-------------------------------------------------------
+
+
+  //+-------------------------------------------------------
   //| embedMedia()
   //| + Try to autoembed image links and youtube links into 
   //| + posts with a hover tooltip
@@ -42,6 +57,7 @@
     function embedMedia(){
 
 
+    //+-------------------------------------------------------
     //| + Plain images
     //+-------------------------------------------------------
       var mediaIMG    = $('.post .msg a[href*=".gif"]:not(.mvn-embeded), .post .msg a[href*=".jpg"]:not(.mvn-embeded), .post .msg a[href*=".png"]:not(.mvn-embeded)');
@@ -50,7 +66,7 @@
         if($(e).attr("href").indexOf(".gifv") > -1){ return true; } //do not track gifv from imgur.
         if(($(e).children().length == 0)&&($(e).text().substring(0,10) == $(e).attr("href").substring(0,10))){
           
-          $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1 mvn-embed-image").removeAttr("title").removeAttr("title");
+          $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1 mvn-embed-image").removeAttr("title");
           $(e).closest(".post").addClass("mvn-overflow-visible");
           
           $(e).append( iconIMG );
@@ -62,6 +78,7 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + Imgur
     //+-------------------------------------------------------
       var mediaIMGUR  = $('.post .msg a[href*="imgur.com"]:not(.mvn-embeded)');   
@@ -69,7 +86,7 @@
 
         if($(e).find("img").length){ return true; }
 
-        $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1 mvn-embed-imgur").removeAttr("title").removeAttr("title");
+        $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1 mvn-embed-imgur").removeAttr("title");
         $(e).closest(".post").addClass("mvn-overflow-visible");
 
         imgURL = $(e).attr("href").split("/");
@@ -119,12 +136,13 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + Videos MP4 & webm
     //+-------------------------------------------------------
       var mediaVIDEO  = $('.post .msg a[href*=".mp4"]:not(.mvn-embeded), .post .msg a[href*=".webm"]:not(.mvn-embeded)');
       mediaVIDEO.each(function(i,e){
 
-        $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1").removeAttr("title").removeAttr("title");
+        $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1").removeAttr("title");
         $(e).closest(".post").addClass("mvn-overflow-visible");
 
         media = embedGIFV.replace("placeholder",$(e).attr("href"));
@@ -136,6 +154,7 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + Videos Youtube
     //+-------------------------------------------------------
       var mediaYTB    = $('.post .msg a[href*="://youtu.be"]:not(.mvn-embeded)');
@@ -184,12 +203,13 @@
       });   
 
 
+    //+-------------------------------------------------------
     //| + Vine
     //+-------------------------------------------------------
       var mediaVINE = $('.post .msg a[href*="//vine.co"]:not(.mvn-embeded)');
       mediaVINE.each(function(i,e){
 
-        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
+        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title");
         $(e).append( iconVINE );
 
         vineURL = $(e).attr("href").replace("/embed","").split("/");
@@ -202,14 +222,16 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + INSTAGRAM
     //+-------------------------------------------------------
       var mediaINST   = $('.post .msg a[href*="instagram.com"]:not(.mvn-embeded)');   
       mediaINST.each(function(i,e){
 
         if($(e).find("img").length){ return true; }
+        if($(e).attr("href").indexOf("/p/") === -1){ return true; } //do not track profiles.
 
-        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
+        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title");
         $(e).append( iconINST );
 
         imgURL = $(e).attr("href").split("/");
@@ -222,12 +244,13 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + MP3 AUDIO
     //+-------------------------------------------------------
       var mediaMP3    = $('.post .msg a[href*=".mp3"]:not(.mvn-embeded)');
       mediaMP3.each(function(i,e){
 
-        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
+        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title");
         $(e).append( iconMP3 );
 
         media = embedMP3.replace("placeholder",$(e).attr("href"));
@@ -238,23 +261,44 @@
       });
 
 
+    //+-------------------------------------------------------
     //| + Mediavida intern links
     //+-------------------------------------------------------
       if(_user.media.magnificMV){
         var mediaMV     = $('.post .msg a[href*="mediavida.com"]:not(.mvn-embeded)');
         mediaMV.each(function(i,e){
 
-          $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title").removeAttr("title");
+          $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title");
           $(e).append( iconCHROME );
 
           var URL = $(e).attr("href").replace("http://","//").replace("https://","//");
           lastChar = URL.slice(-1);
-          URL = ((lastChar == ".")||(lastChar == ","))? URL.slice(0,URL.length-1) : URL;
+          URL = ((lastChar == ".")||(lastChar == ",")||(lastChar == ")"))? URL.slice(0,URL.length-1) : URL;
 
           $(e).attr("data-magnific", "mediavida").attr("data-magnificsrc", location.protocol + URL );
           
         });
       } 
+
+    //+-------------------------------------------------------
+    //| + Extern iframe links intern links
+    //+-------------------------------------------------------
+      var mediaIFRAME = $('.post .msg a[href*="humblebundle.com"]:not(.mvn-embeded)');
+      mediaIFRAME.each(function(i,e){
+
+        $(e).addClass("mvn-embeded mvn-embed-highlight").removeAttr("title");
+        
+        // Append icons
+        if($(e).attr("href").indexOf("humblebundle.com") > -1){ $(e).append( "<img src='"+chrome.extension.getURL("assets/icon-humble.png")+"' class='mvn-ico-embed' style='margin-left: 5px;' />" ); }
+        //if($(e).attr("href").indexOf("steamcommunity.com") > -1){     $(e).append( "<img src='"+chrome.extension.getURL("assets/icon-humble.png")+"' class='mvn-ico-embed' style='margin-left: 5px;' />" ); }
+
+        var URL = $(e).attr("href");
+        lastChar = URL.slice(-1);
+        URL = ((lastChar == ".")||(lastChar == ",")||(lastChar == ")"))? URL.slice(0, URL.length-1) : URL;
+
+        $(e).attr("data-magnific", "iframe").attr("data-magnificsrc", URL );
+        
+      });    
 
     }
 
@@ -283,10 +327,11 @@
             items: { src: "http://www.youtube.com/watch?v="+$(this).attr("data-magnificsrc") },
             type: 'iframe' }); }  
 */
-        if($(this).data("magnific") == "iframe"){ console.warn("iframe", $(this).attr("data-magnificsrc") );
+        if($(this).data("magnific") == "iframe"){ //console.warn("iframe", $(this).attr("data-magnificsrc") );
           $.magnificPopup.open({
             items: { src: $(this).attr("data-magnificsrc") },
-            type: 'iframe' }); }  
+            type: 'iframe',
+            mainClass: 'mvn-magnific-iframe' }); }  
 /*
         if($(this).data("magnific") == "audio"){ console.warn("audio", $(this).attr("data-magnificsrc") );
           $.magnificPopup.open({
@@ -325,10 +370,14 @@
 
       // Add lightbox class to every image and add it to items
       // also include embeded items, to help create a full gallery
-      $(".post img.lazy:not(.mvn-lightbox), "+
-        ".mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed), "+
-        "a[data-youtube]:not(.mvn-lightbox), "+
-        "iframe.vine-embed:not(.mvn-lightbox)").each(function(i,e){
+      $(".post img.lazy:not(.mvn-lightbox):not(.mvn-lightbox-canceled), "+
+        ".mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed):not(.mvn-lightbox-canceled), "+
+        "a[data-youtube]:not(.mvn-lightbox):not(.mvn-lightbox-canceled):not(.mvn-lightbox-canceled), "+
+        "iframe.vine-embed:not(.mvn-lightbox):not(.mvn-lightbox-canceled)").each(function(i,e){
+
+        // do not add elements inside a link
+        var parent = $(e).parent().get(0);
+        if(parent.tagName == "A"){ $(e).addClass("mvn-lightbox-canceled"); return true; }
         
         // Add lightbox, which is a flag to not process again, and also
         // the magnific initiator
@@ -352,6 +401,7 @@
         
 
         //| 3. Include already processed media, excluding iframe and Mediavida
+        //| Also remove imgur media not processed (its included via async ajax)
         //+-------------------------------------------------------
         if($(e).data("magnific") == "iframe"){    $(e).removeClass("mvn-lightbox"); return true; }
         if($(e).data("magnific") == "mediavida"){ $(e).removeClass("mvn-lightbox"); return true; }
@@ -382,27 +432,30 @@
   //+-------------------------------------------------------
   //| Initialize magnific
   //+-------------------------------------------------------
-    if(_user.makeGallery){
-      $("body").on("click", ".mvn-lightbox", function(){
+    $("body").on("click", ".mvn-lightbox", function(){
 
-        $.magnificPopup.open({
-          items: items,
-          type: 'image', // this is default type
-          verticalFit: false, // Fits image in area vertically
-          gallery: {
-            enabled: true,
-            preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-          },
-          callbacks: { 
-            //elementParse: function(item){ item.src = item.el[0].src; },
-            change: function(){
-              $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
-              if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
-              if($item.offset()){
-                $('html, body').animate({ scrollTop: $item.offset().top - 200 }, 150);  }
-            }
+      $.magnificPopup.open({
+        items: items,
+        type: 'image', // this is default type
+        verticalFit: false, // Fits image in area vertically
+        gallery: {
+          enabled: true,
+          preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        callbacks: { 
+          //elementParse: function(item){ item.src = item.el[0].src; },
+          change: function(){
+            $item = $("[data-mgf='"+this.currItem.data.anchor+"']");
+
+            // Show spoilers and the whole post if hidden for moderation or spoiler.
+            if(!$item.closest("div").is(":visible")){ $item.closest("div").show(); }
+            if(!$item.closest(".post").is(":visible")){ $item.closest(".post").show(); }
+
+            // Now that we know its position, scroll the window to it
+            if($item.offset()){
+              $('html, body').animate({ scrollTop: $item.offset().top - 200 }, 150);  }
           }
-        }, parseInt($(this).attr("data-mgf")));
+        }
+      }, parseInt($(this).attr("data-mgf")));
 
-      }); 
-    }   
+    }); 

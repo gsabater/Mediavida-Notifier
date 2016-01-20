@@ -58,26 +58,32 @@
   //| redactor()
   //| + Adds a custom button bar to extend the textarea
   //+-------------------------------------------------------
-    function redactor(){
-
+    function redactor(el){
+      //console.warn("REDACTOR ATTACHED");
       //$("#postform").show();
 
-      // Hide and delete both Mediavida and UT button bars
-      $("form#postform .msg div:nth-child(1):not(.left)").addClass("mvn-old-button-bar");
-      $("#ut-botonera2").prev("div").hide();
+      // Stop execution on specific pages
+      if($("body#mensajes").length){ return false; }
 
-      // Create custtom button bar
-      $( buttonBar ).insertBefore("textarea#cuerpo");
+      // Hide and delete both Mediavida and UT button bars via CSS
+
+      // Create custtom button bar on selected item or default reply box
+      if(!el){ $( buttonBar ).insertBefore("textarea#cuerpo");
+      }else{   $( buttonBar.replace("<li class='show-smileys' style='float:right;'><i class='fa fa-smile-o'></i></li>", "") )
+                 .insertBefore("textarea.mvn-redactor-active"); }
+      
+      // Apply a big class to redactor if needed
       if($("#cabecera").length){ $(".mvn-redactor-container").addClass("big"); }
+      if($("#postear").length){ $(".mvn-redactor-container").addClass("big"); }
 
       // Create macros panel, _mvnLS is not accessible on top
       var macros = "";
+
       for(i in _mvnLS.macros){
         macros = macros + "<div data-id='"+i+"'><span data-macro='"+ _mvnLS.macros[i].value +"'>" + _mvnLS.macros[i].name + "</span> <i class='fa fa-times'></i></div>"}
-
-      var macrosPanel = "<div class='macros-panel'>" + macros +
-        "<div class='add-macro'>Añadir texto seleccionado con el nombre <input type='text' /><div class='save-macro'>Guardar</div></div>" +
-      "</div>";
+        var macrosPanel = "<div class='macros-panel'>" + macros +
+          "<div class='add-macro'>Añadir texto seleccionado con el nombre <input type='text' /><div class='save-macro'>Guardar</div></div>" +
+        "</div>";
 
       $( macrosPanel ).insertAfter(".mvn-dropzone");
 
@@ -89,7 +95,7 @@
   //+-------------------------------------------------------
     function insertText(openTag, closeTag){
 
-      var textArea = $('#cuerpo');
+      var textArea = ( $(".mvn-redactor-active").length ) ? $(".mvn-redactor-active") : $('#cuerpo'); //$(':focus')
 
       var len = textArea.val().length;
       var start = textArea[0].selectionStart;
@@ -110,15 +116,34 @@
   //+-------------------------------------------------------
     $("body").on("click", "ul.mvn-redactor-bar li", function(e){
 
-      if($(this).hasClass("show-smileys")){ $("#smilies").toggle(); return false; }
-      if($(this).hasClass("show-macros")){ $(".macros-panel").toggle(); return false; }
+      if($(this).hasClass("separator")){    return false; }
+      if($(this).hasClass("show-smileys")){ $("#smilies").toggle(); $(".macros-panel").hide();   return false; }
+      if($(this).hasClass("show-macros")){  $("#smilies").hide();   $(".macros-panel").toggle(); return false; }
 
       insertText($(this).attr("data-open"), $(this).attr("data-close"));
 
     });
 
   //+-------------------------------------------------------
-  //| + Toggle panels on use
+  //| + invoque redactor on editable post.
+  //+-------------------------------------------------------
+    $("body").on("mouseenter", "div.msg div.body div textarea", function(e){
+
+      // If the redactor is already attached, dont apply it again
+      $(this).off();
+      if($(this).hasClass("mvn-redactor-enabled")){ return false; }
+
+      // Toggle active textarea
+      $(".mvn-redactor-active").removeClass("mvn-redactor-active");
+      $(this).addClass("mvn-redactor-enabled mvn-redactor-active");
+
+      // call redactor with the textarea ref
+      redactor(this);
+
+    });    
+
+  //+-------------------------------------------------------
+  //| + Toggle smilies and dropzone panels on use
   //+-------------------------------------------------------
     $("#smilies a").on("click", function(){
       $("#smilies").toggle();
@@ -131,7 +156,7 @@
     });
 
   //+-------------------------------------------------------
-  //| + Toggle dropzone area
+  //| + Toggle dropzone area on drag item
   //+-------------------------------------------------------
     $(document.body).on('dragenter', function(e){
       $(".mvn-dropzone").show();
@@ -142,15 +167,17 @@
     });
 
   //+-------------------------------------------------------
-  //| + Macros usage and saving
+  //| + Insert a macro
   //+-------------------------------------------------------
     $("body").on("click", ".macros-panel span", function(e){
       $(".macros-panel").toggle();
       insertText($(this).attr("data-macro"), "");
     });
 
-    $("body").on("click", ".macros-panel .save-macro", function(e){
-
+  //+-------------------------------------------------------
+  //| + Save a macro
+  //+-------------------------------------------------------
+    function saveMacro(){
       var textArea = $('#cuerpo');
       var inputValue = ($(".macros-panel input").val())? $(".macros-panel input").val() : Math.random().toString(36).substring(4);
 
@@ -159,17 +186,30 @@
       var selectedText = textArea.val().substring(start, end).replace(/'/g, "&#39;");
 
       $("<div><span data-macro='" + selectedText + "'>" + inputValue + "</span></div>").insertBefore(".add-macro");
-      //$(".macros-panel").toggle();
       $(".macros-panel input").val("");
 
       var obj = {"name": inputValue, "value": selectedText};
       _mvnLS.macros.push(obj);
 
       chrome.runtime.sendMessage({mvnLS: _mvnLS});
+    }
+
+     $("body").on("keypress", ".add-macro", function(e){
+      if (e.which == 13){
+        saveMacro();
+
+        e.preventDefault();
+        e.stopPropagation();
+        return false;        
+      }
+    });
+
+    $("body").on("click", ".macros-panel .save-macro", function(e){
+      saveMacro();
 
       e.preventDefault();
       e.stopPropagation();
-      return false;
+      return false; 
     });
 
 
@@ -192,7 +232,6 @@
       // Store DB
       chrome.runtime.sendMessage({mvnLS: _mvnLS});
     });
-
 
   //+-------------------------------------------------------
   //| + Dropzone handling and upload

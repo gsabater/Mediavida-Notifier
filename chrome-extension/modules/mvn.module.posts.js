@@ -175,7 +175,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
   //| + Loads a specific page given a parameter
   //+-------------------------------------------------------
     function loadPage(page, callback){
-    
+      
       if($("#postform").is(":visible")){ loadingPage = true; }
       if(!loadingPage){
         
@@ -183,8 +183,9 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         if(in_post){
 
           page = (page)? page : current_page + 1;
+          console.warn("MVN: Loading ajax page", page, callback);
 
-          if(callback){ found = false;
+          if(callback == "manitas"){ found = false;
             for(i = last_page; i >= 1; i--){ //console.log(i, _pages[i]); 
               if(!_pages[i]){ 
                 page = i; found = true; 
@@ -273,7 +274,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
       if(_op){ 
         $(".post").each(function(i,e){
-          poster = $(e).find(".autor dl dt a").text();
+          poster = $(e).find(".autor dl dt").text();
           if(poster == _op){ $(e).addClass("mvn-thread-op"); }
         });
         return true;
@@ -299,7 +300,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         }
       }
 
-      _op = post.find(".autor dl dt a").text();
+      _op = post.find(".autor dl dt").text();
       getOP();
     }    
 
@@ -379,12 +380,8 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
       $(".largecol").prepend("<div id='mvn-order-results'></div>");     
 
       //Start loading everything
-      loadPage(false,"manitas");
+      loadPage(false, "manitas");
 
-    }
-
-    function applyOrder(){
-      console.log("APPLY ORDER");
     }
 
   //+-------------------------------------------------------
