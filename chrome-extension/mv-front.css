@@ -1242,3 +1242,20 @@ img.mfp-img {
 .my-mfp-slide-bottom.mfp-removing.mfp-bg {
   opacity: 0;
 }
+
+/* Date style */
+a#mv-date {
+  background: transparent!important;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  color:#626262;
+}
+
+.MVN-oscuro a#mv-date {
+  background: transparent!important;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  color:#b4c9d3;
+}
