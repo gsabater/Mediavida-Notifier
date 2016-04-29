@@ -85,6 +85,8 @@
       mediaIMGUR.each(function(i,e){
 
         if($(e).find("img").length){ return true; }
+        if($(e).attr("href").indexOf("/gallery/") > -1){ return true; } //do not track albums.
+        if($(e).attr("href").indexOf("/a/") > -1){ return true; } //do not track galleries.
 
         $(e).addClass("mvn-embeded mvn-tooltip tooltip-effect-1 mvn-embed-imgur").removeAttr("title");
         $(e).closest(".post").addClass("mvn-overflow-visible");
@@ -180,8 +182,9 @@
       mediaYTB = $('.post .msg a[href*="://youtube.com"]:not(.mvn-embeded), .post .msg a[href*="://www.youtube.com"]:not(.mvn-embeded)');
       mediaYTB.each(function(i,e){
 
-        if($(e).attr("href").indexOf("/user") > -1){ return true; } //do not track profiles.
+        if($(e).attr("href").indexOf("/user") > -1){ return true; } //do not track user profiles.
         if($(e).attr("href").indexOf("playlist?") > -1){ return true; } //do not track playlists.
+        if($(e).attr("href").indexOf("/channel/") > -1){ return true; } //do not track channels.
 
         $(e).addClass("mvn-embeded");
         $(e).append( iconYTB ).addClass("mvn-embed-highlight");

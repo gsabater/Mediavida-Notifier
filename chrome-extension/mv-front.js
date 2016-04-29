@@ -52,7 +52,6 @@ var _url = window.location.pathname.split( '/' );
         //checkLocalStorage();
       });
 
-  
     }  
 
   //+-------------------------------------------------------

@@ -11,7 +11,7 @@
 // At post load, call initPostTools, which creates an array with
 // all the posts on of the page. After that, detects the current thread
 // page and adds some flags to some not useful elements.
-// Calls userTools(); embedMedia(); reverseQuote();
+// Calls userTools(); embedMedia();
 //=================================================================
 
 var _scroll       = 1,      // int of the current page in screen
@@ -89,7 +89,6 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
     function postTools(){
       userTools();
-      reverseQuote();
 
       if(_user.flagOp){       getOP(); }
       if(_user.makeGallery){  betterLigtbox(); }
@@ -302,55 +301,6 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
       _op = post.find(".autor dl dt").text();
       getOP();
-    }    
-
-  //+-------------------------------------------------------
-  //| reverseQuote()
-  //| + Parses the current posts 
-  //| + and shows quote information on each footer
-  //+-------------------------------------------------------
-    function reverseQuote(){
-
-      var mentions = [];
-      var mentors = [];
-
-    //| + Find quotes in every post
-    //+-------------------------------------------------------
-      for(i in _posts){
-        var quotes = $(_posts[i]).find(".cuerpo").find("a.quote").get();
-        //console.log(i, quotes.length, quotes);
-
-        for(q in quotes){
-          //console.log(quotes[q]);
-          quote = quotes[q];
-          if(quote.rel){
-            if(!mentions[quote.rel]){ mentions[quote.rel] = []; }
-            if(mentions[quote.rel].indexOf(_posts[i].id.substring(4)) < 0){
-              mentions[quote.rel].push( _posts[i].id.substring(4) );  
-            }
-          }
-        }
-
-        mentors[_posts[i].id.substring(4)] = $(_posts[i]).find(".autor dt").text();
-      }
-
-      //console.log(mentions, mentors);
-
-
-    //| + Print quotes in posts
-    //+-------------------------------------------------------
-      $(".mvn-mention").remove();
-      for(key in mentions){
-
-        var m = [];
-
-        for(i in mentions[key]){
-          m[i] = mentors[mentions[key][i]] + " <a href='#"+mentions[key][i]+"' rel='"+mentions[key][i]+"' class='quote'>#" +mentions[key][i] + "</a>";
-        }
-
-        $("#post"+key).find(".bwrap").append("<span class='mvn-mention'>Citado por " + m.join(", ") + "</span>");
-      }
-
     }
     
 
