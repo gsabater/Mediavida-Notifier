@@ -8,7 +8,7 @@
 //  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
 //   
 //=================================================================
-// 
+//  to cancel lightbox in a family of elements, use .mvn-lightbox-canceled
 //=================================================================
   
   var items = [];
@@ -70,7 +70,8 @@
           $(e).closest(".post").addClass("mvn-overflow-visible");
           
           $(e).append( iconIMG );
-          $(e).attr("data-magnific", "image");
+          //$(e).attr("data-magnific", "image");
+          $(e).addClass("mvn-lightbox-canceled");
 
           media = embedIMG.replace("placeholder",$(e).attr("href"));
           if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
@@ -101,7 +102,9 @@
           media = embedIMG.replace("placeholder", "http://i.imgur.com/"+imgURL);
           
           $(e).append( iconIMG );
-          $(e).attr("data-magnific", "imgur-img").attr("data-magnificsrc", "http://i.imgur.com/"+imgURL);
+          //$(e).attr("data-magnific", "imgur-img").attr("data-magnificsrc", "http://i.imgur.com/"+imgURL);
+          $(e).addClass("mvn-lightbox-canceled");
+          
           if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
 
         }else{
@@ -123,7 +126,10 @@
             if(_user.media.hover){ $(e).append('<span class="tooltip-content">'+ media +'</span>'); }
 
             if(data.data.gifv){ $(e).attr("data-magnific", "gifv").attr("data-magnificsrc", 'http://i.imgur.com/'+data.data.id+'.webm');
-            }else{              $(e).attr("data-magnific", "imgur-img").attr("data-magnificsrc", data.data.link); }
+            }else{ 
+              //$(e).attr("data-magnific", "imgur-img").attr("data-magnificsrc", data.data.link);
+              $(e).addClass("mvn-lightbox-canceled");
+            }
 
           })
           .fail(function() {
@@ -365,16 +371,14 @@
       var i = items.length;
 
       // Remove <a for every image, to avoid default lightbox
-      //console.log($(".post a[onclick='return false;']").length);
-      $(".post a[onclick='return false;']").each(function(i,e){
-        //$("<span>LINK REMOVED</span><br>").insertBefore(e);
-        $(e).contents().unwrap(); // $(e).replaceWith( $(e).contents() );
-      });
+      //$(".post a[onclick='return false;']").each(function(i,e){
+      //  $(e).contents().unwrap();
+      //});
 
       // Add lightbox class to every image and add it to items
       // also include embeded items, to help create a full gallery
-      $(".post img.lazy:not(.mvn-lightbox):not(.mvn-lightbox-canceled), "+
-        ".mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed):not(.mvn-lightbox-canceled), "+
+      $(".mvn-embeded[data-magnific]:not(.mvn-lightbox):not(.mvn-embed-removed):not(.mvn-lightbox-canceled), "+
+        //.post img.lazy:not(.mvn-lightbox):not(.mvn-lightbox-canceled), "+
         "a[data-youtube]:not(.mvn-lightbox):not(.mvn-lightbox-canceled):not(.mvn-lightbox-canceled), "+
         "iframe.vine-embed:not(.mvn-lightbox):not(.mvn-lightbox-canceled)").each(function(i,e){
 
