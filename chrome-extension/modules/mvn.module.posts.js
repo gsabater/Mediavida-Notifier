@@ -42,6 +42,11 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
       for (i = 0; i <= posts.length - 1; i++){
         _posts[posts[i].id.substring(4)] = posts[i];
         $("#post"+posts[i].id.substring(4)).addClass("mvn-post");
+
+      //Add permalink to post date
+      var date=$("#post"+posts[i].id.substring(4)+" > div.msg > div.info > span:nth-child(2)");
+      date.replaceWith("<a id='mv-date' href='" + $("#post"+posts[i].id.substring(4)+ "> div.msg > div.info > a").attr('href') + "'>" + date.text() + "</a>");
+      
       }
 
       //Get current page already loaded and last page to load
