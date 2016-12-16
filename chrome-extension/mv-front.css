@@ -134,6 +134,11 @@ dd.online{ display: none; }
   display: block !important;
 }
 
+/* Fix un div extraño que genera en la topbar */
+#topbar #usermenu a div {
+  display: none;
+}
+
 /*** Post Redactor ***/
 #ut-botonera2, .mvn-old-button-bar{ display: none !important; }
 textarea#cuerpo{ resize: none; }
@@ -153,7 +158,7 @@ ul.mvn-redactor-bar {
   border-top: 4px solid black;
   border-bottom: none;
   border-right: 1px solid #ccc;
-  border-left: 1px solid #CCCCCC;  
+  border-left: 1px solid #CCCCCC;
 }
 
 body.MVN-oscuro ul.mvn-redactor-bar {
@@ -417,7 +422,7 @@ em.mvn-orderby-manita {
   padding-right: 1px;
     padding-bottom: 0px;
     padding-left: 7px;
-    
+
   margin: 1px 0;
     margin-right: 1px;
 
@@ -487,7 +492,7 @@ em.mvn-orderby-manita {
 
   background-color: rgba(42, 48, 53, 0.75);
   border-radius: 5px;
-  overflow: hidden;  
+  overflow: hidden;
 }
 
 .tooltip-effect-1 .tooltip-content {
@@ -512,7 +517,7 @@ em.mvn-orderby-manita {
   left: -150%;
   margin: auto;
   width: 100px;
-  text-align: center;  
+  text-align: center;
 }
 
 .mvn-tooltip:hover .tooltip-content {
@@ -559,7 +564,7 @@ div.post.mvn-overflow-visible:hover, div.post.mvn-overflow-visible:hover .msg .b
   height: auto;
   margin: 0;
   max-width: 400px;
-  max-height: 350px;  
+  max-height: 350px;
 }
 
 iframe.mvn-embed-vine{
@@ -654,7 +659,7 @@ body.MVN-oscuro .mvn-pagination-clone{
   position: absolute;
   top: 50%;
   left: 50%;
-  
+
   left: 40%;
   margin-top: -9px;
   margin-left: -9px;
@@ -690,7 +695,7 @@ body.MVN-oscuro .mvn-pagination-clone{
   background-color: white;
   color: #3A2D2D;
 }
-    
+
 
 /*** Settings ***/
 
@@ -729,9 +734,9 @@ body.MVN-oscuro .mvn-pagination-clone{
   width: auto;
 }
 
-#thumbs ul li{ 
+#thumbs ul li{
   position: relative;
-  overflow: visible; 
+  overflow: visible;
 }
 
 #thumbs a.tooltip:hover:after{
@@ -1207,31 +1212,31 @@ img.mfp-img {
 /* animate in */
 .my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
   opacity: 1;
-  -webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
-  -moz-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
-  -ms-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
-  -o-transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
-  transform: translateY(0) perspective( 600px ) rotateX( 0 ); 
+  -webkit-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+  -moz-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+  -ms-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+  -o-transform: translateY(0) perspective( 600px ) rotateX( 0 );
+  transform: translateY(0) perspective( 600px ) rotateX( 0 );
 }
 
 /* animate out */
 .my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
   opacity: 0;
 
-  -webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
-  -moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
-  -ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
-  -o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
-  transform: translateY(-10px) perspective( 600px ) rotateX( 10deg ); 
+  -webkit-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+  -moz-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+  -ms-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+  -o-transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
+  transform: translateY(-10px) perspective( 600px ) rotateX( 10deg );
 }
 
 /* Dark overlay, start state */
 .my-mfp-slide-bottom.mfp-bg {
   opacity: 0;
 
-  -webkit-transition: opacity 0.3s ease-out; 
-  -moz-transition: opacity 0.3s ease-out; 
-  -o-transition: opacity 0.3s ease-out; 
+  -webkit-transition: opacity 0.3s ease-out;
+  -moz-transition: opacity 0.3s ease-out;
+  -o-transition: opacity 0.3s ease-out;
   transition: opacity 0.3s ease-out;
 }
 /* animate in */

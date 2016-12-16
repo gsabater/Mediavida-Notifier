@@ -1,12 +1,12 @@
 //=================================================================
 //
-//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗ 
+//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗
 //  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗██║   ██║██║██╔══██╗██╔══██╗
 //  ██╔████╔██║█████╗  ██║  ██║██║███████║██║   ██║██║██║  ██║███████║
 //  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║╚██╗ ██╔╝██║██║  ██║██╔══██║
 //  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║ ╚████╔╝ ██║██████╔╝██║  ██║
-//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
-//   
+//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝
+//
 //=================================================================
 // Main Background page
 // Used mainly for notification checks, and the main location
@@ -65,7 +65,7 @@ init();
 
   //+-------------------------------------------------------
   //| init()
-  //| + Creates the first ul element used to parse 
+  //| + Creates the first ul element used to parse
   //| + response from server
   //+--------------------------------
   //| + Also inits localstorage
@@ -79,7 +79,7 @@ init();
       _audio.src = "assets/" + user.audio;
 
       window.MV = setInterval(checkNotifications, 30000);
-      
+
       window.setTimeout(function(){ chrome.storage.local.get("MVN-user",    function(result){ MVNStorage(result); });  }, 100);
       //window.setTimeout(function(){ chrome.storage.local.get("tags",        function(result){ checkStorage("tags", result); });  }, 100);
       //window.setTimeout(function(){ chrome.storage.local.get("posts",       function(result){ checkStorage("posts", result); });  }, 100);
@@ -103,10 +103,10 @@ init();
           _audio.src = "assets/" + user.audio;
       }
 
-      if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){ 
+      if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){
         setMVNStorage(user);
         notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
-        sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true); 
+        sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true);
       }
 
       console.log(user);
@@ -137,8 +137,8 @@ init();
   //| + Sets and saves information from localstorage.
   //+-------------------------------------------------------
     function checkStorage(table, db){ mvnLS[table] = db[table] || {}; console.log(table, db, mvnLS); }
-    
-    function setStorage(db){ 
+
+    function setStorage(db){
       var obj = {};
       for (key in db){
         obj[key] = db[key]; }
@@ -265,7 +265,7 @@ init();
 
   //+-------------------------------------------------------
   //| clearNotification()
-  //| + Removes the notification from the action center and 
+  //| + Removes the notification from the action center and
   //| + fades the audio background.
   //+-------------------------------------------------------
     function clearNotification(notificationId){
@@ -277,7 +277,7 @@ init();
   //+-------------------------------------------------------
     chrome.notifications.onClicked.addListener(pushAction);
     chrome.notifications.onClosed.addListener(clearNotification);
-    
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       console.log("+ MVN: Message event", request);
 
