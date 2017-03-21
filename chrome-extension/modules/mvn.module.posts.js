@@ -1,12 +1,12 @@
 //=================================================================
 //
-//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗ 
+//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗
 //  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗██║   ██║██║██╔══██╗██╔══██╗
 //  ██╔████╔██║█████╗  ██║  ██║██║███████║██║   ██║██║██║  ██║███████║
 //  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║╚██╗ ██╔╝██║██║  ██║██╔══██║
 //  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║ ╚████╔╝ ██║██████╔╝██║  ██║
-//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
-//   
+//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝
+//
 //=================================================================
 // At post load, call initPostTools, which creates an array with
 // all the posts on of the page. After that, detects the current thread
@@ -31,7 +31,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
   //+-------------------------------------------------------
   //| initPostTools()
-  //| + Gets an array of the posts on the page to 
+  //| + Gets an array of the posts on the page to
   //| + attach and process the information
   //| usage: $(_posts['93']).css("color","red");
   //+-------------------------------------------------------
@@ -70,12 +70,12 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         $("#scrollpages").append("<em class='mvn-toggle-infiniteScroll" + _disabledScroll + "' alt='Toggle infinite Scroll' title='Toggle infinite Scroll' ><i class='fa fa-sort-amount-desc' style='font-size: 15px;'></i></em>"); }
 
       //Add orderby button
-      if(in_post){ 
-        $("#scrollpages").append("<em class='mvn-orderby-manita' alt='Ordenar por manitas' title='Ordenar por manitas'><i class='fa fa-thumbs-o-up' style='font-size: 15px;'></i></em>"); }     
-      
+      if(in_post){
+        $("#scrollpages").append("<em class='mvn-orderby-manita' alt='Ordenar por manitas' title='Ordenar por manitas'><i class='fa fa-thumbs-o-up' style='font-size: 15px;'></i></em>"); }
+
       //Hide deleted posts if user wants
-      if(_user.hideNopost){ $("body").addClass("mvn-hide-nopost"); }      
-      
+      if(_user.hideNopost){ $("body").addClass("mvn-hide-nopost"); }
+
       //Add bottom tools only once per post
       if(in_post){ bottomTools(); }
 
@@ -112,7 +112,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
       //console.log($(window).scrollTop(), $(document).height(), $(document).height()-200);
 
       if(_user.scroll && in_post){
-        
+
         if(($(window).scrollTop() >= ($(document).height() - $(window).height() - 800)) && (current_page < last_page)){
           loadPage(); }
 
@@ -174,10 +174,10 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
   //| + Loads a specific page given a parameter
   //+-------------------------------------------------------
     function loadPage(page, callback){
-      
+
       if($("#postform").is(":visible")){ loadingPage = true; }
       if(!loadingPage){
-        
+
         loadingPage = true;
         if(in_post){
 
@@ -185,12 +185,12 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
           console.warn("MVN: Loading ajax page", page, callback);
 
           if(callback == "manitas"){ found = false;
-            for(i = last_page; i >= 1; i--){ //console.log(i, _pages[i]); 
-              if(!_pages[i]){ 
-                page = i; found = true; 
-                $(".status-page").text("Página " + page + "/" + last_page); 
-              } 
-            } 
+            for(i = last_page; i >= 1; i--){ //console.log(i, _pages[i]);
+              if(!_pages[i]){
+                page = i; found = true;
+                $(".status-page").text("Página " + page + "/" + last_page);
+              }
+            }
 
             if(!found){ return applyOrder(); }
           }
@@ -204,7 +204,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
             },
 
             success: function(data, textStatus, XMLHttpRequest) {
-              
+
               loadingPage = false;
               _pages[page] = true;
 
@@ -226,7 +226,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
         }
       }
-    }   
+    }
 
 
   //+-------------------------------------------------------
@@ -242,13 +242,13 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         var bottom = $("#bottompanel", xhr).clone();
         bottom.removeAttr("id").addClass("mvn-ajax-pagination");
         bottom.attr("data-mvnpage", bottom.find(".paginas em").text());
-        
+
         bottom.find(".tprev, .tnext, .paginas a, .paginas span").remove();
         bottom.find(".paginas em").prepend("Página ").css("background-color", "transparent");
         bottom.insertBefore("#bottompanel");
         //$(".mvn-ajax-pagination .paginas a").each(function(i,e){ $(e).replaceWith("<span>"+$(e).text()+"</span>"); });
       }
-      
+
       for (i = 0; i <= posts.length - 1; i++){
         if(posts[i].id && !$(posts[i]).hasClass("postit")){
           _posts[posts[i].id.substring(4)] = posts[i];
@@ -271,14 +271,14 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
   //+-------------------------------------------------------
     function getOP(){
 
-      if(_op){ 
+      if(_op){
         $(".post").each(function(i,e){
           poster = $(e).find(".autor dl dt").text();
           if(poster == _op){ $(e).addClass("mvn-thread-op"); }
         });
         return true;
       }
-      
+
       extractOP();
     }
 
@@ -302,23 +302,23 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
       _op = post.find(".autor dl dt").text();
       getOP();
     }
-    
+
 
   //+-------------------------------------------------------
   //| orderbyManitas()
   //| + Loads the whole post and sorts the posts by manitas
   //+-------------------------------------------------------
-    $("body").on("click", ".mvn-orderby-manita", function(e){ 
+    $("body").on("click", ".mvn-orderby-manita", function(e){
 
       if($(this).hasClass("MVN-reset-post")){ location.reload(); return false; }
-      
+
       $(this).addClass("MVN-reset-post");
       $(this).find("i").removeClass("fa-thumbs-o-up").addClass("fa-undo");
 
       $(".mvn-post-page, .mvn-toggle-infiniteScroll").css({"opacity":"0.2", "cursor":"default"});
 
       orderbyManitas();
-      
+
     });
 
     function orderbyManitas(){
@@ -327,7 +327,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
       //First prepare the visual feedback
       $("#main").addClass("mvn-loading-all");
       $("#main").prepend("<div class='indicator'><span class='spinner'>Cargando y ordenando posts, espera...</span><span class='status-page'></span></div>");
-      $(".largecol").prepend("<div id='mvn-order-results'></div>");     
+      $(".largecol").prepend("<div id='mvn-order-results'></div>");
 
       //Start loading everything
       loadPage(false, "manitas");
@@ -337,7 +337,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
   //+-------------------------------------------------------
   //| applyOrder()
   //| + Orders array and removes visual feedback
-  //+-------------------------------------------------------    
+  //+-------------------------------------------------------
     function applyOrder(){
       console.log("APPLY ORDER");
 
@@ -378,8 +378,8 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
   //| Post action: Click #num to quote - ajax listener
   //+-------------------------------------------------------
     $("body").on("click", "#quickreply, .info a.qn", function(e){
-      
-      if($(this).hasClass("qn")){ 
+
+      if($(this).hasClass("qn")){
 
         var cursorPos = $("#cuerpo").prop('selectionStart'),
         v = $("#cuerpo").val(),
@@ -405,7 +405,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
     $("body").on("click", ".mvn-post .masmola", function(e){
       var m = $(this).closest(".mvn-post").find(".mola");
 
-      var data = { 
+      var data = {
         token: $("#token").val(),
         tid: $("#tid").val(),
         num: $(this).attr("rel")
@@ -416,7 +416,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         if(data == "-2"){ alert("No puedes votar más posts hoy"); }
         if(data == "-3"){ alert("Regístrate para botar posts"); }
         if(data == "-4"){ alert("No puedes votar este post"); }
-        if(data == "1"){ 
+        if(data == "1"){
           n = parseInt(m.text()) + 1;
           m.text(n);
           m.fadeIn();
@@ -454,7 +454,7 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         textBefore = v.substring(0,  cursorPos ),
         textAfter  = v.substring( cursorPos, v.length ),
         quoteNum = $(this).attr("href") + " ";
-        
+
         $('#cuerpo').val( textBefore + quoteNum + textAfter );
 
       $("#postform").show();
@@ -464,11 +464,11 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
 
       e.preventDefault();
       return false;
-    }); 
+    });
 
   //+-------------------------------------------------------
   //| initPostTools()
-  //| + Gets an array of the posts on the page to 
+  //| + Gets an array of the posts on the page to
   //| + attach and process the information
   //| - $(_posts['93']).css("color","red");
   //+-------------------------------------------------------
@@ -485,14 +485,14 @@ var thread_url    = ($(".headlink").length)? $(".headlink").attr("href") : windo
         document.head.appendChild (styleNode);
       }
 
-      /* 
+      /*
       Fail xDD
       var d = new Date();
       if((d.getDate() == 28)&&(d.getMonth() == 10)){
         _user.font.family = "Comic Sans MS";
         _user.font.size = "15px";
         _user.font.line = "19px";
-        $( "<style id='MVN-font-style-inocente'>div.post .msg .body .cuerpo{ color: #D6596F; }.MVN-oscuro div.post .msg .body .cuerpo{ color: pink; }</style>" ).appendTo("head");        
+        $( "<style id='MVN-font-style-inocente'>div.post .msg .body .cuerpo{ color: #D6596F; }.MVN-oscuro div.post .msg .body .cuerpo{ color: pink; }</style>" ).appendTo("head");
       }
       */
 

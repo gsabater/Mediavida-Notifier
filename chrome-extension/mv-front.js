@@ -1,12 +1,12 @@
 //=================================================================
 //
-//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗ 
+//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗
 //  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗██║   ██║██║██╔══██╗██╔══██╗
 //  ██╔████╔██║█████╗  ██║  ██║██║███████║██║   ██║██║██║  ██║███████║
 //  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║╚██╗ ██╔╝██║██║  ██║██╔══██║
 //  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║ ╚████╔╝ ██║██████╔╝██║  ██║
-//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
-//   
+//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝
+//
 //=================================================================
 
 console.log("MV Notifier active");
@@ -52,7 +52,7 @@ var _url = window.location.pathname.split( '/' );
         //checkLocalStorage();
       });
 
-    }  
+    }
 
   //+-------------------------------------------------------
   //| doMVN()
@@ -64,6 +64,7 @@ var _url = window.location.pathname.split( '/' );
       redactor();             // mvn.module.posts.redactor
       applyFont();            // mvn.module.posts
       initPostTools();        // mvn.module.posts
+      fixHotlink();           // mvn.module.posts.hotlink
       //forumBookmarks();
 
     }
@@ -75,7 +76,7 @@ var _url = window.location.pathname.split( '/' );
   //+-------------------------------------------------------
     function checkLocalStorage(){
 
-      if(localStorage['ut-Tags'] && 
+      if(localStorage['ut-Tags'] &&
         (localStorage['ut-Tags'] !== "[]") &&
         (!_mvnLS.tags['mvn-set'])){
 
@@ -85,7 +86,7 @@ var _url = window.location.pathname.split( '/' );
         chrome.runtime.sendMessage({mvnLS: _mvnLS});
       }
 
-      if(localStorage['ut-forosFav'] && 
+      if(localStorage['ut-forosFav'] &&
         (localStorage['ut-forosFav'] !== "[]") &&
         (!_mvnLS.forums.length)){
 
@@ -104,7 +105,7 @@ var _url = window.location.pathname.split( '/' );
   //+-------------------------------------------------------
     function printFrontNotifications(num){
       if(num && parseInt(num) > 0){
-        $("#notifylink").prepend("<strong class='bubble'>"+num+"</strong>");  
+        $("#notifylink").prepend("<strong class='bubble'>"+num+"</strong>");
       }
     }
 

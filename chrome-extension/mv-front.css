@@ -135,7 +135,7 @@ dd.online{ display: none; }
 }
 
 /* Fix un div extraño que genera en la topbar */
-#topbar #usermenu a div {
+#topbar #usermenu a.av div {
   display: none;
 }
 
