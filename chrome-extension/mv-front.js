@@ -64,7 +64,8 @@ var _url = window.location.pathname.split( '/' );
       redactor();             // mvn.module.posts.redactor
       applyFont();            // mvn.module.posts
       initPostTools();        // mvn.module.posts
-      fixHotlink();           // mvn.module.posts.hotlink
+
+      //fixHotlink();           // mvn.module.posts.hotlink
       //forumBookmarks();
 
     }

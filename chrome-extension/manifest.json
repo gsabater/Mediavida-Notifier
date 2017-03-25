@@ -3,7 +3,7 @@
 
   "name": "Mediavida Notifier",
   "description": "Enhances the Mediavida Experience.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "icons": {
     "16": "assets/MVN_16x16.png",
     "48": "assets/MVN_48x48.png",
@@ -28,15 +28,11 @@
       "js": [
         "lib/jquery-2.1.4.min.js",
         "lib/jquery.magnific-popup.min.js",
-        //"lib/hotlink.js",
-
         "mv-front.js",
-
         "modules/mvn.module.user.js",
         "modules/mvn.module.bookmarks.js",
 
         "modules/mvn.module.posts.redactor.js",
-        "modules/mvn.module.posts.hotlink.js",
         "modules/mvn.module.posts.embed.js",
         "modules/mvn.module.posts.ajax.js",
         "modules/mvn.module.posts.js",
