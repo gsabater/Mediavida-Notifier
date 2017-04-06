@@ -15,7 +15,8 @@
 
 console.log("MV Notifier background");
 
-var v = 1.21;
+var v = 2.0;
+var update_url = "foro/mediavida/mediavida-notifier-chrome-extension-541508/32#944";
 
 var _audio;
 var _num = 0;
@@ -105,7 +106,7 @@ init();
 
       if(!localstorage['MVN-user'] || (localstorage['MVN-user'].v < v)){
         setMVNStorage(user);
-        notifications['update'] = {url: chrome.extension.getURL("") + 'foro/mediavida/mediavida-notifier-chrome-extension-541508'};
+        notifications['update'] = {url: chrome.extension.getURL("") + update_url};
         sendPush("update", "Mediavida Notifier ha sido actualizada a la versión "+v, true);
       }
 

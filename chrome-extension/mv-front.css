@@ -139,12 +139,13 @@ dd.online{ display: none; }
   display: none;
 }
 
-/*** Post Redactor ***/
+/*** Post Redactor ***
 #ut-botonera2, .mvn-old-button-bar{ display: none !important; }
 textarea#cuerpo{ resize: none; }
 div[style='overflow: hidden;margin: 0 0px 10px -5px;clear: both'],
 div[style='overflow: hidden;margin: 10px 0;clear: both'],
 div[style='overflow: hidden;margin-bottom: 10px;clear: both']{ display: none; }
+*/
 
 .mvn-redactor-container{ position: relative; }
 

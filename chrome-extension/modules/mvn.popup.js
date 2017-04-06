@@ -1,12 +1,12 @@
 //=================================================================
 //
-//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗ 
+//  ███╗   ███╗███████╗██████╗ ██╗ █████╗ ██╗   ██╗██╗██████╗  █████╗
 //  ████╗ ████║██╔════╝██╔══██╗██║██╔══██╗██║   ██║██║██╔══██╗██╔══██╗
 //  ██╔████╔██║█████╗  ██║  ██║██║███████║██║   ██║██║██║  ██║███████║
 //  ██║╚██╔╝██║██╔══╝  ██║  ██║██║██╔══██║╚██╗ ██╔╝██║██║  ██║██╔══██║
 //  ██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║ ╚████╔╝ ██║██████╔╝██║  ██║
-//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝                                                               
-//   
+//  ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═════╝ ╚═╝  ╚═╝
+//
 //=================================================================
 
 checkNotifications();
@@ -19,8 +19,6 @@ chrome.runtime.sendMessage({clear: "0"});
   //| + Loads only when localstorage is ready
   //+-------------------------------------------------------
     function checkNotifications(){
-
-      console.log("get notificaciones");
 
       var xhr = new XMLHttpRequest();
       xhr.open("GET", "http://www.mediavida.com/notificaciones/fly", true);
@@ -57,8 +55,13 @@ chrome.runtime.sendMessage({clear: "0"});
         _url.href = url;
         _url.target = "_blank";
 
+        _img = lis[i].getElementsByTagName("img")[0]
+        src  = "http://www.mediavida.com/" + _img.src.split(base)[1];
+
+        _img.src = src;
+
       }
 
       window.setTimeout(function(){ document.getElementsByTagName("body")[0].style.width = "400px" }, 200);
 
-    }    
+    }
